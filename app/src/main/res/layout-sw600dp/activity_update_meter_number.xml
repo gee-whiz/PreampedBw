@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    tools:context="za.co.empirestate.botspost.preamped.UpdateMeterNumber">
+
+
+
+    <FrameLayout
+        android:background="#FFF000"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+        <TextView android:textSize="20.0sp"
+            android:textColor="#EA2026"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update Meter Number"
+            android:drawablePadding="5.0dip"/>
+    </FrameLayout>
+    <LinearLayout
+        android:id="@+id/btnBack"
+        android:gravity="center"
+        android:background="#EA2026"
+        android:layout_width="match_parent"
+        android:layout_height="25dp">
+        <ImageButton
+            android:id="@+id/imgBack"
+            android:background="@null"
+            android:src="@drawable/bck_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="@android:color/black"
+            android:text="Add New Meter Number"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:paddingRight="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_weight="1"
+                android:inputType="number"
+                android:id="@+id/edtNewMeter"
+                android:gravity="center"
+                android:background="@drawable/text_box_bg"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+
+                android:hint="Enter New Meter Number"
+                android:layout_width="match_parent"
+                android:layout_height="62dp" />
+
+            <ImageButton
+                android:id="@+id/btnUpdate"
+                android:layout_marginTop="6dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_add_circle_black_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="62dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="@android:color/black"
+            android:text="Delete Meter Number"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:paddingRight="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Spinner
+
+                style="@style/mySpinnerItemStyle"
+                android:id="@+id/spDeleteMeter"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+            </Spinner>
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_remove_circle_black_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp" />
+        </LinearLayout>
+    </LinearLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        tools:targetApi="ice_cream_sandwich" />
+
+
+
+
+
+</LinearLayout>

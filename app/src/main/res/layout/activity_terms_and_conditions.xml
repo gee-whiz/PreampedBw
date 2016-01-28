@@ -1,0 +1,34 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.transactquest.TermsActivity"
+    tools:ignore="MergeRootFrame" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <FrameLayout android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.15">
+            <TextView android:textSize="20.0sp" android:textColor="#EA2026" android:layout_gravity="center" android:background="@null" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Terms and Conditions" android:drawablePadding="5.0dip" />
+        </FrameLayout>
+        <LinearLayout android:orientation="horizontal" android:background="#EA2026" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.05">
+            <ImageButton android:layout_gravity="center_vertical" android:id="@+id/bck_btn" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/bck_btn" />
+        </LinearLayout>
+
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/term"
+            android:text="@string/terms" />
+
+
+    </LinearLayout>
+
+</ScrollView>

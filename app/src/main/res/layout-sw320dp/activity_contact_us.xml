@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.15">
+        <TextView android:textColor="#EA2026" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CONTACT US" />
+    </FrameLayout>
+    <LinearLayout android:orientation="horizontal" android:background="#EA2026" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.035">
+        <ImageButton android:layout_gravity="center_vertical" android:id="@+id/bck_btn" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/bck_btn" />
+    </LinearLayout>
+    <LinearLayout android:gravity="center_horizontal|center_vertical" android:orientation="vertical" android:background="#ffffffff" android:paddingTop="10.0dip" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.757">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="For more information and assistance contact" android:textColor="#000000"/>
+        <FrameLayout android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="50.0dip" android:layout_marginBottom="10dp">
+            <TextView android:textColor="#EA2026" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3911473" />
+        </FrameLayout>
+        <FrameLayout android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="50.0dip">
+            <TextView android:textColor="#EA2026" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="enquiries@botspost.co.bw" />
+        </FrameLayout>
+</LinearLayout>
+    <Button android:textColor="#EA2026" android:textSize="22sp" android:textStyle="bold" android:orientation="vertical" android:id="@+id/btn_login" android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="0.0dip" android:text="" android:layout_weight="0.068" />
+</LinearLayout>

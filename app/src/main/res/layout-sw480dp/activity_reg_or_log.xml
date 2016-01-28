@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.9">
+      <!--  <ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/splash_logo" />-->
+    </FrameLayout>
+    <TextView android:textSize="16.0sp" android:textColor="#EA2026" android:layout_gravity="top|center" android:layout_width="wrap_content" android:layout_height="0.0dip" android:text="" android:layout_weight="0.03" />
+    <FrameLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.067">
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <Button android:textSize="27.0sp" android:textColor="#EA2026" android:id="@+id/reg_btn" android:background="#FFF000" android:layout_width="0.0dip" android:layout_height="fill_parent" android:text="Register" android:layout_weight="0.5" />
+            <Button android:textSize="27.0sp" android:textColor="#ffffffff" android:id="@+id/log_btn" android:background="#EA2026" android:layout_width="0.0dip" android:layout_height="fill_parent" android:text="Login" android:layout_weight="0.5" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

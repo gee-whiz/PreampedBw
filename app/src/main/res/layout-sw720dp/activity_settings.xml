@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.15">
+        <TextView android:textColor="#EA2026" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SETTINGS" />
+    </FrameLayout>
+    <LinearLayout android:orientation="horizontal" android:background="#EA2026" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.035">
+        <ImageButton android:layout_gravity="center_vertical" android:id="@+id/bck_btn" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/bck_btn" />
+    </LinearLayout>
+    <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:background="#ffffffff" android:paddingTop="10.0dip" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.757">
+        <TextView android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Primary Meter Number" />
+        <EditText
+            android:focusableInTouchMode="false"
+            android:id="@+id/meter_number" android:background="@drawable/text_box_bg" android:paddingLeft="3.0dip" android:layout_width="fill_parent" android:layout_height="65.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:inputType="number" />
+        <TextView android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="E-mail Address" />
+        <EditText android:id="@+id/email_address" android:background="@drawable/text_box_bg" android:paddingLeft="3.0dip" android:layout_width="fill_parent" android:layout_height="65.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:inputType="textEmailAddress" />
+        <TextView android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="E-mail Address" />
+        <EditText android:id="@+id/phone" android:background="@drawable/text_box_bg" android:paddingLeft="3.0dip" android:layout_width="fill_parent" android:layout_height="65.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:inputType="phone" android:layout_marginBottom="20dp"/>
+        <Button android:textSize="20.0sp" android:textColor="#ffffffff" android:id="@+id/update_card" android:background="@drawable/btn_bg" android:layout_width="fill_parent" android:layout_height="65.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:text="Update Credit Card Details" />
+    </LinearLayout>
+    <Button android:textSize="30.0sp" android:textStyle="bold"  android:textColor="#EA2026" android:orientation="vertical" android:id="@id/update" android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="0.0dip" android:text="UPDATE" android:layout_weight="0.068" />
+</LinearLayout>

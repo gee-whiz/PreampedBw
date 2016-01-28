@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.15">
+        <TextView android:textSize="30.0sp" android:textColor="#EA2026" android:layout_gravity="center" android:background="@null" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PENDING" android:drawableRight="@drawable/payment_details_icon" android:drawablePadding="5.0dip" />
+    </FrameLayout>
+    <LinearLayout android:orientation="horizontal" android:background="#EA2026" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.05">
+        <ImageButton android:layout_gravity="center_vertical" android:id="@+id/bck_btn" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/bck_btn" />
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:background="#ffffffff" android:paddingTop="10.0dip" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.6">
+        <TextView android:textSize="45.0sp" android:textStyle="bold" android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TRANSACTION PENDING:" android:layout_marginBottom="5dp"/>
+        <TextView android:id="@+id/reason" android:textSize="30.0sp"  android:textColor="#447725" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="50dp" android:paddingRight="50dp"  />
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.075">
+        <FrameLayout android:background="@drawable/text_box_bg" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.5">
+            <TextView android:textSize="20.0sp" android:textColor="#ff000000" android:layout_gravity="center" android:id="@+id/date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Date:" />
+        </FrameLayout>
+        <FrameLayout android:background="@drawable/text_box_bg" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.5">
+            <TextView android:textSize="20.0sp" android:textColor="#ff000000" android:layout_gravity="center" android:id="@+id/time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Time" />
+        </FrameLayout>
+    </LinearLayout>
+    <Button android:textSize="35.0sp" android:textStyle="bold" android:textColor="#EA2026" android:orientation="vertical" android:id="@+id/btn_finish" android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="0.0dip" android:text="Finish" android:layout_weight="0.075" />
+    <FrameLayout android:background="#ff000000" android:paddingTop="10.0dip" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.075">
+        <ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/forth_dot" />
+    </FrameLayout>
+</LinearLayout>
