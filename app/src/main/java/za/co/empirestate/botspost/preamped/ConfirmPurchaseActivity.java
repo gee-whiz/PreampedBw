@@ -14,12 +14,19 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import android.text.format.Time;
+
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +39,8 @@ import java.net.URL;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -46,6 +55,13 @@ import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 public class ConfirmPurchaseActivity extends Activity {
 
     private static final String LOG = "Hey Gee" ;
+    private static final String TAG = "hey Gee";
+    static String iv,shaKey;
+    private static String dialogMsg;
+    int tokenAmnt;
+    AES aes;
+    Intent localIntent;
+    private String tag_json_obj = "jobj_req", tag_json_arry = "jarray_req";
     private String amount;
     private String name;
     private String cardNumber;
@@ -56,16 +72,14 @@ public class ConfirmPurchaseActivity extends Activity {
     private MySQLiteFunctions mysqliteFunction;
     private Payment payment;
     private String phone;
-    private static String dialogMsg;
     private String token,units,date,time;
     private String reference = null;
     private String last3Digits;
     private String vatAndLevy;
     private String costOfUnits;
-    int tokenAmnt;
-    static String iv,shaKey;
-    AES aes;
-    Intent localIntent;
+    private String email;
+    private TextView tmeter;
+    private ProgressDialog pDialog;
 
     protected void onCreate(Bundle paramBundle)
     {
@@ -74,11 +88,13 @@ public class ConfirmPurchaseActivity extends Activity {
         this.mysqliteFunction = new MySQLiteFunctions(this);
         localIntent = getIntent();
         this.payment = ((Payment)localIntent.getParcelableExtra("payment_details"));
-
+         email =   mysqliteFunction.getEmail();
+        pDialog = new ProgressDialog(ConfirmPurchaseActivity.this);
+        pDialog.setMessage("Processing Payment..");
         phone = mysqliteFunction.getPhone();
         //meterNumber = mysqliteFunction.getMeterNumber();
-        meterNumber = localIntent.getStringExtra("meterNumber");
-        Log.d(LOG,"Meter Number "+ meterNumber);
+        meterNumber = localIntent.getStringExtra("meter_number");
+        Log.d(LOG, "Meter Number " + meterNumber);
         Time localTime = new Time(Time.getCurrentTimezone());
         localTime.setToNow();
         TextView txtMeterNumber = (TextView) findViewById(R.id.meter_number);
@@ -86,11 +102,18 @@ public class ConfirmPurchaseActivity extends Activity {
         TextView txtInitial = (TextView) findViewById(R.id.initial);
         TextView txtSurname = (TextView) findViewById(R.id.surname);
         TextView txtCardNumber = (TextView) findViewById(R.id.card_number);
+        tmeter = (TextView)findViewById(R.id.txtMeter);
        // TextView txtCardType = (TextView) findViewById(R.id.card_type);
       //  TextView txtCvv = (TextView) findViewById(R.id.cvv);
         TextView txtDate = (TextView)findViewById(R.id.date);
         TextView txtTime = (TextView)findViewById(R.id.time);
         Button btnConfirm = (Button)findViewById(R.id.btn_confirm);
+        if (meterNumber.length() < 9) {
+            tmeter.setText("Voucher");
+        }
+        else {
+            tmeter.setText("Meter Number");
+        }
         if (localIntent.getBooleanExtra("isNew", false))
         {
             tokenAmnt = Integer.parseInt(this.payment.amount) - 4;
@@ -180,7 +203,36 @@ public class ConfirmPurchaseActivity extends Activity {
                 @Override
                 public void onClick(View v){
                     if(isOnline()){
-                     new  GetTokenTask().execute();
+
+                   if (meterNumber.length() < 9)  {
+                       pDialog.show();
+                       String li_amount = String.valueOf(Integer.parseInt(amount) * 100);
+                       Log.d(LOG,"Amount now "+li_amount);
+                       if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
+                           try {
+                               cardNumber = aes.encrypt(cardNumber, shaKey, iv);
+                               cvv = aes.encrypt(cvv, shaKey, iv);
+                           } catch (InvalidKeyException e) {
+                               e.printStackTrace();
+                           } catch (UnsupportedEncodingException e) {
+                               e.printStackTrace();
+                           } catch (InvalidAlgorithmParameterException e) {
+                               e.printStackTrace();
+                           } catch (IllegalBlockSizeException e) {
+                               e.printStackTrace();
+                           } catch (BadPaddingException e) {
+                               e.printStackTrace();
+                           }
+
+                           PurchaseAirtime(meterNumber,li_amount, email, phone, name, cardNumber, cvv, li_amount, expYear, expMonth);
+                       }
+                       else {
+                           PurchaseAirtime(meterNumber,li_amount, email, phone, name, cardNumber, cvv, li_amount, expYear, expMonth);
+                       }
+                   }
+                        else {
+                       new GetTokenTask().execute();
+                   }
                     }else {
                         dialogMsg ="You are offline Please check your internet settings";
                         new ErrorMsgDialog().show(getFragmentManager(),null);
@@ -202,10 +254,172 @@ public class ConfirmPurchaseActivity extends Activity {
         return false;
     }
 
+    public  void PurchaseAirtime(final String productName,final String value,final
+    String email,final String phone, final  String name, final String card ,final String cvv,
+                                 final String amount, final  String expYear, final String expMonth){
+
+        StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
+                AppConfig.URL_AIRTIME, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(LOG, "vend Airtime  response " + response.toString());
+                int size = response.length();
+                JSONArray jsonArray = null;
+                    try {
+                        jsonArray = new JSONArray(response);
+                        JSONObject jsonObject = jsonArray.getJSONObject(0);
+                        String SerialNumber = jsonObject.getString("SerialNumber");
+                        String productName  = jsonObject.getString("ProductName");
+                        String activationNumber = jsonObject.getString("ActivationNumber");
+                        String value = jsonObject.getString("Value");
+                        String expDate = jsonObject.getString("ExpirationDate");
+                        String res =  jsonObject.getString("Response");
+                        Log.d(LOG,"SerialNumber "+ SerialNumber);
+
+                        if (res.equalsIgnoreCase("00")){
+                            pDialog.dismiss();
+                            Intent i = new Intent(ConfirmPurchaseActivity.this,AirtimeSuccessActivity.class);
+                            i.putExtra("Amount", amount);
+                            i.putExtra("ProductName",productName);
+                            i.putExtra("ActivationNumber",activationNumber);
+                            i.putExtra("Value",value);
+                            i.putExtra("expDate",expDate);
+                            i.putExtra("SerialNumber",SerialNumber);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                            finish();
+                        }
+                        else if (res.equalsIgnoreCase("99")){
+                            pDialog.dismiss();
+                           ShowError();
+                        }
+                        else
+                        {
+                            pDialog.dismiss();
+                            NetworkError();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("productName", productName);
+                params.put("value", value);
+                params.put("quantity","1");
+                params.put("email",email);
+                params.put("phone","26772371957");
+                params.put("platform","Adroid");
+                params.put("name",name);
+                params.put("card",card);
+                params.put("cvv",cvv);
+                params.put("amount",amount);
+                params.put("expYear",expYear);
+                params.put("expMonth",expMonth);
+                Log.d(LOG, "values sent from the device  " + params);
+                return params;
+            }
+
+        };
+        strReq.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
+
+
+    }
+
+    private  void ShowError()
+    {
+
+        LayoutInflater inflater = LayoutInflater.from(ConfirmPurchaseActivity.this);
+        View promptView = inflater.inflate(R.layout.purchase_error, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmPurchaseActivity.this);
+        builder.setView(promptView);
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+    }
+
+
+
+
+    //vend airtime
+
+    private  void NetworkError()
+    {
+
+        LayoutInflater inflater = LayoutInflater.from(ConfirmPurchaseActivity.this);
+        View promptView = inflater.inflate(R.layout.network_error, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmPurchaseActivity.this);
+        builder.setView(promptView);
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+    }
+
+    public static class ErrorMsgDialog extends DialogFragment
+    {
+        public Dialog onCreateDialog(Bundle paramBundle)
+        {
+            AlertDialog.Builder locaBuilder = new AlertDialog.Builder(getActivity());
+            locaBuilder.setMessage(dialogMsg).setCancelable(false).setTitle(getResources().getString(R.string.app_name)).setPositiveButton("ok", new DialogInterface.OnClickListener()
+            {
+                public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt)
+                {
+                }
+            });
+            return locaBuilder.create();
+        }
+    }
+
     private class GetTokenTask extends AsyncTask<Void, Void, String> {
+        JSONArray jAr = null;
         private String resp;
         private ProgressDialog progressDialog;
-        JSONArray jAr = null;
 
         @Override
         protected String doInBackground(Void... params) {
@@ -225,6 +439,7 @@ public class ConfirmPurchaseActivity extends Activity {
                     if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16)
                     {
                         resp = request.addParamsToReq(iv,shaKey,mysqliteFunction.getPhone(),mysqliteFunction.getMeterNumber());
+
                         if(resp != null && resp != ""){
                             if(resp.equals("successful")){
                                 try {
@@ -243,9 +458,11 @@ public class ConfirmPurchaseActivity extends Activity {
                                 }
                                 mysqliteFunction.deletePayment();
 
-                                mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear,last3Digits);
-                                Log.d(LOG,"Last 3 digits stored "+ last3Digits);
+                                mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
+                                Log.d(LOG, "Last 3 digits stored " + last3Digits);
                                 resp = request.addPaymentParamaters(name,surname,cardNumber,cvv,expMonth,expYear,amount,phone,meterNumber,Integer.toString(tokenAmnt),date,time);
+                                Log.d(LOG,"first Payment parameters sent to the server "+ meterNumber);
+
 
                             }else{
                                 resp = "connection error";
@@ -253,6 +470,7 @@ public class ConfirmPurchaseActivity extends Activity {
                         }
                     }else {
                         resp = request.addPaymentParamaters(name,surname,cardNumber,cvv,expMonth,expYear,amount,phone,meterNumber,Integer.toString(tokenAmnt),date,time);
+                        Log.d(LOG,"Payment parameters sent to the server "+ meterNumber);
                     }
 
 
@@ -379,18 +597,4 @@ public class ConfirmPurchaseActivity extends Activity {
         }
     }
 
-    public static class ErrorMsgDialog extends DialogFragment
-    {
-        public Dialog onCreateDialog(Bundle paramBundle)
-        {
-            AlertDialog.Builder locaBuilder = new AlertDialog.Builder(getActivity());
-            locaBuilder.setMessage(dialogMsg).setCancelable(false).setTitle(getResources().getString(R.string.app_name)).setPositiveButton("ok", new DialogInterface.OnClickListener()
-            {
-                public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt)
-                {
-                }
-            });
-            return locaBuilder.create();
-        }
-    }
 }

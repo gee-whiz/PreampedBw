@@ -23,21 +23,21 @@ import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
 public class PaymentDetailsActivity extends Activity
 {
-  private String amount;
-  private String cardType;
-  private String meterNumber;
-  private String month;
-  private MySQLiteFunctions mysqliteFunction;
-  private Payment payment;
+    private static final String LOG = "Hey Gee" ;
   int spnMonthPos;
   int spnYearPos;
-  private String year;
   EditText txtInitial;
   EditText txtCvv;
   EditText txtNumber;
   EditText txtSurname;
   Time localTime;
-
+    private String amount;
+  private String cardType;
+  private String meterNumber;
+  private String month;
+  private MySQLiteFunctions mysqliteFunction;
+  private Payment payment;
+  private String year;
 
     protected void onCreate(Bundle paramBundle)
   {
@@ -152,7 +152,8 @@ public class PaymentDetailsActivity extends Activity
             PaymentDetailsActivity.this.mysqliteFunction.createPaymentTable(cardNumber, cardHolderInitial, cardHolderSurname, strCvv, PaymentDetailsActivity.this.month, PaymentDetailsActivity.this.year, cardNumber.substring(13));
             localIntent.putExtra("payment_details", PaymentDetailsActivity.this.payment);
             localIntent.putExtra("isNew", true);
-            localIntent.putExtra("meterNumber",PaymentDetailsActivity.this.meterNumber);
+            Log.d(LOG,"I'm sending this "+PaymentDetailsActivity.this.meterNumber);
+            localIntent.putExtra("meter_number",PaymentDetailsActivity.this.meterNumber);
             //Intent encryptIntent = new Intent();
             //encryptIntent.putExtra("card_number",cardNumber);
             //encryptIntent.putExtra("card_cvv",strCvv);

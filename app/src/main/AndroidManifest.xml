@@ -126,10 +126,14 @@
         <activity
             android:name=".UpdateMeterNumber"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".NewTransactionHistory"
-            android:label="@string/title_activity_new_transaction_history"></activity>
+            android:label="@string/title_activity_new_transaction_history" />
+        <activity
+            android:name=".AirtimeSuccessActivity"
+            android:label="@string/title_activity_airtime_success"
+            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
     </application>
 
 </manifest>

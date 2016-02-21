@@ -21,12 +21,13 @@ import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 public class AccountDetailsActivity extends Activity
 {
   private static final String LOG = "Hey George";
+ int num;
   private String amount;
     private String savedMeters;
     private String[] mmeters;
   private  Spinner meterNumberspn;
   private MySQLiteFunctions mysqliteFunction;
- int num;
+
   protected void onCreate(Bundle paramBundle)
   {
     super.onCreate(paramBundle);
@@ -99,7 +100,7 @@ setSpinners();
           return;
         }
         String str = savedMeters;
-      Log.d(LOG,"Selected meter number "+ str);
+         Log.d(LOG,"Selected meter number "+ str);
         //  Intent i = new Intent(AccountDetailsActivity.this, PaymentWebView.class);
          // AccountDetailsActivity.this.startActivity(i);
          // overridePendingTransition(R.anim.from, R.anim.to);
@@ -114,27 +115,13 @@ setSpinners();
           return;
         }
         Intent localIntent2 = new Intent(AccountDetailsActivity.this, PaymentDetailsActivity.class);
+          Log.d(LOG,"sending first Selected meter number "+ str);
         localIntent2.putExtra("meter_number", str);
         localIntent2.putExtra("amount", AccountDetailsActivity.this.amount);
         AccountDetailsActivity.this.startActivity(localIntent2);
          // overridePendingTransition(R.anim.from, R.anim.to);
       }
     });
-  }
-
-  public static class ErrorMsgDialog extends DialogFragment
-  {
-    public Dialog onCreateDialog(Bundle paramBundle)
-    {
-      AlertDialog.Builder locaBuilder = new AlertDialog.Builder(getActivity());
-      locaBuilder.setMessage("please select an amount").setCancelable(false).setTitle(getResources().getString(R.string.app_name)).setPositiveButton("ok", new DialogInterface.OnClickListener()
-      {
-        public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt)
-        {
-        }
-      });
-      return locaBuilder.create();
-    }
   }
 
     private void setSpinners(){
@@ -179,5 +166,20 @@ setSpinners();
     }
 
     this.mysqliteFunction.close();
+  }
+
+  public static class ErrorMsgDialog extends DialogFragment
+  {
+    public Dialog onCreateDialog(Bundle paramBundle)
+    {
+      AlertDialog.Builder locaBuilder = new AlertDialog.Builder(getActivity());
+      locaBuilder.setMessage("please select an amount").setCancelable(false).setTitle(getResources().getString(R.string.app_name)).setPositiveButton("ok", new DialogInterface.OnClickListener()
+      {
+        public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt)
+        {
+        }
+      });
+      return locaBuilder.create();
+    }
   }
 }
