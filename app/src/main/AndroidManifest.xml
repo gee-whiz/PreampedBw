@@ -136,7 +136,10 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".PostBox"
-            android:label="@string/title_activity_post_box"></activity>
+            android:label="@string/title_activity_post_box" />
+        <activity
+            android:name=".PoBoxSuccessfull"
+            android:label="@string/title_activity_po_box_successfull"></activity>
     </application>
 
 </manifest>

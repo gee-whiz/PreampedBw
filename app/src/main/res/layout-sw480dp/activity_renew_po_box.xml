@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context="za.co.empirestate.botspost.preamped.RenewPoBox">
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#FFF000">
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:drawablePadding="5.0dip"
+            android:text="Renew PO Box"
+            android:textColor="#EA2026"
+            android:textSize="20.0sp"/>
+    </FrameLayout>
+    <LinearLayout
+        android:id="@+id/btnBack"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="#EA2026"
+        android:gravity="center">
+        <ImageButton
+            android:id="@+id/imgBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/bck_btn" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Select Post Office"
+            android:textColor="@android:color/black" />
+
+        <Spinner
+            android:id="@+id/spPoAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="10dp">
+
+        </Spinner>
+
+
+    </LinearLayout><Space
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#FFF000"
+        android:text="NEXT"
+        android:textColor="#EA2026"
+        android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ff000000"
+        android:gravity="center|bottom">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/first_dot" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

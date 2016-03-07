@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import android.text.format.Time;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
@@ -61,6 +62,9 @@ public class ConfirmPurchaseActivity extends Activity {
     int tokenAmnt;
     AES aes;
     Intent localIntent;
+    String meterChar;
+    PoboxObj poboxObj;
+    String poBoxId,groupId;
     private String tag_json_obj = "jobj_req", tag_json_arry = "jarray_req";
     private String amount;
     private String name;
@@ -94,6 +98,7 @@ public class ConfirmPurchaseActivity extends Activity {
         phone = mysqliteFunction.getPhone();
         //meterNumber = mysqliteFunction.getMeterNumber();
         meterNumber = localIntent.getStringExtra("meter_number");
+        groupId = localIntent.getStringExtra("groupId");
         Log.d(LOG, "Meter Number " + meterNumber);
         Time localTime = new Time(Time.getCurrentTimezone());
         localTime.setToNow();
@@ -108,11 +113,17 @@ public class ConfirmPurchaseActivity extends Activity {
         TextView txtDate = (TextView)findViewById(R.id.date);
         TextView txtTime = (TextView)findViewById(R.id.time);
         Button btnConfirm = (Button)findViewById(R.id.btn_confirm);
-        if (meterNumber.length() < 9) {
-            tmeter.setText("Voucher");
+        meterChar = String.valueOf(meterNumber.charAt(0));
+        if (meterNumber.length() > 9) {
+            tmeter.setText("Meter Number");
         }
         else {
-            tmeter.setText("Meter Number");
+
+            if (meterChar.equalsIgnoreCase("B")||meterChar.equalsIgnoreCase("O")||meterChar.equalsIgnoreCase("M")) {
+                tmeter.setText("Voucher");
+            }
+            else
+                tmeter.setText("PoBox ID");
         }
         if (localIntent.getBooleanExtra("isNew", false))
         {
@@ -205,30 +216,65 @@ public class ConfirmPurchaseActivity extends Activity {
                     if(isOnline()){
 
                    if (meterNumber.length() < 9)  {
-                       pDialog.show();
-                       String li_amount = String.valueOf(Integer.parseInt(amount) * 100);
-                       Log.d(LOG,"Amount now "+li_amount);
-                       if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
-                           try {
-                               cardNumber = aes.encrypt(cardNumber, shaKey, iv);
-                               cvv = aes.encrypt(cvv, shaKey, iv);
-                           } catch (InvalidKeyException e) {
-                               e.printStackTrace();
-                           } catch (UnsupportedEncodingException e) {
-                               e.printStackTrace();
-                           } catch (InvalidAlgorithmParameterException e) {
-                               e.printStackTrace();
-                           } catch (IllegalBlockSizeException e) {
-                               e.printStackTrace();
-                           } catch (BadPaddingException e) {
-                               e.printStackTrace();
+
+                       if (meterChar.equalsIgnoreCase("B")||meterChar.equalsIgnoreCase("O")||meterChar.equalsIgnoreCase("M")) {
+
+                           pDialog.show();
+                           String li_amount = String.valueOf(Integer.parseInt(amount) * 100);
+                           Log.d(LOG, "Amount now " + li_amount);
+                           if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
+                               try {
+                                   cardNumber = aes.encrypt(cardNumber, shaKey, iv);
+                                   cvv = aes.encrypt(cvv, shaKey, iv);
+                               } catch (InvalidKeyException e) {
+                                   e.printStackTrace();
+                               } catch (UnsupportedEncodingException e) {
+                                   e.printStackTrace();
+                               } catch (InvalidAlgorithmParameterException e) {
+                                   e.printStackTrace();
+                               } catch (IllegalBlockSizeException e) {
+                                   e.printStackTrace();
+                               } catch (BadPaddingException e) {
+                                   e.printStackTrace();
+                               }
+
+                               PurchaseAirtime(meterNumber, li_amount, email, phone, name, cardNumber, cvv, li_amount, expYear, expMonth);
+                           } else {
+                               PurchaseAirtime(meterNumber, li_amount, email, phone, name, cardNumber, cvv, li_amount, expYear, expMonth);
                            }
 
-                           PurchaseAirtime(meterNumber,li_amount, email, phone, name, cardNumber, cvv, li_amount, expYear, expMonth);
                        }
+
                        else {
-                           PurchaseAirtime(meterNumber,li_amount, email, phone, name, cardNumber, cvv, li_amount, expYear, expMonth);
+                           pDialog.show();
+                           if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
+                               try {
+                                   cardNumber = aes.encrypt(cardNumber, shaKey, iv);
+                                   cvv = aes.encrypt(cvv, shaKey, iv);
+                               } catch (InvalidKeyException e) {
+                                   e.printStackTrace();
+                               } catch (UnsupportedEncodingException e) {
+                                   e.printStackTrace();
+                               } catch (InvalidAlgorithmParameterException e) {
+                                   e.printStackTrace();
+                               } catch (IllegalBlockSizeException e) {
+                                   e.printStackTrace();
+                               } catch (BadPaddingException e) {
+                                   e.printStackTrace();
+                               }
+
+                               RenewPoBox(amount,meterNumber,groupId,email,phone,name,cardNumber,cvv,expYear,expMonth);
+
+                           } else {
+                               RenewPoBox(amount,meterNumber,groupId,email,phone,name,cardNumber,cvv,expYear,expMonth);
+                           }
+
                        }
+
+
+
+
+
                    }
                         else {
                        new GetTokenTask().execute();
@@ -325,7 +371,7 @@ public class ConfirmPurchaseActivity extends Activity {
                 params.put("quantity","1");
                 params.put("email",email);
                 params.put("phone","26772371957");
-                params.put("platform","Adroid");
+                params.put("platform","Android");
                 params.put("name",name);
                 params.put("card",card);
                 params.put("cvv",cvv);
@@ -401,6 +447,69 @@ public class ConfirmPurchaseActivity extends Activity {
 
     }
 
+   public  void RenewPoBox(final  String amount,final String poboBoxId,final  String groupId, final String email,final String phone, final  String name, final String card ,final String cvv,
+                            final  String expYear, final String expMonth){
+       StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
+               AppConfig.URL_RENEWPOBOX, new Response.Listener<String>() {
+           @Override
+           public void onResponse(String response) {
+               Log.d(LOG, "vend Pobox  response " + response.toString());
+               int size = response.length();
+               JSONArray jsonArray = null;
+               try {
+                   jsonArray = new JSONArray(response);
+                   JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+
+
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               }
+                 pDialog.dismiss();
+
+           }
+
+       }, new Response.ErrorListener() {
+
+           @Override
+           public void onErrorResponse(VolleyError error) {
+               VolleyLog.d(TAG, "Error: " + error.getMessage());
+
+
+           }
+       }) {
+
+           @Override
+           protected Map<String, String> getParams() {
+               Map<String, String> params = new HashMap<String, String>();
+               params.put("function","RenewPostBox");
+               params.put("groupId",groupId);
+               params.put("postBoxId",poboBoxId);
+               params.put("email",email);
+               params.put("phone","26772371957");
+               params.put("platform","Android");
+               params.put("card",card);
+               params.put("cvv",cvv);
+               params.put("amount",amount);
+               params.put("name",name);
+               params.put("expYear",expYear);
+               params.put("expMonth",expMonth);
+
+               Log.d(LOG, "values sent from the device  " + params);
+               return params;
+           }
+
+       };
+       strReq.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+       // Adding request to request queue
+       AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
+
+
+
+
+
+   }
+
     public static class ErrorMsgDialog extends DialogFragment
     {
         public Dialog onCreateDialog(Bundle paramBundle)
@@ -436,15 +545,14 @@ public class ConfirmPurchaseActivity extends Activity {
                 if (urlc.getResponseCode() == 200) {
                     publishProgress();
 
-                    if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16)
-                    {
-                        resp = request.addParamsToReq(iv,shaKey,mysqliteFunction.getPhone(),mysqliteFunction.getMeterNumber());
+                    if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
+                        resp = request.addParamsToReq(iv, shaKey, mysqliteFunction.getPhone(), mysqliteFunction.getMeterNumber());
 
-                        if(resp != null && resp != ""){
-                            if(resp.equals("successful")){
+                        if (resp != null && resp != "") {
+                            if (resp.equals("successful")) {
                                 try {
-                                    cardNumber = aes.encrypt(cardNumber,shaKey,iv);
-                                    cvv = aes.encrypt(cvv,shaKey,iv);
+                                    cardNumber = aes.encrypt(cardNumber, shaKey, iv);
+                                    cvv = aes.encrypt(cvv, shaKey, iv);
                                 } catch (InvalidKeyException e) {
                                     e.printStackTrace();
                                 } catch (UnsupportedEncodingException e) {
@@ -460,24 +568,23 @@ public class ConfirmPurchaseActivity extends Activity {
 
                                 mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
                                 Log.d(LOG, "Last 3 digits stored " + last3Digits);
-                                resp = request.addPaymentParamaters(name,surname,cardNumber,cvv,expMonth,expYear,amount,phone,meterNumber,Integer.toString(tokenAmnt),date,time);
-                                Log.d(LOG,"first Payment parameters sent to the server "+ meterNumber);
+                                resp = request.addPaymentParamaters(name, surname, cardNumber, cvv, expMonth, expYear, amount, phone, meterNumber, Integer.toString(tokenAmnt), date, time);
+                                Log.d(LOG, "first Payment parameters sent to the server " + meterNumber);
 
 
-                            }else{
+                            } else {
                                 resp = "connection error";
                             }
                         }
-                    }else {
-                        resp = request.addPaymentParamaters(name,surname,cardNumber,cvv,expMonth,expYear,amount,phone,meterNumber,Integer.toString(tokenAmnt),date,time);
-                        Log.d(LOG,"Payment parameters sent to the server "+ meterNumber);
+                    } else {
+                        resp = request.addPaymentParamaters(name, surname, cardNumber, cvv, expMonth, expYear, amount, phone, meterNumber, Integer.toString(tokenAmnt), date, time);
+                        Log.d(LOG, "Payment parameters sent to the server " + meterNumber);
                     }
 
 
-
-                    if(resp == null ){
+                    if (resp == null) {
                         resp = "A network error occurred while processing you payment,A token would be sent to you via notification or sms";
-                    }else{
+                    } else {
                         try {
                             jAr = new JSONArray(resp);
                             JSONObject serverObj = jAr.getJSONObject(0);
@@ -495,10 +602,10 @@ public class ConfirmPurchaseActivity extends Activity {
                         }
                     }
 
-                }else {
+                } else {
                     resp = "connection error";
                 }
-            }catch (IOException e) {
+            } catch (IOException e) {
 
             }
 
@@ -510,51 +617,51 @@ public class ConfirmPurchaseActivity extends Activity {
             super.onPostExecute(resp);
             resp = this.resp;
             progressDialog.dismiss();
-           // String regex = "[0-9]+"; //numeric regular expression
+            // String regex = "[0-9]+"; //numeric regular expression
             Intent i = new Intent(ConfirmPurchaseActivity.this, SuccessfullActivity.class);
             Intent i2 = new Intent(ConfirmPurchaseActivity.this, UnsuccessfullActivity.class);
             Intent i3 = new Intent(ConfirmPurchaseActivity.this, PendingActivity.class);
 
-            if(resp == null || resp == ""){
-                i3.putExtra("error_msg","Transaction is in progress. A token will be sent to you via notification or sms once the payment has been approved.");
+            if (resp == null || resp == "") {
+                i3.putExtra("error_msg", "Transaction is in progress. A token will be sent to you via notification or sms once the payment has been approved.");
                 i3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i3);
                 finish();
-            }else {
+            } else {
 
-                if(resp.equalsIgnoreCase("connection error")){
+                if (resp.equalsIgnoreCase("connection error")) {
                     //empire state server might be down or user do not have inter credit
                     dialogMsg = "Please check your internet connection and try again";
-                    new ErrorMsgDialog().show(getFragmentManager(),null);
+                    new ErrorMsgDialog().show(getFragmentManager(), null);
 
-                }else if(resp.equals("A network error occurred while processing you payment,A token would be sent to you via notification or sms")){
+                } else if (resp.equals("A network error occurred while processing you payment,A token would be sent to you via notification or sms")) {
 
-                    i3.putExtra("error_msg","Transaction is in progress. A token will be sent to you via notification or sms once the payment has been approved.");
+                    i3.putExtra("error_msg", "Transaction is in progress. A token will be sent to you via notification or sms once the payment has been approved.");
                     i3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                             | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i3);
                     finish();
                     //we have a response from utility server with the token
-                }else if (resp.equals("successful")) {
+                } else if (resp.equals("successful")) {
 
-                    mysqliteFunction.createHistoryTable(reference,amount,token,meterNumber,units, date, time);
+                    mysqliteFunction.createHistoryTable(reference, amount, token, meterNumber, units, date, time);
 
                     i.putExtra("amount", amount);
-                    i.putExtra("token",token);
-                    i.putExtra("units",units);
-                    i.putExtra("reference",reference);
-                    i.putExtra("vat_and_levy",vatAndLevy);
-                    i.putExtra("cost_of_units",costOfUnits);
+                    i.putExtra("token", token);
+                    i.putExtra("units", units);
+                    i.putExtra("reference", reference);
+                    i.putExtra("vat_and_levy", vatAndLevy);
+                    i.putExtra("cost_of_units", costOfUnits);
 
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                             | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
                     finish();
-                }else {
-                    mysqliteFunction.createHistoryTable(reference,amount,token,meterNumber,units,date,time);
+                } else {
+                    mysqliteFunction.createHistoryTable(reference, amount, token, meterNumber, units, date, time);
 
-                    i2.putExtra("error_msg",resp);
+                    i2.putExtra("error_msg", resp);
                     i2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                             | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i2);
@@ -576,25 +683,24 @@ public class ConfirmPurchaseActivity extends Activity {
         @Override
         protected void onProgressUpdate(Void... progress) {
 
-            new android.os.Handler().postDelayed(new Runnable()
-            {
-                public void run()
-                {
+            new android.os.Handler().postDelayed(new Runnable() {
+                public void run() {
                     progressDialog.setMessage("Processing payment");
                 }
             }
                     , 10000);
 
-            new android.os.Handler().postDelayed(new Runnable()
-            {
-                public void run()
-                {
+            new android.os.Handler().postDelayed(new Runnable() {
+                public void run() {
                     progressDialog.setMessage("Generating token");
                 }
             }
                     , 20000);
 
         }
+
+
     }
+
 
 }

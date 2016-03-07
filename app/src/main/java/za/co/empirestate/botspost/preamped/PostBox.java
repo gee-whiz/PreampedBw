@@ -24,6 +24,8 @@ import java.nio.channels.Pipe;
 import java.util.HashMap;
 import java.util.Map;
 
+import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
+
 public class PostBox extends Activity {
     private static final String LOG = "Hey Gee" ;
     private static final String TAG = "hey Gee";
@@ -32,9 +34,10 @@ public class PostBox extends Activity {
     String PostOfficeName,GroupId;
     View backView;
     PoboxObj poboxObj;
-    Button Cancel;
+    Button Cancel,next;
     TextView tHolderType,tName,tPaidUntil,tSize,tStartDate,tStatus,tLastPaidUntil,tRenewalAmount,tPenaltyAmount,tNextPaidUntil,tTransactionHandle;
-    String HolderType,Name,PaidUntil,Size,StartDate,Status,LastPaidUntil,RenewalAmount,PenaltyAmount,NextPaidUntil,TransactionHandle;
+    String HolderType,Name,PaidUntil,Size,StartDate,Status,LastPaidUntil,RenewalAmount,PenaltyAmount,NextPaidUntil,TransactionHandle,poboxID;
+    private MySQLiteFunctions mysqliteFunction;
     private ProgressDialog pDialog;
     private String tag_json_obj = "jobj_req", tag_json_arry = "jarray_req";
 
@@ -46,6 +49,7 @@ public class PostBox extends Activity {
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Please wait...");
         pDialog.show();
+        this.mysqliteFunction = new MySQLiteFunctions(this);
         poboxObj = new PoboxObj();
         localIntent = getIntent();
         if (poboxObj != null){
@@ -54,11 +58,11 @@ public class PostBox extends Activity {
         }
         GroupId = localIntent.getStringExtra("GroupId");
         PostOfficeName = localIntent.getStringExtra("PostOfficeName");
-        GetPostBox(GroupId, PostOfficeName);
+        GetPostBox(PostOfficeName,GroupId);
         Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PostBox.this, RenewPoBox.class);
+                Intent intent = new Intent(PostBox.this, MainActivity.class);
                 startActivity(intent);
 
             }
@@ -66,11 +70,43 @@ public class PostBox extends Activity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PostBox.this, RenewPoBox.class);
+                Intent intent = new Intent(PostBox.this, MainActivity.class);
                 startActivity(intent);
 
             }
         });
+
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (PostBox.this.mysqliteFunction.checkPaymentHistory())
+                {
+                    Intent localIntent1 = new Intent(PostBox.this, ConfirmPurchaseActivity.class);
+                    localIntent1.putExtra("amount",poboxObj.getRenewalAmount());
+                    localIntent1.putExtra("isNew", false);
+                    localIntent1.putExtra("meter_number", poboxObj.getPostBoxId());
+                    localIntent1.putExtra("groupId",GroupId);
+                  PostBox.this.startActivity(localIntent1);
+                    overridePendingTransition(R.anim.from, R.anim.to);
+                    return;
+                }
+                Intent localIntent2 = new Intent(PostBox.this, PaymentDetailsActivity.class);
+                Log.d(LOG,"sending first Selected meter number "+ poboxObj.getPostBoxId());
+                localIntent2.putExtra("meter_number", poboxObj.getPostBoxId());
+                localIntent2.putExtra("amount", poboxObj.getRenewalAmount());
+                localIntent2.putExtra("groupId",GroupId);
+                Log.d(LOG,"group id "+GroupId);
+                PostBox.this.startActivity(localIntent2);
+
+
+
+            }
+
+        });
+
+
     }
 
 
@@ -88,6 +124,7 @@ public  void  setFields()
     tTransactionHandle = (TextView)findViewById(R.id.txtFee);
     Cancel = (Button)findViewById(R.id.btnCancel);
      back = (View)findViewById(R.id.btnBack);
+    next = (Button)findViewById(R.id.btnNext);
 
 }
 
@@ -127,10 +164,12 @@ public  void  setFields()
                         NextPaidUntil = jsonObject.getString("NextPaidUntil");
                         TransactionHandle = jsonObject.getString("TransactionHandle");
                         StartDate = jsonObject.getString("StartDate");
+                        poboxID = jsonObject.getString("PostBoxId");
                         Size = jsonObject.getString("Size");
                         Name = jsonObject.getString("Name");
                         poboxObj.setName(Name);
                         poboxObj.setSize(Size);
+                        poboxObj.setPostBoxId(poboxID);
                         poboxObj.setHolderType(HolderType);
                         poboxObj.setPaidUntil(PaidUntil);
                         poboxObj.setNextPaidUntil(NextPaidUntil);
@@ -138,6 +177,7 @@ public  void  setFields()
                         poboxObj.setRenewalAmount(RenewalAmount);
                         poboxObj.setPenaltyAmount(PenaltyAmount);
                         poboxObj.setStatus(Status);
+                        poboxObj.setGroupId(GroupId);
                         poboxObj.setTransactionHandle(TransactionHandle);
                          Log.d(LOG,"RenewalAmount "+ RenewalAmount);
                     } catch (JSONException e) {

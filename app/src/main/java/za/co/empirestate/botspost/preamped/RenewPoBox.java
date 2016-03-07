@@ -54,7 +54,11 @@ public class RenewPoBox extends Activity implements AdapterView.OnItemSelectedLi
         pDialog.setMessage("Please wait...");
         setFields();
         pDialog.show();
-        GetPostOffices();
+        Postoffices postoffices = new Postoffices();
+        if (postoffices != null){
+            GetPostOffices();
+        }
+
 
 
         backView.setOnClickListener(new View.OnClickListener() {
@@ -78,8 +82,8 @@ public class RenewPoBox extends Activity implements AdapterView.OnItemSelectedLi
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RenewPoBox.this,PostBox.class);
-                intent.putExtra("GroupId",selectedPostOffice);
-                intent.putExtra("PostOfficeName",selecteditem);
+                intent.putExtra("GroupId",selecteditem);
+                intent.putExtra("PostOfficeName",selectedPostOffice);
                 startActivity(intent);
             }
         });

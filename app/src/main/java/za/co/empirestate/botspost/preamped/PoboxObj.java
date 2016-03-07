@@ -7,8 +7,16 @@ public class PoboxObj {
 
 
     public String HolderType,Name,PaidUntil,Size,StartDate,Status,LastPaidUntil,RenewalAmount,PenaltyAmount,NextPaidUntil,TransactionHandle;
-
+    public  String  postBoxId,groupId;
     public PoboxObj() {
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public String getHolderType() {
@@ -17,6 +25,14 @@ public class PoboxObj {
 
     public void setHolderType(String holderType) {
         HolderType = holderType;
+    }
+
+    public String getPostBoxId() {
+        return postBoxId;
+    }
+
+    public void setPostBoxId(String postBoxId) {
+        this.postBoxId = postBoxId;
     }
 
     public String getName() {

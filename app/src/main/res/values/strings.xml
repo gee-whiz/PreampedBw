@@ -110,5 +110,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_airtime_success">AirtimeSuccessActivity</string>
     <string name="title_activity_post_box">PostBox</string>
+    <string name="title_activity_po_box_successfull">PoBoxSuccessfull</string>
 
 </resources>
