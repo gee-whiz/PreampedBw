@@ -133,7 +133,10 @@
         <activity
             android:name=".AirtimeSuccessActivity"
             android:label="@string/title_activity_airtime_success"
-            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
+        <activity
+            android:name=".PostBox"
+            android:label="@string/title_activity_post_box"></activity>
     </application>
 
 </manifest>

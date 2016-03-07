@@ -39,7 +39,7 @@ public class AirtimeAdapter extends  RecyclerView.Adapter<AirtimeAdapter.Airtime
     public void onBindViewHolder(AirtimeViewHolder holder, int position) {
 
         History history = historyList.get(position);
-        holder.amount.setText("P"+history.gethAmount());
+        holder.amount.setText("P"+history.gethAmount()+".00");
         holder.token.setText(history.gethId());
         holder.dateTime.setText(history.gethTranDateTime());
         holder.ref.setText(history.gethRev());

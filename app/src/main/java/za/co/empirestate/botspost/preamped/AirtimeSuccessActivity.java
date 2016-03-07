@@ -20,6 +20,7 @@ public class AirtimeSuccessActivity extends Activity {
     TextView tExpDate,value;
     Button finish;
     ImageButton back;
+    String amount;
 
     String  productName;
     String  ls_amount,ls_serialNumber,ls_activationNumber,ls_theDate,theTime;
@@ -38,17 +39,18 @@ public class AirtimeSuccessActivity extends Activity {
         productName = i.getStringExtra("ProductName");
         ls_theDate = i.getStringExtra("expDate");
        String date = ls_theDate.substring(0, ls_theDate.length()-9);
+        amount = String.valueOf(Integer.parseInt(ls_amount) / 100);
         if (!ls_serialNumber.isEmpty())
         {
             tproductName.setText(productName);
-            tamount.setText("P"+ls_amount);
+            tamount.setText("P"+amount);
             tActivation.setText(ls_activationNumber);
             tSerialNumber.setText(ls_serialNumber);
             tExpDate.setText(date);
             int curMonth = localTime.month + 1;
             tDate.setText(localTime.monthDay + "/" + curMonth + "/" + localTime.year);
             ttime.setText(localTime.format("%k:%M:%S"));
-            value.setText("P"+ ls_amount);
+            value.setText("P"+ amount+".00");
 
         }
 

@@ -118,7 +118,7 @@ public class ConfirmPurchaseActivity extends Activity {
         {
             tokenAmnt = Integer.parseInt(this.payment.amount) - 4;
             txtMeterNumber.setText(meterNumber);
-            txtAmount.setText("P" + this.payment.amount);
+            txtAmount.setText("P" + this.payment.amount+".00");
             txtInitial.setText(this.payment.cardHolderName);
             txtSurname.setText(this.payment.cardHolderSurname);
             txtCardNumber.setText("*************"+this.payment.cardNumber.substring(13));
@@ -184,7 +184,7 @@ public class ConfirmPurchaseActivity extends Activity {
 
             }
             tokenAmnt = Integer.parseInt(localIntent.getStringExtra("amount")) - 4;
-            txtAmount.setText(localIntent.getStringExtra("amount"));
+            txtAmount.setText("P"+localIntent.getStringExtra("amount")+".00");
             txtMeterNumber.setText(localIntent.getStringExtra("meter_number"));
             this.mysqliteFunction.close();
         }

@@ -3,61 +3,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@android:color/white"
+    android:orientation="vertical"
     tools:context="za.co.empirestate.botspost.preamped.RenewPoBox">
 
 
 
     <FrameLayout
-        android:background="#FFF000"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
-        <TextView android:textSize="20.0sp"
-            android:textColor="#EA2026"
+        android:layout_height="100dp"
+        android:background="#FFF000">
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@null"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:drawablePadding="5.0dip"
             android:text="Renew PO Box"
-            android:drawablePadding="5.0dip"/>
+            android:textColor="#EA2026"
+            android:textSize="20.0sp"/>
     </FrameLayout>
     <LinearLayout
         android:id="@+id/btnBack"
-        android:gravity="center"
-        android:background="#EA2026"
         android:layout_width="match_parent"
-        android:layout_height="25dp">
+        android:layout_height="25dp"
+        android:background="#EA2026"
+        android:gravity="center">
         <ImageButton
             android:id="@+id/imgBack"
-            android:background="@null"
-            android:src="@drawable/bck_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/bck_btn" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
 
         <TextView
-            android:textColor="@android:color/black"
-            android:text="Amount"
-            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Select Post Office"
+            android:textColor="@android:color/black" />
 
         <Spinner
             android:id="@+id/spPoAmount"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="45dp"
-            android:layout_marginLeft="45dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="10dp">
 
         </Spinner>
 
@@ -70,24 +70,24 @@
 
     <Button
         android:id="@+id/btnNext"
-        android:textStyle="bold"
-        android:textColor="#EA2026"
-        android:text="NEXT"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:background="#FFF000"
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:text="NEXT"
+        android:textColor="#EA2026"
+        android:textStyle="bold" />
     <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:gravity="center|bottom"
-        android:background="#ff000000"
         android:layout_width="match_parent"
-        android:layout_height="30dp">
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ff000000"
+        android:gravity="center|bottom">
 
         <ImageView
-            android:layout_gravity="center"
-            android:src="@drawable/first_dot"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/first_dot" />
 
     </LinearLayout>
 

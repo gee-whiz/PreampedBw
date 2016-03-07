@@ -41,20 +41,20 @@ public class ElecFragment extends android.app.Fragment {
 
     private static final String LOG = "hey gee";
     private static final String TAG = "hey Gee";
-    private SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView airtimeList,electList,pobList;
-    private String tag_json_obj = "jobj_req", tag_json_arry = "jarray_req";
     View backButton;
-    private ProgressDialog pDialog;
-    private MySQLiteFunctions mysqliteFunction;
     String email,phone,newPhone;
     Context ctx;
-    private  HistoryAdapter historyAdapter;
     ImageButton backImage;
-    private List<History> historyList = new ArrayList<History>();
     Context mContext;
     CardView cardView;
     TextView pleaseWait;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private String tag_json_obj = "jobj_req", tag_json_arry = "jarray_req";
+    private ProgressDialog pDialog;
+    private MySQLiteFunctions mysqliteFunction;
+    private  HistoryAdapter historyAdapter;
+    private List<History> historyList = new ArrayList<History>();
     private  View rootView;
     public ElecFragment() {
         // Required empty public constructor
@@ -83,7 +83,7 @@ public class ElecFragment extends android.app.Fragment {
         ctx = getActivity().getApplicationContext();
        mysqliteFunction = new MySQLiteFunctions(ctx);
         pDialog = new ProgressDialog(getActivity());
-        pDialog.setMessage("Please wait..Fetching Transaction History");
+        pDialog.setMessage("Please wait...");
         email = mysqliteFunction.getEmail();
         phone = mysqliteFunction.getPhone();
         newPhone = phone.substring(1);

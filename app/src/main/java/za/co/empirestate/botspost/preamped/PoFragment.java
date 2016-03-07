@@ -37,20 +37,20 @@ import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 public class PoFragment extends android.app.Fragment {
     private static final String LOG = "hey gee";
     private static final String TAG = "hey Gee";
-    private SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView airtimeList, electList, pobList;
-    private String tag_json_obj = "jobj_req", tag_json_arry = "jarray_req";
     View backButton;
-    private ProgressDialog pDialog;
-    private MySQLiteFunctions mysqliteFunction;
     String email, phone, newPhone;
     Context ctx;
-    private PoAdapter poAdapter;
     ImageButton backImage;
-    private List<History> AirtimeList = new ArrayList<History>();
     Context mContext;
     CardView cardView;
     TextView pleaseWait;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private String tag_json_obj = "jobj_req", tag_json_arry = "jarray_req";
+    private ProgressDialog pDialog;
+    private MySQLiteFunctions mysqliteFunction;
+    private PoAdapter poAdapter;
+    private List<History> AirtimeList = new ArrayList<History>();
     private View rootView;
     public PoFragment() {
         // Required empty public constructor
@@ -78,7 +78,7 @@ public class PoFragment extends android.app.Fragment {
         ctx = getActivity().getApplicationContext();
         mysqliteFunction = new MySQLiteFunctions(ctx);
         pDialog = new ProgressDialog(getActivity());
-        pDialog.setMessage("Please wait..Fetching Transaction History");
+        pDialog.setMessage("Please wait...");
         email = mysqliteFunction.getEmail();
         phone = mysqliteFunction.getPhone();
         newPhone = phone.substring(1);

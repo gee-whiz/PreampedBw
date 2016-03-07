@@ -41,20 +41,20 @@ public class AirtimeFragment extends android.app.Fragment {
 
     private static final String LOG = "hey gee";
     private static final String TAG = "hey Gee";
-    private SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView airtimeList, electList, pobList;
-    private String tag_json_obj = "jobj_req", tag_json_arry = "jarray_req";
     View backButton;
-    private ProgressDialog pDialog;
-    private MySQLiteFunctions mysqliteFunction;
     String email, phone, newPhone;
     Context ctx;
-    private AirtimeAdapter airtimeAdapter;
     ImageButton backImage;
-    private List<History> AirtimeList = new ArrayList<History>();
     Context mContext;
     CardView cardView;
     TextView pleaseWait;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private String tag_json_obj = "jobj_req", tag_json_arry = "jarray_req";
+    private ProgressDialog pDialog;
+    private MySQLiteFunctions mysqliteFunction;
+    private AirtimeAdapter airtimeAdapter;
+    private List<History> AirtimeList = new ArrayList<History>();
     private View rootView;
 
     public AirtimeFragment() {
@@ -78,7 +78,7 @@ public class AirtimeFragment extends android.app.Fragment {
         ctx = getActivity().getApplicationContext();
         mysqliteFunction = new MySQLiteFunctions(ctx);
         pDialog = new ProgressDialog(getActivity());
-        pDialog.setMessage("Please wait..Fetching Transaction History");
+        pDialog.setMessage("Please wait...");
         email = mysqliteFunction.getEmail();
         phone = mysqliteFunction.getPhone();
         newPhone = phone.substring(1);
@@ -137,7 +137,8 @@ public class AirtimeFragment extends android.app.Fragment {
                         String hAmount = jsonObject.getString("Amount");
                         String hRef = jsonObject.getString("Ref");
                         String hDateTime = jsonObject.getString("tranDateTime");
-                        history.sethAmount(hAmount);
+                        String ls_amount =String.valueOf(Integer.parseInt(hAmount) / 100);
+                        history.sethAmount(ls_amount);
                         history.sethId(hId);
                         history.sethRev(hRef);
                         history.sethTranDateTime(hDateTime);

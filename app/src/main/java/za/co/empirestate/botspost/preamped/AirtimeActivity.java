@@ -93,7 +93,7 @@ public class AirtimeActivity extends Activity {
       //  amount = "100";
         Log.d(LOG,"current voucher  is "+ ls_voucher);
         //spinner for denominations
-        ArrayAdapter<CharSequence> adapterAmnt = ArrayAdapter.createFromResource(this, R.array.airtime_vouchers,
+        ArrayAdapter<CharSequence> adapterAmnt = ArrayAdapter.createFromResource  (this, R.array.airtime_vouchers,
                 android.R.layout.simple_spinner_item);
         adapterAmnt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnAmnt.setAdapter(adapterAmnt);
