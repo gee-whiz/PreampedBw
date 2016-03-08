@@ -37,7 +37,7 @@ public class PaymentDetailsActivity extends Activity
   private String month;
   private MySQLiteFunctions mysqliteFunction;
   private Payment payment;
-  private String year;
+  private String year,groupId;
 
     protected void onCreate(Bundle paramBundle)
   {
@@ -46,6 +46,7 @@ public class PaymentDetailsActivity extends Activity
     Intent localIntent = getIntent();
     this.meterNumber = localIntent.getStringExtra("meter_number");
     this.amount = localIntent.getStringExtra("amount");
+     this.groupId = localIntent.getStringExtra("groupId");
     this.mysqliteFunction = new MySQLiteFunctions(this);
     final Spinner spnMonths = (Spinner) findViewById(R.id.month);
     final Spinner spnYears = (Spinner) findViewById(R.id.year);
@@ -154,6 +155,7 @@ public class PaymentDetailsActivity extends Activity
             localIntent.putExtra("isNew", true);
             Log.d(LOG,"I'm sending this "+PaymentDetailsActivity.this.meterNumber);
             localIntent.putExtra("meter_number",PaymentDetailsActivity.this.meterNumber);
+            localIntent.putExtra("groupId",groupId);
             //Intent encryptIntent = new Intent();
             //encryptIntent.putExtra("card_number",cardNumber);
             //encryptIntent.putExtra("card_cvv",strCvv);

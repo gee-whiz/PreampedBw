@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
@@ -52,10 +53,7 @@ public class PostBox extends Activity {
         this.mysqliteFunction = new MySQLiteFunctions(this);
         poboxObj = new PoboxObj();
         localIntent = getIntent();
-        if (poboxObj != null){
-            updateFields();
-           // pDialog.dismiss();
-        }
+
         GroupId = localIntent.getStringExtra("GroupId");
         PostOfficeName = localIntent.getStringExtra("PostOfficeName");
         GetPostBox(PostOfficeName,GroupId);
@@ -192,8 +190,15 @@ public  void  setFields()
                    Intent intent = new Intent(PostBox.this, RenewPoBox.class);
                    startActivity(intent);
                }
-                if (poboxObj != null){
-                    updateFields();
+                if (poboxObj.getName() != null){
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateFields();
+                        }
+                    }, 100);
+
                 }
 
 

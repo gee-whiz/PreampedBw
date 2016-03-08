@@ -64,7 +64,7 @@ public class ConfirmPurchaseActivity extends Activity {
     Intent localIntent;
     String meterChar;
     PoboxObj poboxObj;
-    String poBoxId,groupId;
+    String poBoxId,groupId,NewPhone;
     private String tag_json_obj = "jobj_req", tag_json_arry = "jarray_req";
     private String amount;
     private String name;
@@ -99,6 +99,7 @@ public class ConfirmPurchaseActivity extends Activity {
         //meterNumber = mysqliteFunction.getMeterNumber();
         meterNumber = localIntent.getStringExtra("meter_number");
         groupId = localIntent.getStringExtra("groupId");
+        Log.e(LOG,"Group id "+groupId);
         Log.d(LOG, "Meter Number " + meterNumber);
         Time localTime = new Time(Time.getCurrentTimezone());
         localTime.setToNow();
@@ -113,6 +114,7 @@ public class ConfirmPurchaseActivity extends Activity {
         TextView txtDate = (TextView)findViewById(R.id.date);
         TextView txtTime = (TextView)findViewById(R.id.time);
         Button btnConfirm = (Button)findViewById(R.id.btn_confirm);
+        NewPhone = phone.substring(1);
         meterChar = String.valueOf(meterNumber.charAt(0));
         if (meterNumber.length() > 9) {
             tmeter.setText("Meter Number");
@@ -238,9 +240,9 @@ public class ConfirmPurchaseActivity extends Activity {
                                    e.printStackTrace();
                                }
 
-                               PurchaseAirtime(meterNumber, li_amount, email, phone, name, cardNumber, cvv, li_amount, expYear, expMonth);
+                               PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, cardNumber, cvv, li_amount, expYear, expMonth);
                            } else {
-                               PurchaseAirtime(meterNumber, li_amount, email, phone, name, cardNumber, cvv, li_amount, expYear, expMonth);
+                               PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, cardNumber, cvv, li_amount, expYear, expMonth);
                            }
 
                        }
@@ -263,10 +265,10 @@ public class ConfirmPurchaseActivity extends Activity {
                                    e.printStackTrace();
                                }
 
-                               RenewPoBox(amount,meterNumber,groupId,email,phone,name,cardNumber,cvv,expYear,expMonth);
+                               RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,cardNumber,cvv,expYear,expMonth);
 
                            } else {
-                               RenewPoBox(amount,meterNumber,groupId,email,phone,name,cardNumber,cvv,expYear,expMonth);
+                               RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,cardNumber,cvv,expYear,expMonth);
                            }
 
                        }
