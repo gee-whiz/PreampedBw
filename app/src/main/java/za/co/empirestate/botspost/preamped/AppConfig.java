@@ -11,6 +11,7 @@ public class AppConfig {
     public  static  final  String URL_HISTORY = "http://utc.empirestate.co.za/bostwana_post_office/tran_history.php";
     public static final String    URL_AIRTIME = "http://utc.empirestate.co.za/bostwana_post_office/vendAirtime.php";
     public static final String    URL_RENEWPOBOX = "http://utc.empirestate.co.za/bostwana_post_office/RenewPOBox.php";
+    public  static final  String  URL_IV = "http://utc.empirestate.co.za/bostwana_post_office/update_key_and_iv.php";
 
 }
 

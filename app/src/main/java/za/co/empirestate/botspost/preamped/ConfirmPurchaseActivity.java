@@ -13,6 +13,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -220,62 +222,14 @@ public class ConfirmPurchaseActivity extends Activity {
                    if (meterNumber.length() < 9)  {
 
                        if (meterChar.equalsIgnoreCase("B")||meterChar.equalsIgnoreCase("O")||meterChar.equalsIgnoreCase("M")) {
-
                            pDialog.show();
-                           String li_amount = String.valueOf(Integer.parseInt(amount) * 100);
-                           Log.d(LOG, "Amount now " + li_amount);
-                           if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
-                               try {
-                                   cardNumber = aes.encrypt(cardNumber, shaKey, iv);
-                                   cvv = aes.encrypt(cvv, shaKey, iv);
-                               } catch (InvalidKeyException e) {
-                                   e.printStackTrace();
-                               } catch (UnsupportedEncodingException e) {
-                                   e.printStackTrace();
-                               } catch (InvalidAlgorithmParameterException e) {
-                                   e.printStackTrace();
-                               } catch (IllegalBlockSizeException e) {
-                                   e.printStackTrace();
-                               } catch (BadPaddingException e) {
-                                   e.printStackTrace();
-                               }
-
-                               PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, cardNumber, cvv, li_amount, expYear, expMonth);
-                           } else {
-                               PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, cardNumber, cvv, li_amount, expYear, expMonth);
-                           }
-
+                          AddAirtimeRequest();
                        }
 
                        else {
                            pDialog.show();
-                           if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
-                               try {
-                                   cardNumber = aes.encrypt(cardNumber, shaKey, iv);
-                                   cvv = aes.encrypt(cvv, shaKey, iv);
-                               } catch (InvalidKeyException e) {
-                                   e.printStackTrace();
-                               } catch (UnsupportedEncodingException e) {
-                                   e.printStackTrace();
-                               } catch (InvalidAlgorithmParameterException e) {
-                                   e.printStackTrace();
-                               } catch (IllegalBlockSizeException e) {
-                                   e.printStackTrace();
-                               } catch (BadPaddingException e) {
-                                   e.printStackTrace();
-                               }
-
-                               RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,cardNumber,cvv,expYear,expMonth);
-
-                           } else {
-                               RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,cardNumber,cvv,expYear,expMonth);
-                           }
-
+                           AddPoRequest();
                        }
-
-
-
-
 
                    }
                         else {
@@ -304,7 +258,7 @@ public class ConfirmPurchaseActivity extends Activity {
 
     public  void PurchaseAirtime(final String productName,final String value,final
     String email,final String phone, final  String name, final String card ,final String cvv,
-                                 final String amount, final  String expYear, final String expMonth){
+                                 final String amount, final  String expYear, final String expMonth,final  String surname){
 
         StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
                 AppConfig.URL_AIRTIME, new Response.Listener<String>() {
@@ -372,11 +326,11 @@ public class ConfirmPurchaseActivity extends Activity {
                 params.put("value", value);
                 params.put("quantity","1");
                 params.put("email",email);
-                params.put("phone","26772371957");
+                params.put("phone",phone);
                 params.put("platform","Android");
-                params.put("name",name);
-                params.put("card",card);
-                params.put("cvv",cvv);
+                params.put("name",name + " "+surname);
+                params.put("card", URLEncoder.encode(card));
+                params.put("cvv",URLEncoder.encode(cvv));
                 params.put("amount",amount);
                 params.put("expYear",expYear);
                 params.put("expMonth",expMonth);
@@ -421,6 +375,168 @@ public class ConfirmPurchaseActivity extends Activity {
 
 
 
+
+    public  void  AddAirtimeRequest(){
+        StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
+                AppConfig.URL_IV, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(LOG, "requset for payment  response " + response.toString());
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONArray jsonArray = new JSONArray(response);
+                        Postoffices postoffices = new Postoffices();
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    } catch (JSONException e) {
+                    }
+                }
+
+
+                if (response.equals("successful")){
+
+                    String li_amount = String.valueOf(Integer.parseInt(amount) * 100);
+                    Log.d(LOG, "Amount now " + li_amount);
+                    if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
+
+                        try {
+                            cardNumber = aes.encrypt(cardNumber, shaKey, iv);
+                            cvv = aes.encrypt(cvv, shaKey, iv);
+                        } catch (InvalidKeyException e) {
+                            e.printStackTrace();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (InvalidAlgorithmParameterException e) {
+                            e.printStackTrace();
+                        } catch (IllegalBlockSizeException e) {
+                            e.printStackTrace();
+                        } catch (BadPaddingException e) {
+                            e.printStackTrace();
+                        }
+                        mysqliteFunction.deletePayment();
+
+                        mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
+                        Log.d(LOG, "Last 3 digits stored " + last3Digits);
+                        PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, cardNumber, cvv, li_amount, expYear, expMonth,surname);
+                    } else {
+                        PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, cardNumber, cvv, li_amount, expYear, expMonth,surname);
+                    }
+                }
+
+
+
+            }
+
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("iv", iv);
+                params.put("key",shaKey);
+                params.put("voucher",meterNumber);
+                params.put("phone",phone);
+
+                Log.d(LOG, "values sent from the device  " + params);
+                return params;
+            }
+
+        };
+        strReq.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
+
+    }
+
+
+    public  void  AddPoRequest(){
+        StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
+                AppConfig.URL_IV, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(LOG, "requset for payment  response " + response.toString());
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONArray jsonArray = new JSONArray(response);
+                        Postoffices postoffices = new Postoffices();
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    } catch (JSONException e) {
+                    }
+                }
+
+
+                if (response.equals("successful")){
+
+                    if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
+
+                            try {
+                                cardNumber = aes.encrypt(cardNumber, shaKey, iv);
+                                cvv = aes.encrypt(cvv, shaKey, iv);
+                            } catch (InvalidKeyException e) {
+                                e.printStackTrace();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            } catch (InvalidAlgorithmParameterException e) {
+                                e.printStackTrace();
+                            } catch (IllegalBlockSizeException e) {
+                                e.printStackTrace();
+                            } catch (BadPaddingException e) {
+                                e.printStackTrace();
+                            }
+                        mysqliteFunction.deletePayment();
+
+                        mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
+                        Log.d(LOG, "Last 3 digits stored " + last3Digits);
+                            RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,cardNumber,cvv,expYear,expMonth,surname);
+
+                        } else {
+                            RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,cardNumber,cvv,expYear,expMonth,surname);
+                        }
+
+                    }
+
+
+
+
+            }
+
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("iv", iv);
+                params.put("key",shaKey);
+                params.put("postBoxId",meterNumber);
+                params.put("phone",phone);
+
+                Log.d(LOG, "values sent from the device  " + params);
+                return params;
+            }
+
+        };
+        strReq.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
+
+    }
     //vend airtime
 
     private  void NetworkError()
@@ -450,7 +566,7 @@ public class ConfirmPurchaseActivity extends Activity {
     }
 
    public  void RenewPoBox(final  String amount,final String poboBoxId,final  String groupId, final String email,final String phone, final  String name, final String card ,final String cvv,
-                            final  String expYear, final String expMonth){
+                            final  String expYear, final String expMonth,final  String surname){
        StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
                AppConfig.URL_RENEWPOBOX, new Response.Listener<String>() {
            @Override
@@ -488,12 +604,12 @@ public class ConfirmPurchaseActivity extends Activity {
                params.put("groupId",groupId);
                params.put("postBoxId",poboBoxId);
                params.put("email",email);
-               params.put("phone","26772371957");
+               params.put("phone",phone);
                params.put("platform","Android");
-               params.put("card",card);
-               params.put("cvv",cvv);
+               params.put("card", URLEncoder.encode(card));
+               params.put("cvv",URLEncoder.encode(cvv));
                params.put("amount",amount);
-               params.put("name",name);
+               params.put("name",name + " "+surname);
                params.put("expYear",expYear);
                params.put("expMonth",expMonth);
 

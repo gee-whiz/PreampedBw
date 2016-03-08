@@ -43,8 +43,8 @@ import za.co.empirestate.botspost.ssl.MySSLSocketFactory;
  */
 public class Request {
 
+    private static final String LOG = "Hey Gee" ;
     static InputStream is = null;
-
     public Request(){
 
     }
@@ -219,7 +219,7 @@ public class Request {
         params.add(new BasicNameValuePair("token_amount", tokenAmnt));
         params.add(new BasicNameValuePair("date", date));
         params.add(new BasicNameValuePair("time", time));
-
+         Log.d(LOG,"Electricity encoded "+params);
         return getRespFromUrl(url, params);
 
 
