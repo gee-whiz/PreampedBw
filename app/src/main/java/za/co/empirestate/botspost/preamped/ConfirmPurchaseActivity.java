@@ -223,11 +223,37 @@ public class ConfirmPurchaseActivity extends Activity {
 
                        if (meterChar.equalsIgnoreCase("B")||meterChar.equalsIgnoreCase("O")||meterChar.equalsIgnoreCase("M")) {
                            pDialog.show();
+                           try {
+                               aes = new AES();
+                               iv = aes.generateRandomIV(16);
+                               shaKey = aes.SHA256(iv,32);
+                           } catch (NoSuchAlgorithmException e) {
+                               e.printStackTrace();
+                           } catch (NoSuchPaddingException e) {
+                               e.printStackTrace();
+                           } catch (UnsupportedEncodingException e) {
+                               e.printStackTrace();
+                           }
+                           Log.d("IV" ,iv);
+                           Log.d("KEY", shaKey);
                           AddAirtimeRequest();
                        }
 
                        else {
                            pDialog.show();
+                           try {
+                               aes = new AES();
+                               iv = aes.generateRandomIV(16);
+                               shaKey = aes.SHA256(iv,32);
+                           } catch (NoSuchAlgorithmException e) {
+                               e.printStackTrace();
+                           } catch (NoSuchPaddingException e) {
+                               e.printStackTrace();
+                           } catch (UnsupportedEncodingException e) {
+                               e.printStackTrace();
+                           }
+                           Log.d("IV" ,iv);
+                           Log.d("KEY", shaKey);
                            AddPoRequest();
                        }
 
@@ -413,7 +439,7 @@ public class ConfirmPurchaseActivity extends Activity {
                         } catch (BadPaddingException e) {
                             e.printStackTrace();
                         }
-                        mysqliteFunction.deletePayment();
+                        //mysqliteFunction.deletePayment();
 
                         mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
                         Log.d(LOG, "Last 3 digits stored " + last3Digits);
@@ -492,7 +518,7 @@ public class ConfirmPurchaseActivity extends Activity {
                             } catch (BadPaddingException e) {
                                 e.printStackTrace();
                             }
-                        mysqliteFunction.deletePayment();
+                        //mysqliteFunction.deletePayment();
 
                         mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
                         Log.d(LOG, "Last 3 digits stored " + last3Digits);
