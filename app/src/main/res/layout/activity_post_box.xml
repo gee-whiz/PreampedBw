@@ -138,15 +138,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_weight="1"
-        android:background="#EA2026"
-        android:text="CANCEL"
-        android:textColor="@android:color/white"
-        android:textStyle="bold" />
+
     <Button
         android:id="@+id/btnNext"
         android:layout_width="match_parent"

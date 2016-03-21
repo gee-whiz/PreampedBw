@@ -56,15 +56,8 @@ public class PostBox extends Activity {
 
         GroupId = localIntent.getStringExtra("GroupId");
         PostOfficeName = localIntent.getStringExtra("PostOfficeName");
-        GetPostBox(PostOfficeName,GroupId);
-        Cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PostBox.this, MainActivity.class);
-                startActivity(intent);
+        GetPostBox(PostOfficeName, GroupId);
 
-            }
-        });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,7 +113,6 @@ public  void  setFields()
     tStatus = (TextView)findViewById(R.id.txtStatus);
     tPaidUntil =(TextView)findViewById(R.id.txtUntil);
     tTransactionHandle = (TextView)findViewById(R.id.txtFee);
-    Cancel = (Button)findViewById(R.id.btnCancel);
      back = (View)findViewById(R.id.btnBack);
     next = (Button)findViewById(R.id.btnNext);
 
@@ -135,7 +127,7 @@ public  void  setFields()
         tSize.setText(poboxObj.getSize());
         tStatus.setText(poboxObj.getStatus());
         tPaidUntil.setText(poboxObj.getPaidUntil());
-        tTransactionHandle.setText("P"+poboxObj.getTransactionHandle()+".00");
+        tTransactionHandle.setText("P11.20");
         tHolderType.setText(poboxObj.getHolderType());
 
 

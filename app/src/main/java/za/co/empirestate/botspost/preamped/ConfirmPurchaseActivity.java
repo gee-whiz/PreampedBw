@@ -94,7 +94,7 @@ public class ConfirmPurchaseActivity extends Activity {
         this.mysqliteFunction = new MySQLiteFunctions(this);
         localIntent = getIntent();
         this.payment = ((Payment)localIntent.getParcelableExtra("payment_details"));
-         email =   mysqliteFunction.getEmail();
+        email =   mysqliteFunction.getEmail();
         pDialog = new ProgressDialog(ConfirmPurchaseActivity.this);
         pDialog.setMessage("Processing Payment..");
         phone = mysqliteFunction.getPhone();
@@ -111,8 +111,8 @@ public class ConfirmPurchaseActivity extends Activity {
         TextView txtSurname = (TextView) findViewById(R.id.surname);
         TextView txtCardNumber = (TextView) findViewById(R.id.card_number);
         tmeter = (TextView)findViewById(R.id.txtMeter);
-       // TextView txtCardType = (TextView) findViewById(R.id.card_type);
-      //  TextView txtCvv = (TextView) findViewById(R.id.cvv);
+        // TextView txtCardType = (TextView) findViewById(R.id.card_type);
+        //  TextView txtCvv = (TextView) findViewById(R.id.cvv);
         TextView txtDate = (TextView)findViewById(R.id.date);
         TextView txtTime = (TextView)findViewById(R.id.time);
         Button btnConfirm = (Button)findViewById(R.id.btn_confirm);
@@ -138,8 +138,8 @@ public class ConfirmPurchaseActivity extends Activity {
             txtSurname.setText(this.payment.cardHolderSurname);
             txtCardNumber.setText("*************"+this.payment.cardNumber.substring(13));
             last3Digits = txtCardNumber.getText().toString();
-           // txtCardType.setText(this.payment.cardType);
-          //  txtCvv.setText(this.payment.cvv);
+            // txtCardType.setText(this.payment.cardType);
+            //  txtCvv.setText(this.payment.cvv);
 
             try {
                 aes = new AES();
@@ -171,8 +171,8 @@ public class ConfirmPurchaseActivity extends Activity {
                 txtSurname.setText(localCursor.getString(3));
                 txtCardNumber.setText("*************"+last3Digits);
                 //txtCvv.setText(localCursor.getString(6));
-               // txtCardType.setText(localCursor.getString(7));
-               // txtMeterNumber.setText(this.mysqliteFunction.getMeterNumber());
+                // txtCardType.setText(localCursor.getString(7));
+                // txtMeterNumber.setText(this.mysqliteFunction.getMeterNumber());
 
                 if(localCursor.getString(1).length() == 16){
                     try {
@@ -214,34 +214,60 @@ public class ConfirmPurchaseActivity extends Activity {
                 ConfirmPurchaseActivity.this.onBackPressed();
             }
         });
-            btnConfirm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v){
-                    if(isOnline()){
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                if(isOnline()){
 
-                   if (meterNumber.length() < 9)  {
+                    if (meterNumber.length() < 9)  {
 
-                       if (meterChar.equalsIgnoreCase("B")||meterChar.equalsIgnoreCase("O")||meterChar.equalsIgnoreCase("M")) {
-                           pDialog.show();
-                          AddAirtimeRequest();
-                       }
+                        if (meterChar.equalsIgnoreCase("B")||meterChar.equalsIgnoreCase("O")||meterChar.equalsIgnoreCase("M")) {
+                            pDialog.show();
+                            try {
+                                aes = new AES();
+                                iv = aes.generateRandomIV(16);
+                                shaKey = aes.SHA256(iv,32);
+                            } catch (NoSuchAlgorithmException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchPaddingException e) {
+                                e.printStackTrace();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            Log.d("IV" ,iv);
+                            Log.d("KEY", shaKey);
+                            ShowAdditionalCharges();
+                        }
 
-                       else {
-                           pDialog.show();
-                           AddPoRequest();
-                       }
-
-                   }
                         else {
-                       new GetTokenTask().execute();
-                   }
-                    }else {
-                        dialogMsg ="You are offline Please check your internet settings";
-                        new ErrorMsgDialog().show(getFragmentManager(),null);
-                    }
+                            pDialog.show();
+                            try {
+                                aes = new AES();
+                                iv = aes.generateRandomIV(16);
+                                shaKey = aes.SHA256(iv,32);
+                            } catch (NoSuchAlgorithmException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchPaddingException e) {
+                                e.printStackTrace();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            Log.d("IV" ,iv);
+                            Log.d("KEY", shaKey);
+                            PoAdditionalCharges();
+                        }
 
+                    }
+                    else {
+                        new GetTokenTask().execute();
+                    }
+                }else {
+                    dialogMsg ="You are offline Please check your internet settings";
+                    new ErrorMsgDialog().show(getFragmentManager(),null);
                 }
-            });
+
+            }
+        });
     }
 
     public boolean isOnline() {
@@ -267,47 +293,47 @@ public class ConfirmPurchaseActivity extends Activity {
                 Log.d(LOG, "vend Airtime  response " + response.toString());
                 int size = response.length();
                 JSONArray jsonArray = null;
-                    try {
-                        jsonArray = new JSONArray(response);
-                        JSONObject jsonObject = jsonArray.getJSONObject(0);
-                        String SerialNumber = jsonObject.getString("SerialNumber");
-                        String productName  = jsonObject.getString("ProductName");
-                        String activationNumber = jsonObject.getString("ActivationNumber");
-                        String value = jsonObject.getString("Value");
-                        String expDate = jsonObject.getString("ExpirationDate");
-                        String res =  jsonObject.getString("Response");
-                        Log.d(LOG,"SerialNumber "+ SerialNumber);
+                try {
+                    jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    String SerialNumber = jsonObject.getString("SerialNumber");
+                    String productName  = jsonObject.getString("ProductName");
+                    String activationNumber = jsonObject.getString("ActivationNumber");
+                    String value = jsonObject.getString("Value");
+                    String expDate = jsonObject.getString("ExpirationDate");
+                    String res =  jsonObject.getString("Response");
+                    Log.d(LOG,"SerialNumber "+ SerialNumber);
 
-                        if (res.equalsIgnoreCase("00")){
-                            pDialog.dismiss();
-                            Intent i = new Intent(ConfirmPurchaseActivity.this,AirtimeSuccessActivity.class);
-                            i.putExtra("Amount", amount);
-                            i.putExtra("ProductName",productName);
-                            i.putExtra("ActivationNumber",activationNumber);
-                            i.putExtra("Value",value);
-                            i.putExtra("expDate",expDate);
-                            i.putExtra("SerialNumber",SerialNumber);
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(i);
-                            finish();
-                        }
-                        else if (res.equalsIgnoreCase("99")){
-                            pDialog.dismiss();
-                           ShowError();
-                        }
-                        else
-                        {
-                            pDialog.dismiss();
-                            NetworkError();
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    if (res.equalsIgnoreCase("00")){
+                        pDialog.dismiss();
+                        Intent i = new Intent(ConfirmPurchaseActivity.this,AirtimeSuccessActivity.class);
+                        i.putExtra("Amount", amount);
+                        i.putExtra("ProductName",productName);
+                        i.putExtra("ActivationNumber",activationNumber);
+                        i.putExtra("Value",value);
+                        i.putExtra("expDate",expDate);
+                        i.putExtra("SerialNumber",SerialNumber);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                        finish();
+                    }
+                    else if (res.equalsIgnoreCase("99")){
+                        pDialog.dismiss();
+                        ShowError();
+                    }
+                    else
+                    {
+                        pDialog.dismiss();
+                        NetworkError();
                     }
 
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
+
+            }
 
         }, new Response.ErrorListener() {
 
@@ -413,7 +439,7 @@ public class ConfirmPurchaseActivity extends Activity {
                         } catch (BadPaddingException e) {
                             e.printStackTrace();
                         }
-                        mysqliteFunction.deletePayment();
+                        //mysqliteFunction.deletePayment();
 
                         mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
                         Log.d(LOG, "Last 3 digits stored " + last3Digits);
@@ -478,31 +504,31 @@ public class ConfirmPurchaseActivity extends Activity {
 
                     if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
 
-                            try {
-                                cardNumber = aes.encrypt(cardNumber, shaKey, iv);
-                                cvv = aes.encrypt(cvv, shaKey, iv);
-                            } catch (InvalidKeyException e) {
-                                e.printStackTrace();
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            } catch (InvalidAlgorithmParameterException e) {
-                                e.printStackTrace();
-                            } catch (IllegalBlockSizeException e) {
-                                e.printStackTrace();
-                            } catch (BadPaddingException e) {
-                                e.printStackTrace();
-                            }
-                        mysqliteFunction.deletePayment();
+                        try {
+                            cardNumber = aes.encrypt(cardNumber, shaKey, iv);
+                            cvv = aes.encrypt(cvv, shaKey, iv);
+                        } catch (InvalidKeyException e) {
+                            e.printStackTrace();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (InvalidAlgorithmParameterException e) {
+                            e.printStackTrace();
+                        } catch (IllegalBlockSizeException e) {
+                            e.printStackTrace();
+                        } catch (BadPaddingException e) {
+                            e.printStackTrace();
+                        }
+                        //mysqliteFunction.deletePayment();
 
                         mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
                         Log.d(LOG, "Last 3 digits stored " + last3Digits);
-                            RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,cardNumber,cvv,expYear,expMonth,surname);
+                        RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,cardNumber,cvv,expYear,expMonth,surname);
 
-                        } else {
-                            RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,cardNumber,cvv,expYear,expMonth,surname);
-                        }
-
+                    } else {
+                        RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,cardNumber,cvv,expYear,expMonth,surname);
                     }
+
+                }
 
 
 
@@ -559,74 +585,194 @@ public class ConfirmPurchaseActivity extends Activity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+
             }
         });
 
 
     }
 
-   public  void RenewPoBox(final  String amount,final String poboBoxId,final  String groupId, final String email,final String phone, final  String name, final String card ,final String cvv,
+
+    public  void ShowAdditionalCharges(){
+
+        TextView txAmount,txTransFee,txtTotal;
+        double transactionFee,total;
+        double fAmount = Double.parseDouble(amount);
+        transactionFee = ((fAmount * 7) / 100);
+        total = fAmount + transactionFee;
+        LayoutInflater inflater = LayoutInflater.from(ConfirmPurchaseActivity.this);
+        View promptView = inflater.inflate(R.layout.confirm_item, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmPurchaseActivity.this);
+        builder.setView(promptView);
+        txAmount = (TextView)promptView.findViewById(R.id.txtaAmount);
+        txTransFee = (TextView)promptView.findViewById(R.id.txtaTransactionFee);
+        txtTotal = (TextView)promptView.findViewById(R.id.txtaTotal);
+        txAmount.setText("P"+amount+".00");
+        txTransFee.setText(String.valueOf("P"+transactionFee));
+        txtTotal.setText("P"+String.valueOf(total));
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.setPositiveButton("Agree", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AddAirtimeRequest();
+                dialog.dismiss();
+
+            }
+        });
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(ConfirmPurchaseActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+
+    public void PoAdditionalCharges(){
+
+        TextView txAmount,txTransFee,txtTotal;
+        double transactionFee,total;
+        double fAmount = Double.parseDouble(amount);
+        transactionFee = 11.20;
+        total = fAmount + transactionFee;
+        LayoutInflater inflater = LayoutInflater.from(ConfirmPurchaseActivity.this);
+        View promptView = inflater.inflate(R.layout.confirm_item, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmPurchaseActivity.this);
+        builder.setView(promptView);
+        txAmount = (TextView)promptView.findViewById(R.id.txtaAmount);
+        txTransFee = (TextView)promptView.findViewById(R.id.txtaTransactionFee);
+        txtTotal = (TextView)promptView.findViewById(R.id.txtaTotal);
+        txAmount.setText("P"+amount+".00");
+        txTransFee.setText("P11.20");
+        txtTotal.setText("P"+String.valueOf(total));
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.setPositiveButton("Agree", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AddPoRequest();
+                dialog.dismiss();
+
+            }
+        });
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                pDialog.dismiss();
+                Intent intent1 = new Intent(ConfirmPurchaseActivity.this,MainActivity.class);
+                startActivity(intent1);
+            }
+        });
+    }
+    public  void RenewPoBox(final  String amount,final String poboBoxId,final  String groupId, final String email,final String phone, final  String name, final String card ,final String cvv,
                             final  String expYear, final String expMonth,final  String surname){
-       StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
-               AppConfig.URL_RENEWPOBOX, new Response.Listener<String>() {
-           @Override
-           public void onResponse(String response) {
-               Log.d(LOG, "vend Pobox  response " + response.toString());
-               int size = response.length();
-               JSONArray jsonArray = null;
-               try {
-                   jsonArray = new JSONArray(response);
-                   JSONObject jsonObject = jsonArray.getJSONObject(0);
+        StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
+                AppConfig.URL_RENEWPOBOX, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(LOG, "vend Pobox  response " + response.toString());
+                int size = response.length();
+                JSONArray jsonArray = null;
+                try {
+                    jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                   // String res = jsonObject.getString("response");
 
 
 
-               } catch (JSONException e) {
-                   e.printStackTrace();
-               }
-                 pDialog.dismiss();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if(response.equalsIgnoreCase("00")){
 
-           }
+                    pDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"Hi Ed Please check logs ",Toast.LENGTH_LONG).show();
+                    pDialog.dismiss();
+                }
 
-       }, new Response.ErrorListener() {
+            }
 
-           @Override
-           public void onErrorResponse(VolleyError error) {
-               VolleyLog.d(TAG, "Error: " + error.getMessage());
+        }, new Response.ErrorListener() {
 
-
-           }
-       }) {
-
-           @Override
-           protected Map<String, String> getParams() {
-               Map<String, String> params = new HashMap<String, String>();
-               params.put("function","RenewPostBox");
-               params.put("groupId",groupId);
-               params.put("postBoxId",poboBoxId);
-               params.put("email",email);
-               params.put("phone",phone);
-               params.put("platform","Android");
-               params.put("card", URLEncoder.encode(card));
-               params.put("cvv",URLEncoder.encode(cvv));
-               params.put("amount",amount);
-               params.put("name",name + " "+surname);
-               params.put("expYear",expYear);
-               params.put("expMonth",expMonth);
-
-               Log.d(LOG, "values sent from the device  " + params);
-               return params;
-           }
-
-       };
-       strReq.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-       // Adding request to request queue
-       AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
 
 
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("function","RenewPostBox");
+                params.put("groupId",groupId);
+                params.put("postBoxId",poboBoxId);
+                params.put("email",email);
+                params.put("phone",phone);
+                params.put("platform","Android");
+                params.put("card", URLEncoder.encode(card));
+                params.put("cvv",URLEncoder.encode(cvv));
+                params.put("amount",amount);
+                params.put("name",name + " "+surname);
+                params.put("expYear",expYear);
+                params.put("expMonth",expMonth);
+
+                Log.d(LOG, "values sent from the device  " + params);
+                return params;
+            }
+
+        };
+        strReq.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
 
 
 
-   }
+
+
+    }
 
     public static class ErrorMsgDialog extends DialogFragment
     {

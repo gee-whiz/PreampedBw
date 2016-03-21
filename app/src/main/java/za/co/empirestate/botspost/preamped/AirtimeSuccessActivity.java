@@ -43,7 +43,7 @@ public class AirtimeSuccessActivity extends Activity {
         if (!ls_serialNumber.isEmpty())
         {
             tproductName.setText(productName);
-            tamount.setText("P"+amount);
+            tamount.setText("P"+amount+".00");
             tActivation.setText(ls_activationNumber);
             tSerialNumber.setText(ls_serialNumber);
             tExpDate.setText(date);
