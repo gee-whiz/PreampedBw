@@ -139,7 +139,10 @@
             android:label="@string/title_activity_post_box" />
         <activity
             android:name=".PoBoxSuccessfull"
-            android:label="@string/title_activity_po_box_successfull"></activity>
+            android:label="@string/title_activity_po_box_successfull" />
+        <activity
+            android:name=".SelectPostBox"
+            android:label="@string/title_activity_select_post_box"></activity>
     </application>
 
 </manifest>

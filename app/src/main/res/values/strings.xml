@@ -111,5 +111,6 @@
     <string name="title_activity_airtime_success">AirtimeSuccessActivity</string>
     <string name="title_activity_post_box">PostBox</string>
     <string name="title_activity_po_box_successfull">PoBoxSuccessfull</string>
+    <string name="title_activity_select_post_box">SelectPostBox</string>
 
 </resources>

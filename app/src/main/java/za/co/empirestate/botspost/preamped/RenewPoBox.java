@@ -81,7 +81,7 @@ public class RenewPoBox extends Activity implements AdapterView.OnItemSelectedLi
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RenewPoBox.this,PostBox.class);
+                Intent intent = new Intent(RenewPoBox.this,SelectPostBox.class);
                 intent.putExtra("GroupId",selecteditem);
                 intent.putExtra("PostOfficeName",selectedPostOffice);
                 startActivity(intent);
