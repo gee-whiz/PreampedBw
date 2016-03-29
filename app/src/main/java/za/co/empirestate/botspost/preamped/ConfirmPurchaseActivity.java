@@ -259,7 +259,7 @@ public class ConfirmPurchaseActivity extends Activity {
 
                     }
                     else {
-                        new GetTokenTask().execute();
+                       ElecAdditionalCharges();
                     }
                 }else {
                     dialogMsg ="You are offline Please check your internet settings";
@@ -646,7 +646,55 @@ public class ConfirmPurchaseActivity extends Activity {
         });
 
     }
+    public void ElecAdditionalCharges(){
 
+        TextView txAmount,txTransFee,txtTotal;
+        LayoutInflater inflater = LayoutInflater.from(ConfirmPurchaseActivity.this);
+        View promptView = inflater.inflate(R.layout.confirm_elec_item, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmPurchaseActivity.this);
+        builder.setView(promptView);
+        txAmount = (TextView)promptView.findViewById(R.id.txtaAmount);
+        txTransFee = (TextView)promptView.findViewById(R.id.txtaTransactionFee);
+        txtTotal = (TextView)promptView.findViewById(R.id.txtaTotal);
+        txAmount.setText("P"+amount+".00");
+        txTransFee.setText("P4.00");
+        txtTotal.setText("P"+String.valueOf(tokenAmnt)+".00");
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.setPositiveButton("Agree", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new GetTokenTask().execute();
+                dialog.dismiss();
+
+            }
+        });
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                pDialog.dismiss();
+                Intent intent1 = new Intent(ConfirmPurchaseActivity.this,MainActivity.class);
+                startActivity(intent1);
+            }
+        });
+    }
 
     public void PoAdditionalCharges(){
 

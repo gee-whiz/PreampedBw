@@ -36,6 +36,8 @@ public class PostBox extends Activity {
     View backView;
     PoboxObj poboxObj;
     Button Cancel,next;
+
+    double t,tot,pen;
     TextView tHolderType,tName,tPaidUntil,total,tSize,tStartDate,tStatus,tLastPaidUntil,tRenewalAmount,tPenaltyAmount,tNextPaidUntil,tTransactionHandle;
     String HolderType,totalSt,Name,PaidUntil,Size,StartDate,Status,LastPaidUntil,RenewalAmount,PenaltyAmount,NextPaidUntil,TransactionHandle,poboxID;
     private MySQLiteFunctions mysqliteFunction;
@@ -75,16 +77,16 @@ public class PostBox extends Activity {
                     localIntent1.putExtra("isNew", false);
                     localIntent1.putExtra("meter_number", localIntent.getStringExtra("poboxID"));
                     localIntent1.putExtra("groupId",localIntent.getStringExtra("GroupId"));
-                  PostBox.this.startActivity(localIntent1);
+                     PostBox.this.startActivity(localIntent1);
                     overridePendingTransition(R.anim.from, R.anim.to);
                     return;
                 }
                 Intent localIntent2 = new Intent(PostBox.this, PaymentDetailsActivity.class);
-                Log.d(LOG,"sending first Selected meter number "+ poboxObj.getPostBoxId());
-                localIntent2.putExtra("meter_number", poboxObj.getPostBoxId());
-                localIntent2.putExtra("amount", poboxObj.getRenewalAmount());
-                localIntent2.putExtra("groupId",GroupId);
-                Log.d(LOG,"group id "+GroupId);
+                Log.d(LOG, "sending first Selected meter number " + localIntent.getStringExtra("poboxID"));
+                localIntent2.putExtra("amount", localIntent.getStringExtra("RenewalAmount"));
+                localIntent2.putExtra("meter_number", localIntent.getStringExtra("poboxID"));
+                localIntent2.putExtra("groupId",localIntent.getStringExtra("GroupId"));
+                Log.d(LOG,"group id "+localIntent.getStringExtra("GroupId"));
                 PostBox.this.startActivity(localIntent2);
 
 
@@ -127,10 +129,10 @@ public  void  setFields()
         tHolderType.setText( localIntent.getStringExtra("HolderType"));
         RenewalAmount = localIntent.getStringExtra("RenewalAmount");
         PenaltyAmount = localIntent.getStringExtra("PenaltyAmount");
-        TransactionHandle = "P11.20";
-        double t =  Double.parseDouble(RenewalAmount);
-        double pen = Double.parseDouble(TransactionHandle);
-        double tot = t + pen;
+        TransactionHandle = "11.20";
+         t =  Double.parseDouble(RenewalAmount);
+         pen = Double.parseDouble(TransactionHandle);
+         tot = t + pen;
         total.setText("P"+ String.valueOf(tot));
 
 

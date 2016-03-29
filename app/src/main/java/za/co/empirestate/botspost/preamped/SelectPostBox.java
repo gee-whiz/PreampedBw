@@ -1,12 +1,15 @@
 package za.co.empirestate.botspost.preamped;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -73,18 +76,26 @@ public class SelectPostBox extends Activity implements AdapterView.OnItemSelecte
                 Intent intent = new Intent(SelectPostBox.this, PostBox.class);
 
 
-                    intent.putExtra("HolderType", poboxObj.getHolderType());
-                    intent.putExtra("Name", selectedPostBox);
-                    intent.putExtra("Size", poboxObj.getSize());
-                    intent.putExtra("PaidUntil", poboxObj.getPaidUntil());
-                    intent.putExtra("Status", poboxObj.getStatus());
-                    intent.putExtra("RenewalAmount", poboxObj.getRenewalAmount());
-                    intent.putExtra("PenaltyAmount", poboxObj.getPenaltyAmount());
-                    intent.putExtra("poboxID", poboxObj.getPostBoxId());
-                    intent.putExtra("GroupId",GroupId);
+                intent.putExtra("HolderType", poboxObj.getHolderType());
+                intent.putExtra("Name", selectedPostBox);
+                intent.putExtra("Size", poboxObj.getSize());
+                intent.putExtra("PaidUntil", poboxObj.getPaidUntil());
+                intent.putExtra("Status", poboxObj.getStatus());
+                intent.putExtra("RenewalAmount", poboxObj.getRenewalAmount());
+                intent.putExtra("PenaltyAmount", poboxObj.getPenaltyAmount());
+                intent.putExtra("poboxID", poboxObj.getPostBoxId());
+                intent.putExtra("GroupId", GroupId);
 
-                    startActivity(intent);
+                startActivity(intent);
 
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SelectPostBox.this,RenewPoBox.class);
+                startActivity(intent);
             }
         });
     }
@@ -130,6 +141,35 @@ public class SelectPostBox extends Activity implements AdapterView.OnItemSelecte
 
 
     }
+    private  void PostError()
+    {
+
+        LayoutInflater inflater = LayoutInflater.from(SelectPostBox.this);
+        View promptView = inflater.inflate(R.layout.post_box_error, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(SelectPostBox.this);
+        builder.setView(promptView);
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(SelectPostBox.this,RenewPoBox.class);
+                startActivity(intent);
+
+            }
+        });
+
+
+    }
+
 
     public  void GetPostBox(final  String PostOfficeName,final  String GroupId )
     {
@@ -173,13 +213,18 @@ public class SelectPostBox extends Activity implements AdapterView.OnItemSelecte
                     }
                 }
 
+                     if (poboxID != null) {
+                         for (int i = 0; i < postofficesList.size(); i++) {
+                             SpinnerArray.add(postofficesList.get(i).getName());
+                             pDialog.dismiss();
+                             setSpinners();
+                         }
+                     }
 
-                    for (int i = 0; i < postofficesList.size(); i++) {
-                        SpinnerArray.add(postofficesList.get(i).getName());
-                    pDialog.dismiss();
-                    setSpinners();
-                }
-
+                else {
+                         pDialog.dismiss();
+                      PostError();
+                     }
 
 
             }

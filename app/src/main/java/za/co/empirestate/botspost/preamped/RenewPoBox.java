@@ -85,6 +85,7 @@ public class RenewPoBox extends Activity implements AdapterView.OnItemSelectedLi
                 intent.putExtra("GroupId",selecteditem);
                 intent.putExtra("PostOfficeName",selectedPostOffice);
                 startActivity(intent);
+                finish();
             }
         });
 
