@@ -14,6 +14,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +62,7 @@ public class ConfirmPurchaseActivity extends Activity {
     private static final String TAG = "hey Gee";
     static String iv,shaKey;
     private static String dialogMsg;
-    int tokenAmnt;
+    double tokenAmnt;
     AES aes;
     Intent localIntent;
     String meterChar;
@@ -131,9 +132,10 @@ public class ConfirmPurchaseActivity extends Activity {
         }
         if (localIntent.getBooleanExtra("isNew", false))
         {
-            tokenAmnt = Integer.parseInt(this.payment.amount) - 4;
+            tokenAmnt = Double.parseDouble(this.payment.amount) - 4;
             txtMeterNumber.setText(meterNumber);
-            txtAmount.setText("P" + this.payment.amount+".00");
+            double tempAmount = Double.parseDouble(this.payment.amount);
+            txtAmount.setText("P"+String.format("%.2f",tempAmount));
             txtInitial.setText(this.payment.cardHolderName);
             txtSurname.setText(this.payment.cardHolderSurname);
             txtCardNumber.setText("*************"+this.payment.cardNumber.substring(13));
@@ -198,8 +200,9 @@ public class ConfirmPurchaseActivity extends Activity {
                 Log.e("cn",cardNumber);
 
             }
-            tokenAmnt = Integer.parseInt(localIntent.getStringExtra("amount")) - 4;
-            txtAmount.setText("P"+localIntent.getStringExtra("amount")+".00");
+            tokenAmnt = Double.parseDouble(localIntent.getStringExtra("amount")) - 4;
+            double tempAmount = Double.parseDouble(localIntent.getStringExtra("amount"));
+            txtAmount.setText("P"+String.format("%.2f",tempAmount));
             txtMeterNumber.setText(localIntent.getStringExtra("meter_number"));
             this.mysqliteFunction.close();
         }
@@ -236,7 +239,7 @@ public class ConfirmPurchaseActivity extends Activity {
                             }
                             Log.d("IV" ,iv);
                             Log.d("KEY", shaKey);
-                            ShowAdditionalCharges();
+                            AddAirtimeRequest();
                         }
 
                         else {
@@ -254,12 +257,12 @@ public class ConfirmPurchaseActivity extends Activity {
                             }
                             Log.d("IV" ,iv);
                             Log.d("KEY", shaKey);
-                            PoAdditionalCharges();
+                            AddPoRequest();
                         }
 
                     }
                     else {
-                       ElecAdditionalCharges();
+                        new GetTokenTask().execute();
                     }
                 }else {
                     dialogMsg ="You are offline Please check your internet settings";
@@ -349,7 +352,7 @@ public class ConfirmPurchaseActivity extends Activity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("productName", productName);
-                params.put("value", value);
+                params.put("value", "1000");
                 params.put("quantity","1");
                 params.put("email",email);
                 params.put("phone",phone);
@@ -357,7 +360,7 @@ public class ConfirmPurchaseActivity extends Activity {
                 params.put("name",name + " "+surname);
                 params.put("card", URLEncoder.encode(card));
                 params.put("cvv",URLEncoder.encode(cvv));
-                params.put("amount",amount);
+                params.put("amount","1000");
                 params.put("expYear",expYear);
                 params.put("expMonth",expMonth);
                 Log.d(LOG, "values sent from the device  " + params);
@@ -421,7 +424,7 @@ public class ConfirmPurchaseActivity extends Activity {
 
                 if (response.equals("successful")){
 
-                    String li_amount = String.valueOf(Integer.parseInt(amount) * 100);
+                    String li_amount = String.valueOf(Double.parseDouble(amount) * 100);
                     Log.d(LOG, "Amount now " + li_amount);
                     if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
 
@@ -443,9 +446,9 @@ public class ConfirmPurchaseActivity extends Activity {
 
                         mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
                         Log.d(LOG, "Last 3 digits stored " + last3Digits);
-                        PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, cardNumber, cvv, li_amount, expYear, expMonth,surname);
+                        PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, cardNumber, cvv, li_amount, expYear, expMonth, surname);
                     } else {
-                        PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, cardNumber, cvv, li_amount, expYear, expMonth,surname);
+                        PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, cardNumber, cvv, li_amount, expYear, expMonth, surname);
                     }
                 }
 
@@ -593,162 +596,8 @@ public class ConfirmPurchaseActivity extends Activity {
     }
 
 
-    public  void ShowAdditionalCharges(){
 
-        TextView txAmount,txTransFee,txtTotal;
-        double transactionFee,total;
-        double fAmount = Double.parseDouble(amount);
-        transactionFee = ((fAmount * 7) / 100);
-        total = fAmount + transactionFee;
-        LayoutInflater inflater = LayoutInflater.from(ConfirmPurchaseActivity.this);
-        View promptView = inflater.inflate(R.layout.confirm_item, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmPurchaseActivity.this);
-        builder.setView(promptView);
-        txAmount = (TextView)promptView.findViewById(R.id.txtaAmount);
-        txTransFee = (TextView)promptView.findViewById(R.id.txtaTransactionFee);
-        txtTotal = (TextView)promptView.findViewById(R.id.txtaTotal);
-        txAmount.setText("P"+amount+".00");
-        txTransFee.setText(String.valueOf("P"+transactionFee));
-        txtTotal.setText("P"+String.valueOf(total));
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
 
-            }
-        });
-
-        builder.setPositiveButton("Agree", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                AddAirtimeRequest();
-                dialog.dismiss();
-
-            }
-        });
-
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Intent intent = new Intent(ConfirmPurchaseActivity.this,MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-    }
-    public void ElecAdditionalCharges(){
-
-        TextView txAmount,txTransFee,txtTotal;
-        LayoutInflater inflater = LayoutInflater.from(ConfirmPurchaseActivity.this);
-        View promptView = inflater.inflate(R.layout.confirm_elec_item, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmPurchaseActivity.this);
-        builder.setView(promptView);
-        txAmount = (TextView)promptView.findViewById(R.id.txtaAmount);
-        txTransFee = (TextView)promptView.findViewById(R.id.txtaTransactionFee);
-        txtTotal = (TextView)promptView.findViewById(R.id.txtaTotal);
-        txAmount.setText("P"+amount+".00");
-        txTransFee.setText("P4.00");
-        txtTotal.setText("P"+String.valueOf(tokenAmnt)+".00");
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        builder.setPositiveButton("Agree", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                new GetTokenTask().execute();
-                dialog.dismiss();
-
-            }
-        });
-
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                pDialog.dismiss();
-                Intent intent1 = new Intent(ConfirmPurchaseActivity.this,MainActivity.class);
-                startActivity(intent1);
-            }
-        });
-    }
-
-    public void PoAdditionalCharges(){
-
-        TextView txAmount,txTransFee,txtTotal;
-        double transactionFee,total;
-        double fAmount = Double.parseDouble(amount);
-        transactionFee = 11.20;
-        total = fAmount + transactionFee;
-        LayoutInflater inflater = LayoutInflater.from(ConfirmPurchaseActivity.this);
-        View promptView = inflater.inflate(R.layout.confirm_item, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmPurchaseActivity.this);
-        builder.setView(promptView);
-        txAmount = (TextView)promptView.findViewById(R.id.txtaAmount);
-        txTransFee = (TextView)promptView.findViewById(R.id.txtaTransactionFee);
-        txtTotal = (TextView)promptView.findViewById(R.id.txtaTotal);
-        txAmount.setText("P"+amount+".00");
-        txTransFee.setText("P11.20");
-        txtTotal.setText("P"+String.valueOf(total));
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        builder.setPositiveButton("Agree", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                AddPoRequest();
-                dialog.dismiss();
-
-            }
-        });
-
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                pDialog.dismiss();
-                Intent intent1 = new Intent(ConfirmPurchaseActivity.this,MainActivity.class);
-                startActivity(intent1);
-            }
-        });
-    }
     public  void RenewPoBox(final  String amount,final String poboBoxId,final  String groupId, final String email,final String phone, final  String name, final String card ,final String cvv,
                             final  String expYear, final String expMonth,final  String surname){
         StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
@@ -880,7 +729,7 @@ public class ConfirmPurchaseActivity extends Activity {
 
                                 mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
                                 Log.d(LOG, "Last 3 digits stored " + last3Digits);
-                                resp = request.addPaymentParamaters(name, surname, cardNumber, cvv, expMonth, expYear, amount, phone, meterNumber, Integer.toString(tokenAmnt), date, time);
+                                resp = request.addPaymentParamaters(name, surname, cardNumber, cvv, expMonth, expYear, amount, phone, meterNumber, Double.toString(tokenAmnt), date, time);
                                 Log.d(LOG, "first Payment parameters sent to the server " + meterNumber);
 
 
@@ -889,7 +738,7 @@ public class ConfirmPurchaseActivity extends Activity {
                             }
                         }
                     } else {
-                        resp = request.addPaymentParamaters(name, surname, cardNumber, cvv, expMonth, expYear, amount, phone, meterNumber, Integer.toString(tokenAmnt), date, time);
+                        resp = request.addPaymentParamaters(name, surname, cardNumber, cvv, expMonth, expYear, amount, phone, meterNumber, Double.toString(tokenAmnt), date, time);
                         Log.d(LOG, "Payment parameters sent to the server " + meterNumber);
                     }
 

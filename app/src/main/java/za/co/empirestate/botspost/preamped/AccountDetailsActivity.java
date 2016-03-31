@@ -7,6 +7,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaActionSound;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -43,7 +44,8 @@ setSpinners();
     {
       public void onClick(View paramAnonymousView)
       {
-        AccountDetailsActivity.this.onBackPressed();
+      Intent intent = new Intent(AccountDetailsActivity.this, MainActivity.class);
+          startActivity(intent);
       }
     });
 
@@ -104,22 +106,14 @@ setSpinners();
         //  Intent i = new Intent(AccountDetailsActivity.this, PaymentWebView.class);
          // AccountDetailsActivity.this.startActivity(i);
          // overridePendingTransition(R.anim.from, R.anim.to);
-        if (AccountDetailsActivity.this.mysqliteFunction.checkPaymentHistory())
-        {
-          Intent localIntent1 = new Intent(AccountDetailsActivity.this, ConfirmPurchaseActivity.class);
+
+          Intent localIntent1 = new Intent(AccountDetailsActivity.this, Eleconfirm.class);
           localIntent1.putExtra("amount", AccountDetailsActivity.this.amount);
           localIntent1.putExtra("isNew", false);
             localIntent1.putExtra("meter_number", str);
           AccountDetailsActivity.this.startActivity(localIntent1);
             overridePendingTransition(R.anim.from, R.anim.to);
-          return;
-        }
-        Intent localIntent2 = new Intent(AccountDetailsActivity.this, PaymentDetailsActivity.class);
-          Log.d(LOG,"sending first Selected meter number "+ str);
-        localIntent2.putExtra("meter_number", str);
-        localIntent2.putExtra("amount", AccountDetailsActivity.this.amount);
-        AccountDetailsActivity.this.startActivity(localIntent2);
-         // overridePendingTransition(R.anim.from, R.anim.to);
+
       }
     });
   }

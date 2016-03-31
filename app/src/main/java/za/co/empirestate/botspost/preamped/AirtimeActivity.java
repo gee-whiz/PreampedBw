@@ -53,24 +53,12 @@ public class AirtimeActivity extends Activity {
             public void onClick(View view) {
 
 
-                if (AirtimeActivity.this.mysqliteFunction.checkPaymentHistory())
-                {
-                    Intent localIntent1 = new Intent(AirtimeActivity.this, ConfirmPurchaseActivity.class);
-                    localIntent1.putExtra("amount", AirtimeActivity.this.amount);
-                    localIntent1.putExtra("isNew", false);
-                    localIntent1.putExtra("meter_number", voucher);
-                    AirtimeActivity.this.startActivity(localIntent1);
-                    overridePendingTransition(R.anim.from, R.anim.to);
-                    return;
-                }
-                Intent localIntent2 = new Intent(AirtimeActivity.this, PaymentDetailsActivity.class);
-                Log.d(LOG,"sending first Selected meter number "+ voucher);
-                localIntent2.putExtra("meter_number", voucher);
-                localIntent2.putExtra("amount", AirtimeActivity.this.amount);
-               AirtimeActivity.this.startActivity(localIntent2);
-                // overridePendingTransition(R.anim.from, R.anim.to);
-
-
+                Intent localIntent1 = new Intent(AirtimeActivity.this, AirtimeConfirm.class);
+                localIntent1.putExtra("amount", AirtimeActivity.this.amount);
+                localIntent1.putExtra("isNew", false);
+                localIntent1.putExtra("meter_number", voucher);
+                AirtimeActivity.this.startActivity(localIntent1);
+                overridePendingTransition(R.anim.from, R.anim.to);
             }
         });
 

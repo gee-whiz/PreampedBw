@@ -233,6 +233,6 @@ android:layout_marginTop="15dp"
     </LinearLayout>
     <Button android:id="@+id/btn_finish" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.075" android:background="#FFF000" android:orientation="vertical" android:text="Finish" android:textColor="#EA2026" android:textSize="22.0sp" android:textStyle="bold" />
     <FrameLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.075" android:background="#ff000000" android:paddingTop="10.0dip">
-        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:src="@drawable/forth_dot" />
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:src="@drawable/fifth_dot" />
     </FrameLayout>
 </LinearLayout>

@@ -33,6 +33,6 @@
     </LinearLayout>
     <Button android:id="@+id/btn_confirm" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.05" android:background="#FFF000" android:orientation="vertical" android:text="Confirm" android:textColor="#EA2026" android:textSize="35sp" android:textStyle="bold" />
     <FrameLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.05" android:background="#ff000000" android:paddingTop="10.0dip">
-        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:src="@drawable/third_dot" />
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:src="@drawable/forth_dot" />
     </FrameLayout>
 </LinearLayout>

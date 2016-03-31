@@ -112,5 +112,7 @@
     <string name="title_activity_post_box">PostBox</string>
     <string name="title_activity_po_box_successfull">PoBoxSuccessfull</string>
     <string name="title_activity_select_post_box">SelectPostBox</string>
+    <string name="title_activity_airtime_confirm">AirtimeConfirm</string>
+    <string name="title_activity_eleconfirm">Eleconfirm</string>
 
 </resources>

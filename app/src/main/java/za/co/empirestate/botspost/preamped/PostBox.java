@@ -35,7 +35,7 @@ public class PostBox extends Activity {
     String PostOfficeName,GroupId;
     View backView;
     PoboxObj poboxObj;
-    Button Cancel,next;
+    Button cancel,next;
 
     double t,tot,pen;
     TextView tHolderType,tName,tPaidUntil,total,tSize,tStartDate,tStatus,tLastPaidUntil,tRenewalAmount,tPenaltyAmount,tNextPaidUntil,tTransactionHandle;
@@ -65,7 +65,13 @@ public class PostBox extends Activity {
             }
         });
 
-
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostBox.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,7 +79,7 @@ public class PostBox extends Activity {
                 if (PostBox.this.mysqliteFunction.checkPaymentHistory())
                 {
                     Intent localIntent1 = new Intent(PostBox.this, ConfirmPurchaseActivity.class);
-                    localIntent1.putExtra("amount",localIntent.getStringExtra("RenewalAmount"));
+                    localIntent1.putExtra("amount",String.valueOf(tot));
                     localIntent1.putExtra("isNew", false);
                     localIntent1.putExtra("meter_number", localIntent.getStringExtra("poboxID"));
                     localIntent1.putExtra("groupId",localIntent.getStringExtra("GroupId"));
@@ -83,7 +89,7 @@ public class PostBox extends Activity {
                 }
                 Intent localIntent2 = new Intent(PostBox.this, PaymentDetailsActivity.class);
                 Log.d(LOG, "sending first Selected meter number " + localIntent.getStringExtra("poboxID"));
-                localIntent2.putExtra("amount", localIntent.getStringExtra("RenewalAmount"));
+                localIntent2.putExtra("amount",String.valueOf(tot));
                 localIntent2.putExtra("meter_number", localIntent.getStringExtra("poboxID"));
                 localIntent2.putExtra("groupId",localIntent.getStringExtra("GroupId"));
                 Log.d(LOG,"group id "+localIntent.getStringExtra("GroupId"));
@@ -102,7 +108,7 @@ public class PostBox extends Activity {
 
 public  void  setFields()
 {
-
+    cancel = (Button)findViewById(R.id.btnCancel);
     tName =  (TextView)findViewById(R.id.txtName);
     tHolderType = (TextView)findViewById(R.id.txtHolderType);
     tPenaltyAmount = (TextView)findViewById(R.id.txtPenalty);
@@ -133,7 +139,7 @@ public  void  setFields()
          t =  Double.parseDouble(RenewalAmount);
          pen = Double.parseDouble(TransactionHandle);
          tot = t + pen;
-        total.setText("P"+ String.valueOf(tot));
+        total.setText("P"+String.format("%.2f",tot));
 
 
 
