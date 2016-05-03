@@ -43,6 +43,7 @@ import java.net.URLEncoder;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,12 +80,12 @@ public class ConfirmPurchaseActivity extends Activity {
     private MySQLiteFunctions mysqliteFunction;
     private Payment payment;
     private String phone;
-    private String token,units,date,time;
+    private String token,units,date,time,voucherValue;
     private String reference = null;
     private String last3Digits;
     private String vatAndLevy;
     private String costOfUnits;
-    private String email;
+    private String email,ls_transactionFee;
     private TextView tmeter;
     private ProgressDialog pDialog;
 
@@ -102,6 +103,7 @@ public class ConfirmPurchaseActivity extends Activity {
         //meterNumber = mysqliteFunction.getMeterNumber();
         meterNumber = localIntent.getStringExtra("meter_number");
         groupId = localIntent.getStringExtra("groupId");
+        voucherValue = localIntent.getStringExtra("voucherValue");
         Log.e(LOG,"Group id "+groupId);
         Log.d(LOG, "Meter Number " + meterNumber);
         Time localTime = new Time(Time.getCurrentTimezone());
@@ -126,6 +128,8 @@ public class ConfirmPurchaseActivity extends Activity {
 
             if (meterChar.equalsIgnoreCase("B")||meterChar.equalsIgnoreCase("O")||meterChar.equalsIgnoreCase("M")) {
                 tmeter.setText("Voucher");
+                ls_transactionFee = localIntent.getStringExtra("transactionFee");
+                Log.e(LOG,"transaction fee"+ls_transactionFee);
             }
             else
                 tmeter.setText("PoBox ID");
@@ -135,7 +139,7 @@ public class ConfirmPurchaseActivity extends Activity {
             tokenAmnt = Double.parseDouble(this.payment.amount) - 4;
             txtMeterNumber.setText(meterNumber);
             double tempAmount = Double.parseDouble(this.payment.amount);
-            txtAmount.setText("P"+String.format("%.2f",tempAmount));
+            txtAmount.setText("P"+String.valueOf(tempAmount));
             txtInitial.setText(this.payment.cardHolderName);
             txtSurname.setText(this.payment.cardHolderSurname);
             txtCardNumber.setText("*************"+this.payment.cardNumber.substring(13));
@@ -202,7 +206,7 @@ public class ConfirmPurchaseActivity extends Activity {
             }
             tokenAmnt = Double.parseDouble(localIntent.getStringExtra("amount")) - 4;
             double tempAmount = Double.parseDouble(localIntent.getStringExtra("amount"));
-            txtAmount.setText("P"+String.format("%.2f",tempAmount));
+            txtAmount.setText("P"+String.valueOf(tempAmount));
             txtMeterNumber.setText(localIntent.getStringExtra("meter_number"));
             this.mysqliteFunction.close();
         }
@@ -316,6 +320,7 @@ public class ConfirmPurchaseActivity extends Activity {
                         i.putExtra("Value",value);
                         i.putExtra("expDate",expDate);
                         i.putExtra("SerialNumber",SerialNumber);
+                        i.putExtra("transactionFee",ls_transactionFee);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
@@ -352,7 +357,8 @@ public class ConfirmPurchaseActivity extends Activity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("productName", productName);
-                params.put("value", "1000");
+                params.put("value",amount);
+                params.put("voucherValue",voucherValue);
                 params.put("quantity","1");
                 params.put("email",email);
                 params.put("phone",phone);
@@ -360,7 +366,7 @@ public class ConfirmPurchaseActivity extends Activity {
                 params.put("name",name + " "+surname);
                 params.put("card", URLEncoder.encode(card));
                 params.put("cvv",URLEncoder.encode(cvv));
-                params.put("amount","1000");
+                params.put("amount",amount);
                 params.put("expYear",expYear);
                 params.put("expMonth",expMonth);
                 Log.d(LOG, "values sent from the device  " + params);
@@ -423,8 +429,10 @@ public class ConfirmPurchaseActivity extends Activity {
 
 
                 if (response.equals("successful")){
+                    DecimalFormat decimalFormat= new DecimalFormat("###.#");
+                    Double la_amount = Double.parseDouble(amount) * 100;
+                    String li_amount = decimalFormat.format(la_amount);
 
-                    String li_amount = String.valueOf(Double.parseDouble(amount) * 100);
                     Log.d(LOG, "Amount now " + li_amount);
                     if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
 

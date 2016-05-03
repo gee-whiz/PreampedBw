@@ -15,6 +15,7 @@ public class AirtimeSuccessActivity extends Activity {
     TextView tproductName;
     TextView tamount;
     TextView tSerialNumber;
+    TextView tTransactionFee;
     TextView tActivation;
     TextView tDate,ttime;
     TextView tExpDate,value;
@@ -23,7 +24,7 @@ public class AirtimeSuccessActivity extends Activity {
     String amount;
 
     String  productName;
-    String  ls_amount,ls_serialNumber,ls_activationNumber,ls_theDate,theTime;
+    String  ls_amount,ls_serialNumber,ls_activationNumber,ls_theDate,ls_transactionFee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class AirtimeSuccessActivity extends Activity {
         ls_amount    = i.getStringExtra("Value");
         productName = i.getStringExtra("ProductName");
         ls_theDate = i.getStringExtra("expDate");
+        ls_transactionFee = i.getStringExtra("transactionFee");
        String date = ls_theDate.substring(0, ls_theDate.length()-9);
         amount = String.valueOf(Integer.parseInt(ls_amount) / 100);
         if (!ls_serialNumber.isEmpty())
@@ -51,6 +53,7 @@ public class AirtimeSuccessActivity extends Activity {
             tDate.setText(localTime.monthDay + "/" + curMonth + "/" + localTime.year);
             ttime.setText(localTime.format("%k:%M:%S"));
             value.setText("P"+ amount+".00");
+            tTransactionFee.setText(ls_transactionFee);
 
         }
 
@@ -87,6 +90,7 @@ public class AirtimeSuccessActivity extends Activity {
         back = (ImageButton)findViewById(R.id.bck_btn);
         finish = (Button)findViewById(R.id.btn_finish);
         value = (TextView)findViewById(R.id.txtValue);
+        tTransactionFee = (TextView)findViewById(R.id.txtaTransactionFee);
 
 
 

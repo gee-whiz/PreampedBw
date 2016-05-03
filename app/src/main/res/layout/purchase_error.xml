@@ -46,7 +46,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="Error Processing Payment, Please Make Sure You Entered Correct Credentials."
+            android:text="Unable to complete airtime purchase. Please try again later."
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 

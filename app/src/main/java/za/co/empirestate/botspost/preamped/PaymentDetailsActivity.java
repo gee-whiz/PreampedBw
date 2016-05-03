@@ -31,13 +31,14 @@ public class PaymentDetailsActivity extends Activity
   EditText txtNumber;
   EditText txtSurname;
   Time localTime;
+
     private String amount;
   private String cardType;
   private String meterNumber;
   private String month;
   private MySQLiteFunctions mysqliteFunction;
   private Payment payment;
-  private String year,groupId;
+  private String year,groupId,voucherValue,ls_transactionFee;
 
     protected void onCreate(Bundle paramBundle)
   {
@@ -47,6 +48,8 @@ public class PaymentDetailsActivity extends Activity
     this.meterNumber = localIntent.getStringExtra("meter_number");
     this.amount = localIntent.getStringExtra("amount");
      this.groupId = localIntent.getStringExtra("groupId");
+      voucherValue = localIntent.getStringExtra("voucherValue");
+      ls_transactionFee = localIntent.getStringExtra("transactionFee");
     this.mysqliteFunction = new MySQLiteFunctions(this);
     final Spinner spnMonths = (Spinner) findViewById(R.id.month);
     final Spinner spnYears = (Spinner) findViewById(R.id.year);
@@ -153,8 +156,11 @@ public class PaymentDetailsActivity extends Activity
             PaymentDetailsActivity.this.mysqliteFunction.createPaymentTable(cardNumber, cardHolderInitial, cardHolderSurname, strCvv, PaymentDetailsActivity.this.month, PaymentDetailsActivity.this.year, cardNumber.substring(13));
             localIntent.putExtra("payment_details", PaymentDetailsActivity.this.payment);
             localIntent.putExtra("isNew", true);
-            Log.d(LOG,"I'm sending this "+PaymentDetailsActivity.this.meterNumber);
-            localIntent.putExtra("meter_number",PaymentDetailsActivity.this.meterNumber);
+            localIntent.putExtra("voucherValue",voucherValue);
+
+            localIntent.putExtra("meter_number", PaymentDetailsActivity.this.meterNumber);
+            localIntent.putExtra("transactionFee", ls_transactionFee);
+            Log.d(LOG, "I'm sending this " + ls_transactionFee);
             localIntent.putExtra("groupId",groupId);
             //Intent encryptIntent = new Intent();
             //encryptIntent.putExtra("card_number",cardNumber);

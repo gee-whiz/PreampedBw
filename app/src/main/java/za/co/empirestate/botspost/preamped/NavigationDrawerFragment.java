@@ -61,7 +61,7 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
     ListViewAdapter adapter;
-    String[] lst = { " ","Buy Prepaid Electricity","Buy Prepaid Airtime","Renew PO Box","Transaction History","Settings","Terms & Conditions", "Contact Us","Log out"};
+    String[] lst = { " ","Buy Prepaid Electricity","Buy Prepaid Airtime","Transaction History","Settings","Terms & Conditions", "Contact Us","Log out"};
 
     public NavigationDrawerFragment() {
     }
@@ -221,23 +221,20 @@ public class NavigationDrawerFragment extends Fragment {
             startActivity(intent);
         }
 
-        else  if (position == 3){
-            Intent intent = new Intent(getActivity(),RenewPoBox.class);
-            startActivity(intent);
-        }
-        else if(position == 4){
+
+        else if(position == 3){
             Intent intent = new Intent(getActivity(),
                     NewTransactionHistory.class);
             startActivity(intent);
-        }else if(position == 5){
+        }else if(position == 4){
             Intent intent = new Intent(getActivity(),
                     SettingsActivity.class);
             startActivity(intent);
-        }else if(position == 6){
+        }else if(position == 5){
             Intent intent = new Intent(getActivity(),
                     TermsAndConditions.class);
             startActivity(intent);
-        }else if(position == 7){
+        }else if(position == 6){
 
             Intent intent = new Intent(getActivity(),
                     ContactUsActivity.class);

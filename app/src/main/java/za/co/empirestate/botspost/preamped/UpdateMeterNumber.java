@@ -48,6 +48,7 @@ public class UpdateMeterNumber extends Activity {
     ImageButton backImage;
     EditText newMeterNumber;
     String meterNumber;
+    String smeterNumber;
     ImageButton update,Delete;
     int num;
     String phone,email;
@@ -67,7 +68,7 @@ public class UpdateMeterNumber extends Activity {
         pDialog = new ProgressDialog(UpdateMeterNumber.this);
         setFields();
         setSpinners();
-        meterNumber = mysqliteFunction.getMeterNumber();
+        smeterNumber = mysqliteFunction.getMeterNumber();
 
         backImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +111,14 @@ public class UpdateMeterNumber extends Activity {
         Delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShowDeleteAlert(deleteId);
+                if (toDelete.equalsIgnoreCase(smeterNumber))
+                {
+                    ShowPrimaryMeterError();
+
+                }
+                else {
+                    ShowDeleteAlert(deleteId);
+                }
             }
         });
     }
@@ -135,6 +143,7 @@ public class UpdateMeterNumber extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                toDelete = deleteSp.getSelectedItem().toString();
+
                 num += 1;
                 if (num > 1){
                     deleteId = id;
@@ -210,14 +219,14 @@ public class UpdateMeterNumber extends Activity {
             @Override
             public void onClick(View v) {
                 pDialog.show();
-                 mysqliteFunction.delete_byID(deleteId);
-                    phone = mysqliteFunction.getPhone();
-                    email = mysqliteFunction.getEmail();
-                    newPhone = phone.substring(1);
-                    DeleteMeterNumber(email, newPhone, toDelete);
-                    dialog.dismiss();
-                    finish();
-                }
+                mysqliteFunction.delete_byID(deleteId);
+                phone = mysqliteFunction.getPhone();
+                email = mysqliteFunction.getEmail();
+                newPhone = phone.substring(1);
+                DeleteMeterNumber(email, newPhone, toDelete);
+                dialog.dismiss();
+                finish();
+            }
         });
 
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
@@ -315,6 +324,31 @@ public class UpdateMeterNumber extends Activity {
 
     }
 
+    private  void ShowPrimaryMeterError()
+    {
+
+        LayoutInflater inflater = LayoutInflater.from(UpdateMeterNumber.this);
+        View promptView = inflater.inflate(R.layout.primary_meter_error, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(UpdateMeterNumber.this);
+        builder.setView(promptView);
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+    }
 
 
     private  void DeleteMeterNumber(final String email,final  String phone,final String newMeterNumber){

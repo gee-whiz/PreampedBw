@@ -80,15 +80,7 @@
                 android:padding="8dp"
                 android:gravity="center"
                 android:id="@+id/txt_top_tab2"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="PO Box"
-                android:textSize="14sp"
-                android:padding="8dp"
-                android:gravity="center"
-                android:id="@+id/txt_top_tab3"/>
+
         </TabWidget>
     </LinearLayout>
 </RelativeLayout>
