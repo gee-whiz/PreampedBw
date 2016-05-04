@@ -3,14 +3,13 @@ package za.co.empirestate.botspost.preamped;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DecimalFormat;
+import java.util.Locale;
 
 import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
@@ -21,9 +20,10 @@ public class AirtimeConfirm extends Activity {
     Button next,cancel;
     View back;
     double total;
-    private MySQLiteFunctions mysqliteFunction;
     String amount,voucherValue,voucher,ls_transactionFee;
     Intent localIntent;
+    private MySQLiteFunctions mysqliteFunction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +97,7 @@ public class AirtimeConfirm extends Activity {
         tTotal = (TextView)findViewById(R.id.txtTotal);
         next = (Button)findViewById(R.id.btnNext);
         cancel = (Button)findViewById(R.id.btnCancel);
-        back = (View)findViewById(R.id.btnBack);
+        back = findViewById(R.id.btnBack);
         tVoucher = (TextView)findViewById(R.id.txtVoucher);
 
 
@@ -115,9 +115,9 @@ public class AirtimeConfirm extends Activity {
         total = fAmount + transactionFee;
         tAmount.setText("P"+amount+".00");
         tVoucher.setText(voucher);
-        tTransactionFee.setText("P"+String.valueOf(transactionFee));
-        ls_transactionFee = "P"+String.valueOf(transactionFee);
-        tTotal.setText("P"+ String.valueOf(total));
+        tTransactionFee.setText("P"+String.format(Locale.ENGLISH, "%.2f", transactionFee) );
+        ls_transactionFee = "P"+String.format(Locale.ENGLISH, "%.2f", transactionFee);
+        tTotal.setText("P"+ String.format(Locale.ENGLISH, "%.2f", total) );
 
 
 

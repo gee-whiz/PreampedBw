@@ -130,15 +130,16 @@ public class AirtimeFragment extends android.app.Fragment {
                 int size = response.length();
                 for (int i = 0; i < 100; i++) {
                     try {
+
                         JSONArray jsonArray = new JSONArray(response);
                         History history = new History();
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         String hId = jsonObject.getString("id");
-                        String hAmount = jsonObject.getString("Amount");
+                        String  hAmount = jsonObject.getString("Amount");
                         String hRef = jsonObject.getString("Ref");
                         String hDateTime = jsonObject.getString("tranDateTime");
-                        String ls_amount =String.valueOf(Integer.parseInt(hAmount) / 100);
-                        history.sethAmount(ls_amount);
+
+                        history.sethAmount(hAmount);
                         history.sethId(hId);
                         history.sethRev(hRef);
                         history.sethTranDateTime(hDateTime);

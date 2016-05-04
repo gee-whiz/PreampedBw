@@ -3,8 +3,8 @@ package za.co.empirestate.botspost.preamped;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 public class AirtimeSuccessActivity extends Activity {
 
+    private static final String LOG = "Hey Gee" ;
     TextView tproductName;
     TextView tamount;
     TextView tSerialNumber;
@@ -40,6 +41,7 @@ public class AirtimeSuccessActivity extends Activity {
         productName = i.getStringExtra("ProductName");
         ls_theDate = i.getStringExtra("expDate");
         ls_transactionFee = i.getStringExtra("transactionFee");
+        Log.e(LOG,"trans fee "+ls_transactionFee);
        String date = ls_theDate.substring(0, ls_theDate.length()-9);
         amount = String.valueOf(Integer.parseInt(ls_amount) / 100);
         if (!ls_serialNumber.isEmpty())
@@ -90,7 +92,7 @@ public class AirtimeSuccessActivity extends Activity {
         back = (ImageButton)findViewById(R.id.bck_btn);
         finish = (Button)findViewById(R.id.btn_finish);
         value = (TextView)findViewById(R.id.txtValue);
-        tTransactionFee = (TextView)findViewById(R.id.txtaTransactionFee);
+        tTransactionFee = (TextView)findViewById(R.id.txtFee);
 
 
 

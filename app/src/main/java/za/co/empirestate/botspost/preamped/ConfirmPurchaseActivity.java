@@ -13,16 +13,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.renderscript.Sampler;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
-
-import android.text.format.Time;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -45,6 +41,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.crypto.BadPaddingException;
@@ -95,7 +92,7 @@ public class ConfirmPurchaseActivity extends Activity {
         setContentView(R.layout.activity_confirm_purchase);
         this.mysqliteFunction = new MySQLiteFunctions(this);
         localIntent = getIntent();
-        this.payment = ((Payment)localIntent.getParcelableExtra("payment_details"));
+        this.payment = localIntent.getParcelableExtra("payment_details");
         email =   mysqliteFunction.getEmail();
         pDialog = new ProgressDialog(ConfirmPurchaseActivity.this);
         pDialog.setMessage("Processing Payment..");
@@ -139,7 +136,7 @@ public class ConfirmPurchaseActivity extends Activity {
             tokenAmnt = Double.parseDouble(this.payment.amount) - 4;
             txtMeterNumber.setText(meterNumber);
             double tempAmount = Double.parseDouble(this.payment.amount);
-            txtAmount.setText("P"+String.valueOf(tempAmount));
+            txtAmount.setText("P"+String.format(Locale.ENGLISH, "%.2f", tempAmount) );
             txtInitial.setText(this.payment.cardHolderName);
             txtSurname.setText(this.payment.cardHolderSurname);
             txtCardNumber.setText("*************"+this.payment.cardNumber.substring(13));
@@ -149,8 +146,8 @@ public class ConfirmPurchaseActivity extends Activity {
 
             try {
                 aes = new AES();
-                iv = aes.generateRandomIV(16);
-                shaKey = aes.SHA256(iv,32);
+                iv = AES.generateRandomIV(16);
+                shaKey = AES.SHA256(iv, 32);
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             } catch (NoSuchPaddingException e) {
@@ -183,8 +180,8 @@ public class ConfirmPurchaseActivity extends Activity {
                 if(localCursor.getString(1).length() == 16){
                     try {
                         aes = new AES();
-                        iv = aes.generateRandomIV(16);
-                        shaKey = aes.SHA256(iv,32);
+                        iv = AES.generateRandomIV(16);
+                        shaKey = AES.SHA256(iv, 32);
                     } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     } catch (NoSuchPaddingException e) {
@@ -206,7 +203,7 @@ public class ConfirmPurchaseActivity extends Activity {
             }
             tokenAmnt = Double.parseDouble(localIntent.getStringExtra("amount")) - 4;
             double tempAmount = Double.parseDouble(localIntent.getStringExtra("amount"));
-            txtAmount.setText("P"+String.valueOf(tempAmount));
+            txtAmount.setText("P"+String.format(Locale.ENGLISH, "%.2f", tempAmount) );
             txtMeterNumber.setText(localIntent.getStringExtra("meter_number"));
             this.mysqliteFunction.close();
         }
@@ -216,7 +213,7 @@ public class ConfirmPurchaseActivity extends Activity {
         time = localTime.format("%k:%M:%S");
         txtDate.setText(date);
         txtTime.setText(time);
-        ((ImageButton)findViewById(R.id.bck_btn)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.bck_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View paramAnonymousView) {
                 ConfirmPurchaseActivity.this.onBackPressed();
             }
@@ -229,11 +226,13 @@ public class ConfirmPurchaseActivity extends Activity {
                     if (meterNumber.length() < 9)  {
 
                         if (meterChar.equalsIgnoreCase("B")||meterChar.equalsIgnoreCase("O")||meterChar.equalsIgnoreCase("M")) {
+                            ls_transactionFee = localIntent.getStringExtra("transactionFee");
+                            Log.e(LOG,"transaction fee"+ls_transactionFee);
                             pDialog.show();
                             try {
                                 aes = new AES();
-                                iv = aes.generateRandomIV(16);
-                                shaKey = aes.SHA256(iv,32);
+                                iv = AES.generateRandomIV(16);
+                                shaKey = AES.SHA256(iv, 32);
                             } catch (NoSuchAlgorithmException e) {
                                 e.printStackTrace();
                             } catch (NoSuchPaddingException e) {
@@ -250,8 +249,8 @@ public class ConfirmPurchaseActivity extends Activity {
                             pDialog.show();
                             try {
                                 aes = new AES();
-                                iv = aes.generateRandomIV(16);
-                                shaKey = aes.SHA256(iv,32);
+                                iv = AES.generateRandomIV(16);
+                                shaKey = AES.SHA256(iv, 32);
                             } catch (NoSuchAlgorithmException e) {
                                 e.printStackTrace();
                             } catch (NoSuchPaddingException e) {
@@ -281,12 +280,9 @@ public class ConfirmPurchaseActivity extends Activity {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
-        if (netInfo != null && netInfo.isConnectedOrConnecting()
+        return netInfo != null && netInfo.isConnectedOrConnecting()
                 && cm.getActiveNetworkInfo().isAvailable()
-                && cm.getActiveNetworkInfo().isConnected()) {
-            return true;
-        }
-        return false;
+                && cm.getActiveNetworkInfo().isConnected();
     }
 
     public  void PurchaseAirtime(final String productName,final String value,final
