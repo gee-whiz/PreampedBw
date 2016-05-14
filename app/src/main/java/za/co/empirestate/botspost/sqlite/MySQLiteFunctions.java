@@ -9,11 +9,11 @@ import android.util.Log;
 
 public class MySQLiteFunctions
 {
+    public static final String COLUMN_ID = "id";
+    public  static  final String COLUMN_METER = "meter_number";
     private static final String LOG = "Hey George" ;
     private SQLiteDatabase db;
   private MySQLiteHelper dbHelper;
-    public static final String COLUMN_ID = "id";
-    public  static  final String COLUMN_METER = "meter_number";
   public MySQLiteFunctions(Context paramContext)
   {
     this.dbHelper = new MySQLiteHelper(paramContext);
@@ -54,11 +54,11 @@ public class MySQLiteFunctions
     {
         this.db = this.dbHelper.getWritableDatabase();
         ContentValues localContentValues = new ContentValues();
-        localContentValues.put(dbHelper.COLUMN_REFRERENCE, reference);
-        localContentValues.put(dbHelper.COLUMN_AMOUNT, amount);
-        localContentValues.put(dbHelper.COLUMN_TOKEN, token);
-        localContentValues.put(dbHelper.COLUMN_METER_NUMBER, meterNumber);
-        localContentValues.put(dbHelper.COLUMN_UNITS, units);
+        localContentValues.put(MySQLiteHelper.COLUMN_REFRERENCE, reference);
+        localContentValues.put(MySQLiteHelper.COLUMN_AMOUNT, amount);
+        localContentValues.put(MySQLiteHelper.COLUMN_TOKEN, token);
+        localContentValues.put(MySQLiteHelper.COLUMN_METER_NUMBER, meterNumber);
+        localContentValues.put(MySQLiteHelper.COLUMN_UNITS, units);
         localContentValues.put("date", date);
         localContentValues.put("time", time);
 
@@ -76,7 +76,7 @@ public class MySQLiteFunctions
         this.db = this.dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put("device_id",deviceId);
+        contentValues.put("device_id", deviceId);
         this.db.insert("device_id_tbl", null, contentValues);
     }
 
@@ -211,7 +211,7 @@ public class MySQLiteFunctions
     public void updateHistory(String meterNumber,String reference,String amount,String token,String message,String units)
     {
         this.db = this.dbHelper.getReadableDatabase();
-        db.rawQuery("UPDATE user_tbl SET "+dbHelper.COLUMN_METER_NUMBER+"='"+meterNumber+"',"+dbHelper.COLUMN_REFRERENCE+"='"+reference+"',"+dbHelper.COLUMN_AMOUNT+"='"+amount+"',"+dbHelper.COLUMN_TOKEN+"='"+token+"',"+dbHelper.COLUMN_MESSAGE+"='"+message+"',"+dbHelper.COLUMN_UNITS+"='"+units+"'", null).moveToFirst();
+        db.rawQuery("UPDATE user_tbl SET "+ MySQLiteHelper.COLUMN_METER_NUMBER +"='"+meterNumber+"',"+ MySQLiteHelper.COLUMN_REFRERENCE +"='"+reference+"',"+ MySQLiteHelper.COLUMN_AMOUNT +"='"+amount+"',"+ MySQLiteHelper.COLUMN_TOKEN +"='"+token+"',"+ MySQLiteHelper.COLUMN_MESSAGE +"='"+message+"',"+ MySQLiteHelper.COLUMN_UNITS +"='"+units+"'", null).moveToFirst();
         close();
     }
 
@@ -273,7 +273,7 @@ public class MySQLiteFunctions
         SQLiteDatabase db = this.dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if(cursor.getCount() >0)
+        if(cursor.getCount() > 0)
         {
             String[] str = new String[cursor.getCount()];
 
@@ -281,15 +281,17 @@ public class MySQLiteFunctions
 
             while (cursor.moveToNext())
             {
-                str[i] = cursor.getString(cursor.getColumnIndex(dbHelper.COLUMN_METER_NUMBER));
+                str[i] = cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_METER_NUMBER));
 
                 i++;
             }
+
             return str;
         }
         else
         {
-            return new String[] {};
+            Log.e(LOG,"returning");
+            return null;
         }
     }
 

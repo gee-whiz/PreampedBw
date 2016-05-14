@@ -31,14 +31,13 @@ import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
 public class SettingsActivity extends Activity
 {
-  private MySQLiteFunctions mysqliteFunction;
-  private String curMeterNumber,curPhone;
+    private static String dialogMsg;
   boolean updateMeter = false;
   boolean updateEmail = false;
   boolean updatePhone = false;
+  private MySQLiteFunctions mysqliteFunction;
+  private String curMeterNumber,curPhone;
   private String meterNumber,emailAddress,phoneNumber;
-    private static String dialogMsg;
-
 
   protected void onCreate(Bundle paramBundle)
   {
@@ -46,6 +45,7 @@ public class SettingsActivity extends Activity
     setContentView(R.layout.activity_settings);
     this.mysqliteFunction = new MySQLiteFunctions(this);
       curMeterNumber = mysqliteFunction.getMeterNumber();
+
       curPhone = mysqliteFunction.getPhone();
       Log.d("PHONE",curPhone);
     ImageButton bckBtn = (ImageButton)findViewById(R.id.bck_btn);
@@ -135,10 +135,53 @@ public class SettingsActivity extends Activity
     });
   }
 
+    /**
+     * this function will validate the email entered by the user
+     *
+     * @param email
+     *
+     * @return -1 if the email is invalid and 1 id the email is valid
+     */
+    private boolean validateEmail(String email) {
+
+        String email_pattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+        Pattern p = Pattern.compile(email_pattern);
+        Matcher m = p.matcher(email);
+
+        return m.matches();
+
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        return netInfo != null && netInfo.isConnectedOrConnecting()
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected();
+    }
+
+    public static class ErrorMsgDialog extends DialogFragment
+    {
+        public Dialog onCreateDialog(Bundle paramBundle)
+        {
+            AlertDialog.Builder localBuilder = new AlertDialog.Builder(getActivity());
+            localBuilder.setMessage(dialogMsg).setCancelable(false).setTitle(getResources().getString(R.string.app_name)).setPositiveButton("ok", new DialogInterface.OnClickListener()
+            {
+                public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt)
+                {
+                }
+            });
+            return localBuilder.create();
+        }
+    }
+
     private class UpdateTask extends AsyncTask<String,Void,String>{
+        JSONArray jAr = null;
         private ProgressDialog progressDialog;
         private String resp;
-        JSONArray jAr = null;
 
         @Override
         protected String doInBackground(String... params) {
@@ -233,54 +276,5 @@ public class SettingsActivity extends Activity
         }
 
 
-    }
-
-    /**
-     * this function will validate the email entered by the user
-     *
-     * @param email
-     *
-     * @return -1 if the email is invalid and 1 id the email is valid
-     */
-    private boolean validateEmail(String email) {
-
-        String email_pattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
-        Pattern p = Pattern.compile(email_pattern);
-        Matcher m = p.matcher(email);
-
-        if (m.matches()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-
-        if (netInfo != null && netInfo.isConnectedOrConnecting()
-                && cm.getActiveNetworkInfo().isAvailable()
-                && cm.getActiveNetworkInfo().isConnected()) {
-            return true;
-        }
-        return false;
-    }
-
-    public static class ErrorMsgDialog extends DialogFragment
-    {
-        public Dialog onCreateDialog(Bundle paramBundle)
-        {
-            AlertDialog.Builder localBuilder = new AlertDialog.Builder(getActivity());
-            localBuilder.setMessage(dialogMsg).setCancelable(false).setTitle(getResources().getString(R.string.app_name)).setPositiveButton("ok", new DialogInterface.OnClickListener()
-            {
-                public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt)
-                {
-                }
-            });
-            return localBuilder.create();
-        }
     }
 }

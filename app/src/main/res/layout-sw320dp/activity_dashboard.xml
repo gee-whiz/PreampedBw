@@ -1,12 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:background="@drawable/bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@drawable/bg"
+  android:orientation="vertical">
     <FrameLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.9">
         <!--<ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/splash_logo" />-->
     </FrameLayout>
-    <FrameLayout android:orientation="vertical" android:id="@+id/bottom" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.1">
-        <LinearLayout android:layout_gravity="bottom" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-            <Button android:textSize="15.0sp" android:textColor="#EA2026" android:id="@+id/btn_buy" android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="0.0dip" android:text="Buy Prepaid Electricity" android:layout_weight="1" />
+    <FrameLayout
+        android:id="@+id/bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_buy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#EA2026"
+                android:text="Buy Prepaid Electricity"
+                android:textColor="@android:color/white"
+                android:textSize="15.0sp" />
+            <Button
+                android:id="@+id/btn_airtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#FFF000"
+                android:text="Buy Prepaid Airtime"
+                android:textColor="#EA2026"
+                android:textSize="15.0sp" />
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>

@@ -6,58 +6,46 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.*;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
 public class UpdateMeterNumber extends Activity {
     private static final String LOG = "Hey George" ;
-    private MySQLiteFunctions mysqliteFunction;
     View backView;
     ImageButton backImage;
     EditText newMeterNumber;
     String meterNumber;
-    String smeterNumber;
+    String smeterNumber,curMeterNumber;
     ImageButton update,Delete;
     int num;
     String phone,email;
     Long deleteId;
     String toDelete;
     Spinner deleteSp;
-    private  String[] mmeters;
     Context ctx;
     String newPhone;
+    private MySQLiteFunctions mysqliteFunction;
+    private  String[] mmeters;
     private ProgressDialog pDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +57,7 @@ public class UpdateMeterNumber extends Activity {
         setFields();
         setSpinners();
         smeterNumber = mysqliteFunction.getMeterNumber();
-
+         curMeterNumber = mysqliteFunction.getMeterNumber();
         backImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,7 +111,7 @@ public class UpdateMeterNumber extends Activity {
         });
     }
     public  void setFields(){
-        backView = (View)findViewById(R.id.btnBack);
+        backView = findViewById(R.id.btnBack);
         backImage = (ImageButton)findViewById(R.id.imgBack);
         newMeterNumber = (EditText)findViewById(R.id.edtNewMeter);
         update = (ImageButton)findViewById(R.id.btnUpdate);
@@ -135,20 +123,31 @@ public class UpdateMeterNumber extends Activity {
         mysqliteFunction.getAllMeterNumbers();
         mmeters = mysqliteFunction.getAllM();
         Log.d(LOG, "All meter numbers " + mmeters);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.my_custom_spinner, mmeters);
+        ArrayList<String> tmp = new ArrayList<>();
+        for (int i = 0;i < mmeters.length;i++){
+            Log.e(LOG,"nuuuuu"+mmeters[i].length());
+            if (mmeters[i].length() > 9) {
+                tmp.add(mmeters[i]);
+            }
+        }
+
+        tmp.removeAll(Collections.singleton(null));
+        Log.d(LOG, "All meter numbers " + mmeters);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.my_custom_spinner, tmp);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         deleteSp.setAdapter(adapter);
         num = 0;
         deleteSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-               toDelete = deleteSp.getSelectedItem().toString();
+                toDelete = deleteSp.getSelectedItem().toString();
 
                 num += 1;
-                if (num > 1){
+                if (num > 1) {
                     deleteId = id;
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -253,13 +252,25 @@ public class UpdateMeterNumber extends Activity {
                    Log.d(LOG, "Sucessssss" + response);
                    Log.d(LOG, "meter number " + meterNumber);
                    phone = mysqliteFunction.getPhone();
-                   mysqliteFunction.AddNewMeterNumber(meterNumber);
-                   email = mysqliteFunction.getEmail();
-                   newPhone = phone.substring(1);
-                   AddNewMeterNumber(email,newPhone,meterNumber);
-                    Intent intent = new Intent(ctx,SettingsActivity.class);
-                    startActivity(intent);
-                    finish();
+                   if (curMeterNumber.length() < 10){
+                       mysqliteFunction.updateMeterNumber(meterNumber);
+                       mysqliteFunction.AddNewMeterNumber(meterNumber);
+                       email = mysqliteFunction.getEmail();
+                       newPhone = phone.substring(1);
+                       AddNewMeterNumber(email,newPhone,meterNumber);
+                       Intent intent = new Intent(ctx,AccountDetailsActivity.class);
+                       startActivity(intent);
+                       finish();
+                   }
+                   else {
+                       mysqliteFunction.AddNewMeterNumber(meterNumber);
+                       email = mysqliteFunction.getEmail();
+                       newPhone = phone.substring(1);
+                       AddNewMeterNumber(email, newPhone, meterNumber);
+                       Intent intent = new Intent(ctx, MainActivity.class);
+                       startActivity(intent);
+                       finish();
+                   }
                }
 
                 else

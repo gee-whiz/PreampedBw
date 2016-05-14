@@ -13,12 +13,12 @@ import android.widget.Button;
 public class DashboardFragment extends Fragment implements View.OnClickListener
 {
 
+    public DashboardFragment () {
+    }
+
     public static DashboardFragment  newInstance() {
         DashboardFragment  fragment = new DashboardFragment ();
         return fragment;
-    }
-
-    public DashboardFragment () {
     }
 
     private ActionBar getActionBar() {
@@ -32,9 +32,10 @@ public class DashboardFragment extends Fragment implements View.OnClickListener
                 false);
 
         Button btnBuy = (Button) rootView.findViewById(R.id.btn_buy);
-
+       Button  btnAirtime  = (Button)rootView.findViewById(R.id.btn_airtime);
 
         btnBuy.setOnClickListener(this);
+        btnAirtime.setOnClickListener(this);
 
         return rootView;
 
@@ -45,6 +46,12 @@ public class DashboardFragment extends Fragment implements View.OnClickListener
 
         if (v.getId() == R.id.btn_buy){
             Intent localIntent = new Intent(getActivity(), AccountDetailsActivity.class);
+            startActivity(localIntent);
+
+        }
+        else
+        if (v.getId() == R.id.btn_airtime){
+            Intent localIntent = new Intent(getActivity(), AirtimeActivity.class);
             startActivity(localIntent);
 
         }

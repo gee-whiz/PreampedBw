@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -19,54 +18,58 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import za.co.empirestate.botspost.json.JSONArrayFunctions;
-import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
-
-import java.io.File;
-import java.io.IOException;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
+
+import za.co.empirestate.botspost.json.JSONArrayFunctions;
+import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
+
 public class LoginActivity extends Activity
 {
+    public static final String EXTRA_MESSAGE = "message";
+    public static final String PROPERTY_REG_ID = "registration_id";
     private static final String LOG = "Hey Gee" ;
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private static final String PROPERTY_APP_VERSION = "appVersion";
     private static String dialogMsg;
+    String SENDER_ID = "1084226562155";
+    GoogleCloudMessaging gcm;
   private String meterNumber, phone;
   private MySQLiteFunctions mysqliteFunction;
   private String password;
   private EditText txtMeterNumber,txtPhone;
   private EditText txtPassword;
   private  String regid="";
-    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    public static final String EXTRA_MESSAGE = "message";
-    public static final String PROPERTY_REG_ID = "registration_id";
-    private static final String PROPERTY_APP_VERSION = "appVersion";
-    String SENDER_ID = "1084226562155";
-    GoogleCloudMessaging gcm;
 
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+    }
 
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
-        if (netInfo != null && netInfo.isConnectedOrConnecting()
+        return netInfo != null && netInfo.isConnectedOrConnecting()
                 && cm.getActiveNetworkInfo().isAvailable()
-                && cm.getActiveNetworkInfo().isConnected()) {
-            return true;
-        }
-        return false;
+                && cm.getActiveNetworkInfo().isConnected();
     }
-
 
   protected void onCreate(Bundle paramBundle)
   {
@@ -90,7 +93,7 @@ public class LoginActivity extends Activity
       }else{
           txtPhone.setText(this.mysqliteFunction.getPhone().substring(4));
       }
-      ((TextView) findViewById(R.id.txt_forgot_pass)).setOnClickListener(new View.OnClickListener() {
+      findViewById(R.id.txt_forgot_pass).setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
               Intent i = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
@@ -98,7 +101,7 @@ public class LoginActivity extends Activity
               finish();
           }
       });
-    ((ImageButton)findViewById(R.id.bck_btn)).setOnClickListener(new View.OnClickListener() {
+    findViewById(R.id.bck_btn).setOnClickListener(new View.OnClickListener() {
         public void onClick(View paramAnonymousView) {
             LoginActivity.this.onBackPressed();
         }
@@ -114,7 +117,8 @@ public class LoginActivity extends Activity
               if ( password.isEmpty() || phone.isEmpty()) {
 
                   if (meterNumber.isEmpty()) {
-                      txtMeterNumber.setError("Meter number cannot be empty");
+
+                      //txtMeterNumber.setError("Meter number cannot be empty");
                   }
 
                   if (password.isEmpty()) {
@@ -150,6 +154,24 @@ public class LoginActivity extends Activity
       });
   }
 
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                dialogMsg = "You must download the Google Play Services APK or Activate it in your settings";
+                new MsgDialog().show(getFragmentManager(), null);
+                // Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, 1);
+                //  dialog.show();
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
   public static class ErrorMsgDialog extends DialogFragment
   {
     public Dialog onCreateDialog(Bundle paramBundle)
@@ -165,10 +187,36 @@ public class LoginActivity extends Activity
     }
   }
 
+    public static class MsgDialog extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstance) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("You must download the Google Play Services APK or Activate it in your settings")
+                    .setCancelable(false)
+                    .setTitle(getResources().getString(R.string.app_name))
+                    .setPositiveButton("ok",
+                            new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface arg0,
+                                                    int arg1) {
+                                    // TODO Auto-generated method stub
+                                    Intent i = new Intent(getActivity(),
+                                            MainActivity.class);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                }
+                            });
+            return builder.create();
+        }
+    }
+
     private class LoginTask extends AsyncTask<String, Void, String> {
+        JSONArray jAr = null;
         private String resp; //response from server
         private ProgressDialog progressDialog;
-        JSONArray jAr = null;
 
         @Override
         protected String doInBackground(String... params) {
@@ -268,60 +316,5 @@ public class LoginActivity extends Activity
             progressDialog.show();
         }
 
-    }
-
-    private boolean checkPlayServices() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
-            } else {
-                dialogMsg = "You must download the Google Play Services APK or Activate it in your settings";
-                new MsgDialog().show(getFragmentManager(), null);
-                // Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, 1);
-                //  dialog.show();
-                finish();
-            }
-            return false;
-        }
-        return true;
-    }
-
-    public static class MsgDialog extends DialogFragment {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstance) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("You must download the Google Play Services APK or Activate it in your settings")
-                    .setCancelable(false)
-                    .setTitle(getResources().getString(R.string.app_name))
-                    .setPositiveButton("ok",
-                            new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface arg0,
-                                                    int arg1) {
-                                    // TODO Auto-generated method stub
-                                    Intent i = new Intent(getActivity(),
-                                            MainActivity.class);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                }
-                            });
-            return builder.create();
-        }
-    }
-
-    private static int getAppVersion(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            // should never happen
-            throw new RuntimeException("Could not get package name: " + e);
-        }
     }
 }

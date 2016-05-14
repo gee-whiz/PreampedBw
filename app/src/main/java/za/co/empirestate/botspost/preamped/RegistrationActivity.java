@@ -7,7 +7,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,51 +17,63 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import za.co.empirestate.botspost.json.JSONArrayFunctions;
-import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import za.co.empirestate.botspost.json.JSONArrayFunctions;
+import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
 public class RegistrationActivity extends Activity
 {
-  private static String dialogMsg;
-  private String confirmPass;
-  private String emailAddress;
-  private String meterNumber;
-  private String name;
-  private MySQLiteFunctions mysqliteFunction;
-  private String password;
-  private String phone;
-  private Button btnReg;
-  private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
   public static final String EXTRA_MESSAGE = "message";
   public static final String PROPERTY_REG_ID = "registration_id";
+    private static final String LOG = "hey Gee" ;
+  private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
   private static final String PROPERTY_APP_VERSION = "appVersion";
+    private static String dialogMsg;
   String SENDER_ID = "1084226562155";
   GoogleCloudMessaging gcm;
   Context context;
   String regid="";
+  private String confirmPass;
+  private String emailAddress;
+  private String meterNumber;
+  private String name,android_id;
+  private MySQLiteFunctions mysqliteFunction;
+  private String password,utilityResponse ;
+  private String phone;
+  private Button btnReg;
+
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+    }
 
     /**
      * this function will validate the email entered by the user
@@ -79,25 +90,18 @@ public class RegistrationActivity extends Activity
         Pattern p = Pattern.compile(email_pattern);
         Matcher m = p.matcher(email);
 
-        if (m.matches()) {
-            return true;
-        }
+        return m.matches();
 
-        return false;
     }
 
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
-        if (netInfo != null && netInfo.isConnectedOrConnecting()
+        return netInfo != null && netInfo.isConnectedOrConnecting()
                 && cm.getActiveNetworkInfo().isAvailable()
-                && cm.getActiveNetworkInfo().isConnected()) {
-            return true;
-        }
-        return false;
+                && cm.getActiveNetworkInfo().isConnected();
     }
-
 
   protected void onCreate(Bundle paramBundle)
   {
@@ -113,14 +117,17 @@ public class RegistrationActivity extends Activity
       final TextView txtTerms = (TextView) findViewById(R.id.txt_terms);
       final CheckBox termsAndConChk = (CheckBox) findViewById(R.id.news_chk_box);
     this.mysqliteFunction = new MySQLiteFunctions(this);
-
       context = this;
-    ((ImageButton)findViewById(R.id.bck_btn)).setOnClickListener(new View.OnClickListener()
-    {
-      public void onClick(View paramAnonymousView)
-      {
-        RegistrationActivity.this.onBackPressed();
-      }
+      android_id = Settings.Secure.getString(context.getContentResolver(),
+              Settings.Secure.ANDROID_ID);
+       regid = mysqliteFunction.getDeviceId();
+       Log.e(LOG,"gcm device id "+regid);
+
+
+    findViewById(R.id.bck_btn).setOnClickListener(new View.OnClickListener() {
+        public void onClick(View paramAnonymousView) {
+            RegistrationActivity.this.onBackPressed();
+        }
     });
 
       txtTerms.setOnClickListener(new View.OnClickListener() {
@@ -144,9 +151,9 @@ public class RegistrationActivity extends Activity
             phone = txtPhoneNumber.getText().toString();
 
             boolean bool = RegistrationActivity.this.validateEmail(RegistrationActivity.this.emailAddress);
-            if ((RegistrationActivity.this.meterNumber.isEmpty()) || (RegistrationActivity.this.emailAddress.isEmpty()) || (RegistrationActivity.this.password.isEmpty()) || phone.isEmpty() || name.isEmpty()) {
-                if (RegistrationActivity.this.meterNumber.isEmpty())
-                    txtMeterNumber.setError("field cannot be empty");
+            if ( (RegistrationActivity.this.emailAddress.isEmpty()) || (RegistrationActivity.this.password.isEmpty()) || phone.isEmpty() || name.isEmpty()) {
+               // if (RegistrationActivity.this.meterNumber.isEmpty())
+                    //txtMeterNumber.setError("field cannot be empty");
                 if (RegistrationActivity.this.emailAddress.isEmpty())
                     txtEmailAddress.setError("field cannot be empty");
                 if (RegistrationActivity.this.password.isEmpty())
@@ -160,14 +167,14 @@ public class RegistrationActivity extends Activity
                 return;
             }
 
-            if (!bool || (RegistrationActivity.this.password.length() < 6) || (RegistrationActivity.this.meterNumber.length() != 11) || !((phone.startsWith("7")) && phone.length() == 8)) {
+            if (!bool || (RegistrationActivity.this.password.length() < 6)  || !((phone.startsWith("7")) && phone.length() == 8)) {
                 if (!bool)
                     txtEmailAddress.setError("Invalid email address");
                 if (RegistrationActivity.this.password.length() < 6)
                     txtPassword.setError("Password must be at least 6 character long");
 
-                if (RegistrationActivity.this.meterNumber.length() != 11)
-                    txtMeterNumber.setError("Meter number must be 11 digits");
+                //if (RegistrationActivity.this.meterNumber.length() != 11)
+                   // txtMeterNumber.setError("Meter number must be 11 digits");
 
                 if(!((phone.startsWith("7")) && phone.length() == 8))
                     txtPhoneNumber.setError("Incorrect phone numbers");
@@ -182,9 +189,14 @@ public class RegistrationActivity extends Activity
             }
             if (RegistrationActivity.this.isOnline()) {
                 if(termsAndConChk.isChecked()){
-
-                    new RegistrationTask().execute(meterNumber,
-                            emailAddress, password,phone,name, mysqliteFunction.getDeviceId(),"ANDROID");
+                  if (meterNumber.isEmpty()){
+                      new RegistrationTask().execute("null",
+                              emailAddress, password, phone, name, mysqliteFunction.getDeviceId(), "ANDROID");
+                  }
+                    else {
+                      new RegistrationTask().execute(meterNumber,
+                              emailAddress, password, phone, name, mysqliteFunction.getDeviceId(), "ANDROID");
+                  }
                 }else {
                     RegistrationActivity.dialogMsg = "Please accept the terms and conditions";
                     new RegistrationActivity.ErrorMsgDialog().show(RegistrationActivity.this.getFragmentManager(), null);
@@ -198,6 +210,7 @@ public class RegistrationActivity extends Activity
         }
     });
   }
+
     protected void onResume() {
         super.onResume();
         checkPlayServices();
@@ -219,178 +232,6 @@ public class RegistrationActivity extends Activity
             return false;
         }
         return true;
-    }
-
-  public static class ErrorMsgDialog extends DialogFragment
-  {
-    public Dialog onCreateDialog(Bundle paramBundle)
-    {
-      Builder localBuilder = new AlertDialog.Builder(getActivity());
-      localBuilder.setMessage(RegistrationActivity.dialogMsg).setCancelable(false).setTitle(getResources().getString(R.string.app_name)).setPositiveButton("ok", new DialogInterface.OnClickListener()
-      {
-        public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt)
-        {
-        }
-      });
-      return localBuilder.create();
-    }
-  }
-
-    private class RegistrationTask extends AsyncTask<String, Void, String> {
-        private String resp; //response from server
-        JSONArray jAr = null;
-        private ProgressDialog progressDialog;
-        String host = "http://google.com";
-
-        @Override
-        protected String doInBackground(String... params) {
-
-           JSONArrayFunctions jsonArrayFunctions = new JSONArrayFunctions();
-            try {
-                HttpURLConnection urlc = (HttpURLConnection) (new URL(host)
-                        .openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(10000);
-                urlc.connect();
-                if (urlc.getResponseCode() == 200) {
-                    if (gcm == null) {
-                        gcm = GoogleCloudMessaging.getInstance(context);
-                    }
-                   // regid = getRegistrationId(context);
-                    regid = mysqliteFunction.getDeviceId();
-                   if(regid.isEmpty()){
-                       regid = gcm.register(SENDER_ID);
-                       mysqliteFunction.createDeviceIdTable(regid);
-                    }
-                   // Log.e("REG_ID",regid);
-                   // storeRegistrationId(context, regid);
-                   // regid = getRegistrationId(context);
-                    Request xmlVendRequest = new Request();
-                    String utilityResponse = xmlVendRequest.verifyMeterNumber(meterNumber);
-                    Log.e("utility",utilityResponse);
-                       if (utilityResponse.equals("success") ){
-                        resp = jsonArrayFunctions.addNewUser(params[0],
-                                params[1], params[2],params[3],params[4],params[5],params[6]);
-                            }else{
-                           if(utilityResponse != "" || utilityResponse != null){
-                               resp = utilityResponse;
-                           }else {
-                               resp="server error";
-                           }
-                       }
-                }else{
-                   resp = "can't establish connection to server";
-                }
-            }catch (IOException e) {
-
-            }
-
-            return resp;
-        }
-
-        @Override
-        protected void onPostExecute(String resp) {
-            super.onPostExecute(resp);
-            resp = this.resp;
-            progressDialog.dismiss();
-
-            if(resp != null){
-
-                if(resp.equalsIgnoreCase("can't establish connection to server")  ){
-                    dialogMsg = "Connection Error Please check your internet settings or try again later";
-                    new ErrorMsgDialog().show(getFragmentManager(), null);
-                }else if(resp.equalsIgnoreCase("failed to verify")){
-                    // TODO Auto-generated catch block
-                    dialogMsg = "your meter number is invalid or cannot be verified";
-                    new ErrorMsgDialog().show(getFragmentManager(), null);
-                }else if(resp.equalsIgnoreCase("server error")){
-                    dialogMsg = "server error try again later";
-                    new ErrorMsgDialog().show(getFragmentManager(), null);
-                }else if(resp.equals("no device id")){
-                    dialogMsg = "Error getting your device id please try again";
-                    new ErrorMsgDialog().show(getFragmentManager(), null);
-                }else {
-
-                    try {
-                        jAr = new JSONArray(resp);
-                        JSONObject serverObj = jAr.getJSONObject(0);
-                        String serverMessge = serverObj.getString("message");
-                        if (serverMessge.equalsIgnoreCase("succeeded")) {
-                            btnReg.setEnabled(false);
-                            dialogMsg = "Thank for Registering with Botswana Post!";
-                            File dbTest =new File("/data/data/za.co.empirestate.botspost.preamped/databases/preamped.db");
-                            mysqliteFunction.deletePayment();
-                            if(dbTest.exists()){
-                                boolean isCurrentUser = mysqliteFunction.checkCurrentUser(meterNumber,emailAddress,"+267"+phone);
-                                mysqliteFunction.deleteUser();
-                                mysqliteFunction.createUserTable(meterNumber,emailAddress,"+267"+phone);
-                                if(!isCurrentUser){
-                                    mysqliteFunction.clearDatabase();
-                                    mysqliteFunction.createUserTable(meterNumber,emailAddress,"+267"+phone);
-                                    mysqliteFunction.createCurrentUserTable(meterNumber,emailAddress,"+267"+phone);
-                                }
-                            }else {
-                                mysqliteFunction.createUserTable(meterNumber,emailAddress,"+267"+phone);
-                                mysqliteFunction.createCurrentUserTable(meterNumber,emailAddress,"+267"+phone);
-                            }
-                            new Handler().postDelayed(new Runnable()
-                            {
-                                public void run()
-                                {
-                                    startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
-                                    finish();
-                                }
-                            }
-                                    ,3000);
-                            new MsgDialog().show(getFragmentManager(), null);
-                        }else if(serverMessge.equalsIgnoreCase("email exists")){
-                            dialogMsg = "Email Already Exists";
-                            new ErrorMsgDialog().show(getFragmentManager(), null);
-                        }else if(serverMessge.equalsIgnoreCase("phone exists")){
-                            dialogMsg = "Phone Already Exists";
-                            new ErrorMsgDialog().show(getFragmentManager(), null);
-                        } else {
-                            dialogMsg = "Server Error Please Try again later";
-                            new ErrorMsgDialog().show(getFragmentManager(), null);
-                        }
-
-                    } catch (JSONException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                        dialogMsg = "Processing error Please Try again later";
-                        new ErrorMsgDialog().show(getFragmentManager(), null);
-                    }
-                }
-
-            }else {
-                dialogMsg = "Server Error Please Try again later";
-                new ErrorMsgDialog().show(getFragmentManager(), null);
-            }
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(RegistrationActivity.this);
-            progressDialog.setMessage("Saving Your Details...");
-            progressDialog.setIndeterminate(true);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
-    }
-
-    private static int getAppVersion(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            // should never happen
-            throw new RuntimeException("Could not get package name: " + e);
-        }
     }
 
     /**
@@ -447,6 +288,21 @@ public class RegistrationActivity extends Activity
         return registrationId;
     }
 
+  public static class ErrorMsgDialog extends DialogFragment
+  {
+    public Dialog onCreateDialog(Bundle paramBundle)
+    {
+      Builder localBuilder = new AlertDialog.Builder(getActivity());
+      localBuilder.setMessage(RegistrationActivity.dialogMsg).setCancelable(false).setTitle(getResources().getString(R.string.app_name)).setPositiveButton("ok", new DialogInterface.OnClickListener()
+      {
+        public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt)
+        {
+        }
+      });
+      return localBuilder.create();
+    }
+  }
+
     public static class MsgDialog extends DialogFragment {
 
         @Override
@@ -471,5 +327,156 @@ public class RegistrationActivity extends Activity
                             });
             return builder.create();
         }
+    }
+
+    private class RegistrationTask extends AsyncTask<String, Void, String> {
+        JSONArray jAr = null;
+        String host = "http://google.com";
+        private String resp; //response from server
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected String doInBackground(String... params) {
+
+           JSONArrayFunctions jsonArrayFunctions = new JSONArrayFunctions();
+            try {
+                HttpURLConnection urlc = (HttpURLConnection) (new URL(host)
+                        .openConnection());
+                urlc.setRequestProperty("User-Agent", "Test");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(10000);
+                urlc.connect();
+                Log.e(LOG,"now in background");
+                if (urlc.getResponseCode() == 200) {
+                    if (gcm == null) {
+                        gcm = GoogleCloudMessaging.getInstance(context);
+                        Log.e(LOG,"gcm "+gcm);
+                    }
+
+
+
+                  if (meterNumber.isEmpty()){
+                      utilityResponse = "success";
+                  }
+                    else {
+                      Request xmlVendRequest = new Request();
+                      utilityResponse = xmlVendRequest.verifyMeterNumber(meterNumber);
+                  }
+
+                    Log.e(LOG,"utitlity response "+utilityResponse);
+                       if (utilityResponse.equals("success") ){
+                        resp = jsonArrayFunctions.addNewUser(params[0],
+                                params[1], params[2],params[3],params[4],params[5],params[6]);
+                            }else{
+                           if(utilityResponse != "" || utilityResponse != null){
+                               resp = utilityResponse;
+                           }else {
+                               resp="server error";
+                           }
+                       }
+                }else{
+                    Log.e(LOG,"can't establish connection to the server");
+                   resp = "can't establish connection to server";
+                }
+            }catch (IOException e) {
+
+            }
+             Log.e(LOG,"response now "+resp);
+            return resp;
+        }
+
+        @Override
+        protected void onPostExecute(String resp) {
+            super.onPostExecute(resp);
+            resp = this.resp;
+            progressDialog.dismiss();
+
+            if(resp != null){
+
+                if(resp.equalsIgnoreCase("can't establish connection to server")  ){
+                    dialogMsg = "Connection Error Please check your internet settings or try again later";
+                    new ErrorMsgDialog().show(getFragmentManager(), null);
+                }else if(resp.equalsIgnoreCase("failed to verify")){
+                    // TODO Auto-generated catch block
+                    dialogMsg = "your meter number is invalid or cannot be verified";
+                    new ErrorMsgDialog().show(getFragmentManager(), null);
+                }else if(resp.equalsIgnoreCase("server error")){
+                    dialogMsg = "server error try again later";
+                    new ErrorMsgDialog().show(getFragmentManager(), null);
+                }else if(resp.equals("no device id")){
+                    dialogMsg = "Error getting your device id please try again";
+                    new ErrorMsgDialog().show(getFragmentManager(), null);
+                }else {
+
+                    try {
+                        jAr = new JSONArray(resp);
+                        JSONObject serverObj = jAr.getJSONObject(0);
+                        String serverMessge = serverObj.getString("message");
+                        if (serverMessge.equalsIgnoreCase("succeeded")) {
+                            btnReg.setEnabled(false);
+                            dialogMsg = "Thank for Registering with Botswana Post!";
+                            File dbTest =new File("/data/data/za.co.empirestate.botspost.preamped/databases/preamped.db");
+                            mysqliteFunction.deletePayment();
+                            if(dbTest.exists()){
+                                boolean isCurrentUser = mysqliteFunction.checkCurrentUser(meterNumber,emailAddress,"+267"+phone);
+                                mysqliteFunction.deleteUser();
+                                mysqliteFunction.createUserTable(meterNumber,emailAddress,"+267"+phone);
+                                if(!isCurrentUser){
+                                    mysqliteFunction.clearDatabase();
+                                    mysqliteFunction.createUserTable(meterNumber,emailAddress,"+267"+phone);
+                                    mysqliteFunction.createCurrentUserTable(meterNumber,emailAddress,"+267"+phone);
+                                }
+                            }else {
+
+
+                                mysqliteFunction.createUserTable(meterNumber,emailAddress,"+267"+phone);
+                                mysqliteFunction.createCurrentUserTable(meterNumber,emailAddress,"+267"+phone);
+                            }
+                            new Handler().postDelayed(new Runnable()
+                            {
+                                public void run()
+                                {
+                                    startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+                                    finish();
+                                }
+                            }
+                                    ,3000);
+                            new MsgDialog().show(getFragmentManager(), null);
+                        }else if(serverMessge.equalsIgnoreCase("email exists")){
+                            dialogMsg = "Email Already Exists";
+                            new ErrorMsgDialog().show(getFragmentManager(), null);
+                        }else if(serverMessge.equalsIgnoreCase("phone exists")){
+                            dialogMsg = "Phone Already Exists";
+                            new ErrorMsgDialog().show(getFragmentManager(), null);
+                        } else {
+                            dialogMsg = "Server Error Please Try again later";
+                            new ErrorMsgDialog().show(getFragmentManager(), null);
+                        }
+
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                        dialogMsg = "Processing error Please Try again later";
+                        new ErrorMsgDialog().show(getFragmentManager(), null);
+                    }
+                }
+
+            }else {
+                dialogMsg = "Server000000 Error Please Try again later";
+                new ErrorMsgDialog().show(getFragmentManager(), null);
+            }
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(RegistrationActivity.this);
+            progressDialog.setMessage("Saving Your Details...");
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
     }
 }

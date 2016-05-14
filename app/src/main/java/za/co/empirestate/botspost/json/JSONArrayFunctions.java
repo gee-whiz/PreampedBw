@@ -1,12 +1,15 @@
 package za.co.empirestate.botspost.json;
 
-import java.util.LinkedList;
+import android.util.Log;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import java.util.LinkedList;
+
 public class JSONArrayFunctions
 {
-  private static String ADD_USER_TAG = "add_user";
+    private static final String LOG = "Hey Gee" ;
+    private static String ADD_USER_TAG = "add_user";
   private static String LOG_USER_TAG = "log_user";
   private static String UPDATE_DETAILS_TAG = "update_details";
   //private static String url = "http://utc.empirestate.co.za/bostwana_post_office/sendNotifications.php";
@@ -24,7 +27,7 @@ public class JSONArrayFunctions
     localLinkedList.add(new BasicNameValuePair("name", name));
     localLinkedList.add(new BasicNameValuePair("device_id", deviceId));
     localLinkedList.add(new BasicNameValuePair("os", os));
-
+      Log.e(LOG,"params sent "+localLinkedList);
      if(deviceId.isEmpty()){
          return "no device id";
      }else {

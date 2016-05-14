@@ -55,7 +55,7 @@ public class AirtimeSuccessActivity extends Activity {
             tDate.setText(localTime.monthDay + "/" + curMonth + "/" + localTime.year);
             ttime.setText(localTime.format("%k:%M:%S"));
             value.setText("P"+ amount+".00");
-            tTransactionFee.setText(ls_transactionFee);
+            //tTransactionFee.setText(ls_transactionFee);
 
         }
 
@@ -92,7 +92,7 @@ public class AirtimeSuccessActivity extends Activity {
         back = (ImageButton)findViewById(R.id.bck_btn);
         finish = (Button)findViewById(R.id.btn_finish);
         value = (TextView)findViewById(R.id.txtValue);
-        tTransactionFee = (TextView)findViewById(R.id.txtFee);
+       // tTransactionFee = (TextView)findViewById(R.id.txtFee);
 
 
 
