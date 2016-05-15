@@ -1,5 +1,7 @@
 package za.co.empirestate.botspost.preamped;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -20,10 +22,15 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -37,6 +44,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,6 +64,9 @@ public class RegistrationActivity extends Activity
   GoogleCloudMessaging gcm;
   Context context;
   String regid="";
+    Context ctx;
+    List<String> emailAccountList;
+  AutoCompleteTextView txtEmailAddress;
   private String confirmPass;
   private String emailAddress;
   private String meterNumber;
@@ -110,7 +122,8 @@ public class RegistrationActivity extends Activity
     btnReg = (Button) findViewById(R.id.register_btn);
       final EditText txtPhoneNumber = (EditText) findViewById(R.id.phone);
       final EditText txtMeterNumber = (EditText) findViewById(R.id.meter_number);
-      final EditText txtEmailAddress = (EditText) findViewById(R.id.email_address);
+    txtEmailAddress = (AutoCompleteTextView) findViewById(R.id.email_address);
+      getEmail();
     final EditText txtPassword = (EditText) findViewById(R.id.password);
     final EditText txtConfirmPass = (EditText) findViewById(R.id.confirm_pass);
       final EditText txtName = (EditText) findViewById(R.id.name);
@@ -118,6 +131,7 @@ public class RegistrationActivity extends Activity
       final CheckBox termsAndConChk = (CheckBox) findViewById(R.id.news_chk_box);
     this.mysqliteFunction = new MySQLiteFunctions(this);
       context = this;
+      ctx = getApplicationContext();
       android_id = Settings.Secure.getString(context.getContentResolver(),
               Settings.Secure.ANDROID_ID);
        regid = mysqliteFunction.getDeviceId();
@@ -286,6 +300,36 @@ public class RegistrationActivity extends Activity
             return "";
         }
         return registrationId;
+    }
+
+    public void getEmail() {
+        AccountManager am = AccountManager.get(getApplicationContext());
+        Account[] accts = am.getAccounts();
+        if (accts.length == 0) {
+            Toast.makeText(ctx, "No Accounts found. Please create one and try again", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
+        emailAccountList = new ArrayList<String>();
+        if (accts != null) {
+            for (int i = 0; i < accts.length; i++) {
+                emailAccountList.add(accts[i].name);
+                Log.d(LOG,"emails "+emailAccountList);
+            }
+            ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.xsimple_spinner_dropdown_item, emailAccountList);
+
+           txtEmailAddress.setAdapter(adapter);
+            txtEmailAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(txtEmailAddress.getWindowToken(), 0);
+
+                }
+            });
+
+        }
     }
 
   public static class ErrorMsgDialog extends DialogFragment

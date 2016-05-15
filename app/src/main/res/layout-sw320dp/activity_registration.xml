@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <FrameLayout android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.15">
-        <TextView android:textColor="#EA2026" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="WELCOME" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  android:orientation="vertical">
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.15" android:background="#FFF000">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="WELCOME" android:textColor="#EA2026" />
     </FrameLayout>
-    <LinearLayout android:orientation="horizontal" android:background="#EA2026" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.035">
-        <ImageButton android:layout_gravity="center_vertical" android:id="@+id/bck_btn" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/bck_btn" />
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.035" android:background="#EA2026" android:orientation="horizontal">
+        <ImageButton android:id="@+id/bck_btn" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:background="@null" android:src="@drawable/bck_btn" />
     </LinearLayout>
-    <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:background="#ffffffff" android:paddingTop="10.0dip" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.757">
-        <TextView android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Meter Number" />
-        <EditText android:id="@+id/meter_number" android:background="@drawable/text_box_bg" android:paddingLeft="3.0dip" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:inputType="number" />
-        <TextView android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="E-mail Address" />
-        <EditText android:id="@+id/email_address" android:background="@drawable/text_box_bg" android:paddingLeft="3.0dip" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:inputType="textEmailAddress" />
-        <TextView android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Name" />
-        <EditText android:id="@+id/name" android:background="@drawable/text_box_bg" android:paddingLeft="3.0dip" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:inputType="textPersonName" />
-        <TextView android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Phone Number" />
-        <EditText android:id="@+id/phone" android:background="@drawable/text_box_bg" android:paddingLeft="3.0dip" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:inputType="number" />
-        <TextView android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Password" />
-        <EditText android:id="@+id/password" android:background="@drawable/text_box_bg" android:paddingLeft="3.0dip" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:inputType="textPassword" />
-        <TextView android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Confirm Password" />
-        <EditText android:id="@+id/confirm_pass" android:background="@drawable/text_box_bg" android:paddingLeft="3.0dip" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:inputType="textPassword" android:layout_marginBottom="5dp"/>
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.757" android:background="#ffffffff" android:gravity="center_horizontal" android:orientation="vertical" android:paddingTop="10.0dip">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Meter Number" android:textColor="#ff000000" />
+        <EditText android:id="@+id/meter_number" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:background="@drawable/text_box_bg" android:inputType="number" android:paddingLeft="3.0dip" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="E-mail Address" android:textColor="#ff000000" />
+        <AutoCompleteTextView
+            android:id="@+id/email_address"
+            android:layout_width="fill_parent"
+            android:layout_height="30.0dip"
+            android:layout_marginLeft="45.0dip"
+            android:layout_marginRight="45.0dip"
+            android:background="@drawable/text_box_bg"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="3.0dip" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Name" android:textColor="#ff000000" />
+        <EditText android:id="@+id/name" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:background="@drawable/text_box_bg" android:inputType="textPersonName" android:paddingLeft="3.0dip" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Phone Number" android:textColor="#ff000000" />
+        <EditText android:id="@+id/phone" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:background="@drawable/text_box_bg" android:inputType="number" android:paddingLeft="3.0dip" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Password" android:textColor="#ff000000" />
+        <EditText android:id="@+id/password" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:background="@drawable/text_box_bg" android:inputType="textPassword" android:paddingLeft="3.0dip" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Confirm Password" android:textColor="#ff000000" />
+        <EditText android:id="@+id/confirm_pass" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginBottom="5dp" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:background="@drawable/text_box_bg" android:inputType="textPassword" android:paddingLeft="3.0dip"/>
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -38,9 +46,9 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:text="@string/terms"
-                android:textSize="15sp"
-                android:textColor="#1F0CED" />
+                android:textColor="#1F0CED"
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
-    <Button android:textColor="#EA2026" android:textSize="22sp" android:textStyle="bold" android:orientation="vertical" android:id="@+id/register_btn" android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="0.0dip" android:text="REGISTER" android:layout_weight="0.068" />
+    <Button android:id="@+id/register_btn" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.068" android:background="#FFF000" android:orientation="vertical" android:text="REGISTER" android:textColor="#EA2026" android:textSize="22sp" android:textStyle="bold" />
 </LinearLayout>
