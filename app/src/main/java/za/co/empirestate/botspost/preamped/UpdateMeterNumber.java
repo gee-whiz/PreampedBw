@@ -20,7 +20,12 @@ import android.widget.Toast;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +52,9 @@ public class UpdateMeterNumber extends Activity {
     private MySQLiteFunctions mysqliteFunction;
     private  String[] mmeters;
     private ProgressDialog pDialog;
+    private String tag_json_obj = "hey gee";
+    private String TAG = "hey";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -257,6 +265,9 @@ public class UpdateMeterNumber extends Activity {
                        mysqliteFunction.AddNewMeterNumber(meterNumber);
                        email = mysqliteFunction.getEmail();
                        newPhone = phone.substring(1);
+                       pDialog.setMessage("Updating Please wait");
+                       pDialog.show();
+                       UpdateUser(meterNumber, email, newPhone, newPhone);
                        AddNewMeterNumber(email,newPhone,meterNumber);
                        Intent intent = new Intent(ctx,AccountDetailsActivity.class);
                        startActivity(intent);
@@ -266,6 +277,7 @@ public class UpdateMeterNumber extends Activity {
                        mysqliteFunction.AddNewMeterNumber(meterNumber);
                        email = mysqliteFunction.getEmail();
                        newPhone = phone.substring(1);
+
                        AddNewMeterNumber(email, newPhone, meterNumber);
                        Intent intent = new Intent(ctx, MainActivity.class);
                        startActivity(intent);
@@ -392,7 +404,7 @@ public class UpdateMeterNumber extends Activity {
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("email",email);
+                params.put("",email);
                 params.put("phone",  phone);
                 params.put("newMeterNumber",newMeterNumber);
                 Log.e(LOG, "Values from the device " + params);
@@ -403,5 +415,64 @@ public class UpdateMeterNumber extends Activity {
         strReq.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq);
+    }
+
+
+
+
+    public  void  UpdateUser(final String meterNumber,final String email, final  String phone,final  String newPhone){
+        StringRequest strReq = new StringRequest(com.android.volley.Request.Method.POST,
+                AppConfig.URL_LOGIN, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(LOG, "update meter  response " + response.toString());
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONArray jsonArray = new JSONArray(response);
+
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                        if (response != null){
+                            pDialog.dismiss();
+                        }
+
+
+                    } catch (JSONException e) {
+                    }
+                }
+
+
+            }
+
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+
+
+            }
+        }) {
+
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("tag", "update_details");
+                params.put("meter_number",meterNumber);
+                params.put("email",email);
+                params.put("phone",phone);
+                params.put("cur_phone",newPhone);
+
+                Log.d(LOG, "values sent from the device  " + params);
+                return params;
+            }
+
+        };
+        strReq.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        // Adding request to request queue
+
+        AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
+
     }
 }

@@ -45,6 +45,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
+            android:gravity="center"
             android:text="Network Error, Please Try Again"
             android:textColor="@android:color/white"
             android:textStyle="bold" />

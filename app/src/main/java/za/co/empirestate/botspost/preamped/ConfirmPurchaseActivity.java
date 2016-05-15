@@ -326,6 +326,10 @@ public class ConfirmPurchaseActivity extends Activity {
                         pDialog.dismiss();
                         ShowError();
                     }
+                    else  if(res.equalsIgnoreCase("98")) {
+                        CardError(SerialNumber);
+                    }
+
                     else
                     {
                         pDialog.dismiss();
@@ -591,6 +595,38 @@ public class ConfirmPurchaseActivity extends Activity {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+
+
+    }
+
+    private  void CardError(String message)
+    {
+
+        LayoutInflater inflater = LayoutInflater.from(ConfirmPurchaseActivity.this);
+        View promptView = inflater.inflate(R.layout.network_error, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmPurchaseActivity.this);
+        builder.setView(promptView);
+        TextView error = (TextView)promptView.findViewById(R.id.txtOr);
+        error.setText(message);
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ConfirmPurchaseActivity.this,SettingsActivity.class);
+                startActivity(intent);
+                finish();
                 dialog.dismiss();
 
             }

@@ -128,23 +128,26 @@ public class LoginActivity extends Activity
                   if (phone.isEmpty()) {
                       txtPhone.setError("phone cannot be empty");
                   }
-              } else if (password.length() < 6 || meterNumber.length() != 11 || !((phone.startsWith("7")) && phone.length() == 8)) {
+              } else if (password.length() < 6 || !((phone.startsWith("7")) && phone.length() == 8)) {
                   if (password.length() < 6) {
                       txtPassword
                               .setError("password must be at least 6 character long");
                   }
 
-                 if (meterNumber.length() != 11) {
-                      txtMeterNumber
-                              .setError("meter number must be 11 digits");
-                  }
+
 
                   if(!((phone.startsWith("7")) && phone.length() == 8))
                       txtPhone.setError("incorrect phone numbers");
 
               } else {
                   if (isOnline()) {
-                      new LoginTask().execute(meterNumber, password,phone,regid);
+                      if (meterNumber.isEmpty()){
+                          new LoginTask().execute("null", password, phone, regid);
+                      }
+                      else {
+                          new LoginTask().execute(meterNumber, password, phone, regid);
+
+                      }
                   } else {
                       dialogMsg = "You are offline Please check your internet settings";
                       new ErrorMsgDialog().show(getFragmentManager(), null);

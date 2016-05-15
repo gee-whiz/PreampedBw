@@ -43,6 +43,7 @@ public class JSONArrayFunctions
     localLinkedList.add(new BasicNameValuePair("password", password));
     localLinkedList.add(new BasicNameValuePair("phone", phone));
       localLinkedList.add(new BasicNameValuePair("device_id", device_id));
+      Log.e(LOG, "values sent " +localLinkedList);
     return this.JsonParser.getJSONFromUrl(url, localLinkedList);
   }
 
