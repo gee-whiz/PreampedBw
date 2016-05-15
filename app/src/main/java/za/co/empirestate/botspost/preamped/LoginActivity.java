@@ -81,9 +81,13 @@ public class LoginActivity extends Activity
       txtPassword = (EditText) findViewById(R.id.password);
       txtPhone = (EditText) findViewById(R.id.phone);
     this.mysqliteFunction = new MySQLiteFunctions(this);
-    this.txtMeterNumber.setText(this.mysqliteFunction.getMeterNumber());
+    //this.txtMeterNumber.setText(this.mysqliteFunction.getMeterNumber());
+      String tmp = this.mysqliteFunction.getPhone();
+      Log.d(LOG,"temp "+tmp);
     meterNumber = txtMeterNumber.getText().toString();
-
+      if (!tmp.isEmpty()) {
+          txtPhone.setText(this.mysqliteFunction.getPhone().substring(4));
+      }
       regid = mysqliteFunction.getDeviceId();
       txtMeterNumber.setEnabled(true);
       txtPhone.setEnabled(true);

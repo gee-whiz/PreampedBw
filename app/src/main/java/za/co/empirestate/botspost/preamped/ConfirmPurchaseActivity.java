@@ -76,7 +76,7 @@ public class ConfirmPurchaseActivity extends Activity {
     private String surname;
     private MySQLiteFunctions mysqliteFunction;
     private Payment payment;
-    private String phone;
+    private String phone,encriptedCard,encriptedCVV;
     private String token,units,date,time,voucherValue;
     private String reference = null;
     private String last3Digits;
@@ -437,8 +437,8 @@ public class ConfirmPurchaseActivity extends Activity {
                     if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
 
                         try {
-                            cardNumber = aes.encrypt(cardNumber, shaKey, iv);
-                            cvv = aes.encrypt(cvv, shaKey, iv);
+                            encriptedCard = aes.encrypt(cardNumber, shaKey, iv);
+                           encriptedCVV = aes.encrypt(cvv, shaKey, iv);
                         } catch (InvalidKeyException e) {
                             e.printStackTrace();
                         } catch (UnsupportedEncodingException e) {
@@ -454,9 +454,28 @@ public class ConfirmPurchaseActivity extends Activity {
 
                         mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
                         Log.d(LOG, "Last 3 digits stored " + last3Digits);
-                        PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, cardNumber, cvv, li_amount, expYear, expMonth, surname);
+                        PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, encriptedCard, encriptedCVV, li_amount, expYear, expMonth, surname);
                     } else {
-                        PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, cardNumber, cvv, li_amount, expYear, expMonth, surname);
+
+                        try {
+                            encriptedCard = aes.encrypt(cardNumber, shaKey, iv);
+                            encriptedCVV = aes.encrypt(cvv, shaKey, iv);
+                        } catch (InvalidKeyException e) {
+                            e.printStackTrace();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (InvalidAlgorithmParameterException e) {
+                            e.printStackTrace();
+                        } catch (IllegalBlockSizeException e) {
+                            e.printStackTrace();
+                        } catch (BadPaddingException e) {
+                            e.printStackTrace();
+                        }
+                        //mysqliteFunction.deletePayment();
+
+                        mysqliteFunction.updateCardDetails(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
+                        Log.d(LOG, "Last 3 digits stored " + last3Digits);
+                        PurchaseAirtime(meterNumber, li_amount, email, NewPhone, name, encriptedCard, encriptedCVV, li_amount, expYear, expMonth, surname);
                     }
                 }
 
@@ -516,8 +535,8 @@ public class ConfirmPurchaseActivity extends Activity {
                     if (localIntent.getBooleanExtra("isNew", false) || cardNumber.length() == 16) {
 
                         try {
-                            cardNumber = aes.encrypt(cardNumber, shaKey, iv);
-                            cvv = aes.encrypt(cvv, shaKey, iv);
+                            encriptedCard = aes.encrypt(cardNumber, shaKey, iv);
+                            encriptedCVV = aes.encrypt(cvv, shaKey, iv);
                         } catch (InvalidKeyException e) {
                             e.printStackTrace();
                         } catch (UnsupportedEncodingException e) {
@@ -533,7 +552,7 @@ public class ConfirmPurchaseActivity extends Activity {
 
                         mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
                         Log.d(LOG, "Last 3 digits stored " + last3Digits);
-                        RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,cardNumber,cvv,expYear,expMonth,surname);
+                        RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,encriptedCard,encriptedCVV,expYear,expMonth,surname);
 
                     } else {
                         RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,cardNumber,cvv,expYear,expMonth,surname);
@@ -752,8 +771,8 @@ public class ConfirmPurchaseActivity extends Activity {
                         if (resp != null && resp != "") {
                             if (resp.equals("successful")) {
                                 try {
-                                    cardNumber = aes.encrypt(cardNumber, shaKey, iv);
-                                    cvv = aes.encrypt(cvv, shaKey, iv);
+                                    encriptedCard = aes.encrypt(cardNumber, shaKey, iv);
+                                    encriptedCVV = aes.encrypt(cvv, shaKey, iv);
                                 } catch (InvalidKeyException e) {
                                     e.printStackTrace();
                                 } catch (UnsupportedEncodingException e) {
@@ -769,7 +788,7 @@ public class ConfirmPurchaseActivity extends Activity {
 
                                 mysqliteFunction.createPaymentTable(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
                                 Log.d(LOG, "Last 3 digits stored " + last3Digits);
-                                resp = request.addPaymentParamaters(name, surname, cardNumber, cvv, expMonth, expYear, amount, phone, meterNumber, Double.toString(tokenAmnt), date, time);
+                                resp = request.addPaymentParamaters(name, surname, encriptedCard, encriptedCVV, expMonth, expYear, amount, phone, meterNumber, Double.toString(tokenAmnt), date, time);
                                 Log.d(LOG, "first Payment parameters sent to the server " + meterNumber);
 
 
@@ -778,8 +797,36 @@ public class ConfirmPurchaseActivity extends Activity {
                             }
                         }
                     } else {
-                        resp = request.addPaymentParamaters(name, surname, cardNumber, cvv, expMonth, expYear, amount, phone, meterNumber, Double.toString(tokenAmnt), date, time);
-                        Log.d(LOG, "Payment parameters sent to the server " + meterNumber);
+                        resp = request.addParamsToReq(iv, shaKey, mysqliteFunction.getPhone(), mysqliteFunction.getMeterNumber());
+
+                        if (resp != null && resp != "") {
+                            if (resp.equals("successful")) {
+                                try {
+                                    encriptedCard = aes.encrypt(cardNumber, shaKey, iv);
+                                    encriptedCVV = aes.encrypt(cvv, shaKey, iv);
+                                } catch (InvalidKeyException e) {
+                                    e.printStackTrace();
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                } catch (InvalidAlgorithmParameterException e) {
+                                    e.printStackTrace();
+                                } catch (IllegalBlockSizeException e) {
+                                    e.printStackTrace();
+                                } catch (BadPaddingException e) {
+                                    e.printStackTrace();
+                                }
+                                mysqliteFunction.deletePayment();
+
+                                mysqliteFunction.updateCardDetails(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
+                                Log.d(LOG, "Last 3 digits stored " + last3Digits);
+                                resp = request.addPaymentParamaters(name, surname, encriptedCard, encriptedCVV, expMonth, expYear, amount, phone, meterNumber, Double.toString(tokenAmnt), date, time);
+                                Log.d(LOG, "second Payment parameters sent to the server " + meterNumber);
+
+
+                            } else {
+                                resp = "connection error";
+                            }
+                        }
                     }
 
 

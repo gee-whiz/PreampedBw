@@ -261,13 +261,11 @@ public class UpdateMeterNumber extends Activity {
                    Log.d(LOG, "meter number " + meterNumber);
                    phone = mysqliteFunction.getPhone();
                    if (curMeterNumber.length() < 10){
-                       mysqliteFunction.updateMeterNumber(meterNumber);
+
                        mysqliteFunction.AddNewMeterNumber(meterNumber);
                        email = mysqliteFunction.getEmail();
                        newPhone = phone.substring(1);
-                       pDialog.setMessage("Updating Please wait");
-                       pDialog.show();
-                       UpdateUser(meterNumber, email, newPhone, newPhone);
+                       mysqliteFunction.updateMeterNumber(meterNumber);
                        AddNewMeterNumber(email,newPhone,meterNumber);
                        Intent intent = new Intent(ctx,AccountDetailsActivity.class);
                        startActivity(intent);
@@ -277,7 +275,6 @@ public class UpdateMeterNumber extends Activity {
                        mysqliteFunction.AddNewMeterNumber(meterNumber);
                        email = mysqliteFunction.getEmail();
                        newPhone = phone.substring(1);
-
                        AddNewMeterNumber(email, newPhone, meterNumber);
                        Intent intent = new Intent(ctx, MainActivity.class);
                        startActivity(intent);

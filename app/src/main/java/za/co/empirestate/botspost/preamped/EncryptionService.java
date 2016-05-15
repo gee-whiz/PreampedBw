@@ -27,10 +27,11 @@ import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
  */
 public class EncryptionService extends IntentService {
 
-    private MySQLiteFunctions mysqliteFunction;
-    String cardNumber,cvv,initial,surname,expMonth,expYear,last3Digits;
     static String iv,shaKey;
+    String cardNumber,cvv,initial,surname,expMonth,expYear,last3Digits;
     AES aes;
+    private MySQLiteFunctions mysqliteFunction;
+    private String LOG = "HEy Gee";
 
     public EncryptionService() {
         super("EncriptionService");
@@ -113,6 +114,7 @@ public class EncryptionService extends IntentService {
                         e.printStackTrace();
                     }
                     mysqliteFunction.updateCardDetails(cardNumber,cvv,initial,surname,expMonth,expYear,last3Digits);
+                    Log.d(LOG,"card number updated "+cardNumber);
                     Toast.makeText(getApplicationContext(),"Card successfully updated",Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(getApplicationContext(),"Card details could not be updated please check your internet settings",Toast.LENGTH_LONG).show();

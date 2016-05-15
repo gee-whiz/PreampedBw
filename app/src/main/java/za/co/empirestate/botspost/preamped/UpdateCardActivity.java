@@ -18,16 +18,16 @@ import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
 public class UpdateCardActivity extends Activity
 {
-  private String last3digits;
-  private String month;
-  private MySQLiteFunctions mysqliteFunction;
-  private String year,first13,last3;
     EditText txtInitial;
     EditText txtCvv;
     EditText txtNumber;
     EditText txtSurname;
     String[] yearsAr = {"2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026","2027","2028","2029","2030"};
     String[] monthsAr ={"01","02","03","04","05","06","07","08","09","10","11","12"};
+  private String last3digits;
+  private String month;
+  private MySQLiteFunctions mysqliteFunction;
+  private String year,first13,last3;
 
   protected void onCreate(Bundle paramBundle)
   {
@@ -199,7 +199,7 @@ public class UpdateCardActivity extends Activity
             Intent localIntent = new Intent(UpdateCardActivity.this, MainActivity.class);
           //  UpdateCardActivity.this.mysqliteFunction.deletePayment();
             UpdateCardActivity.this.mysqliteFunction.createPaymentTable(cardNumber, initial, surname, cvv, UpdateCardActivity.this.month, UpdateCardActivity.this.year, last3digits);
-            UpdateCardActivity.this.startActivity(localIntent);
+          /*  UpdateCardActivity.this.startActivity(localIntent);
             Intent encryptIntent = new Intent(UpdateCardActivity.this,EncryptionService.class);
             encryptIntent.putExtra("card_number",cardNumber);
             encryptIntent.putExtra("card_cvv",cvv);
@@ -209,7 +209,10 @@ public class UpdateCardActivity extends Activity
             encryptIntent.putExtra("exp_year",year);
             encryptIntent.putExtra("last3_digits",last3digits);
             startService(encryptIntent);
-            finish();
+            finish();*/
+
+            Intent intent = new Intent(UpdateCardActivity.this,MainActivity.class);
+            startActivity(intent);
         }
     });
   }
