@@ -39,21 +39,17 @@ public class Eleconfirm extends Activity {
             @Override
             public void onClick(View v) {
                 if (Eleconfirm.this.mysqliteFunction.checkPaymentHistory()) {
+                    checkCard();
 
-                    Intent localIntent1 = new Intent(Eleconfirm.this, ConfirmPurchaseActivity.class);
-                    localIntent1.putExtra("amount", Eleconfirm.this.amount);
-                    localIntent1.putExtra("isNew", false);
-                    localIntent1.putExtra("meter_number", str);
-                    Eleconfirm.this.startActivity(localIntent1);
-                    overridePendingTransition(R.anim.from, R.anim.to);
-                    return;
                 }
-                checkCard();
-                Intent localIntent2 = new Intent(Eleconfirm.this, PaymentDetailsActivity.class);
-                localIntent2.putExtra("meter_number", str);
-                localIntent2.putExtra("amount", Eleconfirm.this.amount);
-                Eleconfirm.this.startActivity(localIntent2);
-                // overridePendingTransition(R.anim.from, R.anim.to);
+                else {
+
+                    Intent localIntent2 = new Intent(Eleconfirm.this, PaymentDetailsActivity.class);
+                    localIntent2.putExtra("meter_number", str);
+                    localIntent2.putExtra("amount", Eleconfirm.this.amount);
+                    Eleconfirm.this.startActivity(localIntent2);
+                    // overridePendingTransition(R.anim.from, R.anim.to);
+                }
             }
         });
 
@@ -117,8 +113,17 @@ public class Eleconfirm extends Activity {
             Log.e("card number",cardNumber);
 
             if (cardNumber.length() > 18 ){
-                mysqliteFunction.deletePayment();
                CardError("Please update your card details");
+            }
+            else
+            {
+                Intent localIntent1 = new Intent(Eleconfirm.this, ConfirmPurchaseActivity.class);
+                localIntent1.putExtra("amount", Eleconfirm.this.amount);
+                localIntent1.putExtra("isNew", false);
+                localIntent1.putExtra("meter_number", str);
+                Eleconfirm.this.startActivity(localIntent1);
+                overridePendingTransition(R.anim.from, R.anim.to);
+                return;
             }
 
         }
@@ -145,6 +150,7 @@ public class Eleconfirm extends Activity {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mysqliteFunction.deletePayment();
                 Intent intent = new Intent(Eleconfirm.this,SettingsActivity.class);
                 startActivity(intent);
                 finish();
