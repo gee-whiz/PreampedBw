@@ -1,15 +1,16 @@
 package za.co.empirestate.botspost.preamped;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.Set;
 
 import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
@@ -18,10 +19,11 @@ public class Eleconfirm extends Activity {
     TextView tAmount,tTransactionFee,tTotal,tMeter,tToken;
     Button next,cancel;
     View back;
-    private MySQLiteFunctions mysqliteFunction;
-    String amount,str;
+    String amount,str,cardNumber;
     int TokenAmount;
     Intent localIntent;
+    private MySQLiteFunctions mysqliteFunction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,11 +33,13 @@ public class Eleconfirm extends Activity {
         localIntent = getIntent();
         str = localIntent.getStringExtra("meter_number");
         amount = localIntent.getStringExtra("amount");
+
      UpdateFields();
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Eleconfirm.this.mysqliteFunction.checkPaymentHistory()) {
+
                     Intent localIntent1 = new Intent(Eleconfirm.this, ConfirmPurchaseActivity.class);
                     localIntent1.putExtra("amount", Eleconfirm.this.amount);
                     localIntent1.putExtra("isNew", false);
@@ -44,6 +48,7 @@ public class Eleconfirm extends Activity {
                     overridePendingTransition(R.anim.from, R.anim.to);
                     return;
                 }
+                checkCard();
                 Intent localIntent2 = new Intent(Eleconfirm.this, PaymentDetailsActivity.class);
                 localIntent2.putExtra("meter_number", str);
                 localIntent2.putExtra("amount", Eleconfirm.this.amount);
@@ -79,7 +84,7 @@ public class Eleconfirm extends Activity {
         tTotal = (TextView)findViewById(R.id.txtTotal);
         next = (Button)findViewById(R.id.btnNext);
         cancel = (Button)findViewById(R.id.btnCancel);
-        back = (View)findViewById(R.id.btnBack);
+        back = findViewById(R.id.btnBack);
         tMeter = (TextView)findViewById(R.id.txtVoucher);
         tToken = (TextView)findViewById(R.id.txtaToken);
 
@@ -96,5 +101,58 @@ public class Eleconfirm extends Activity {
         tTransactionFee.setText("P4.00");
         tTotal.setText("P" + amount+".00");
         tToken.setText("P"+String.valueOf(TokenAmount)+".00");
+    }
+
+
+
+    //check card if not encripted
+    public  void checkCard(){
+        Cursor localCursor = this.mysqliteFunction.getPaymentHistory();
+
+        if ((localCursor != null) && (localCursor.moveToFirst()))
+        {
+
+            cardNumber=localCursor.getString(1);
+
+            Log.e("card number",cardNumber);
+
+            if (cardNumber.length() > 18 ){
+                mysqliteFunction.deletePayment();
+               CardError("Please update your card details");
+            }
+
+        }
+    }
+
+    private  void CardError(String message)
+    {
+
+        LayoutInflater inflater = LayoutInflater.from(Eleconfirm.this);
+        View promptView = inflater.inflate(R.layout.network_error, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Eleconfirm.this);
+        builder.setView(promptView);
+        TextView error = (TextView)promptView.findViewById(R.id.txtOr);
+        error.setText(message);
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Eleconfirm.this,SettingsActivity.class);
+                startActivity(intent);
+                finish();
+                dialog.dismiss();
+
+            }
+        });
+
+
     }
 }
