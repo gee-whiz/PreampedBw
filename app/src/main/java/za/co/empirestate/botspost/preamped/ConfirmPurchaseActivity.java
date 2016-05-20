@@ -555,7 +555,25 @@ public class ConfirmPurchaseActivity extends Activity {
                         RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,encriptedCard,encriptedCVV,expYear,expMonth,surname);
 
                     } else {
-                        RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,cardNumber,cvv,expYear,expMonth,surname);
+                        try {
+                            encriptedCard = aes.encrypt(cardNumber, shaKey, iv);
+                            encriptedCVV = aes.encrypt(cvv, shaKey, iv);
+                        } catch (InvalidKeyException e) {
+                            e.printStackTrace();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (InvalidAlgorithmParameterException e) {
+                            e.printStackTrace();
+                        } catch (IllegalBlockSizeException e) {
+                            e.printStackTrace();
+                        } catch (BadPaddingException e) {
+                            e.printStackTrace();
+                        }
+                        //mysqliteFunction.deletePayment();
+
+                        mysqliteFunction.updateCardDetails(cardNumber, name, surname, cvv, expMonth, expYear, last3Digits);
+                        Log.d(LOG, "Last 3 digits stored " + last3Digits);
+                        RenewPoBox(amount,meterNumber,groupId,email,NewPhone,name,encriptedCard,encriptedCVV,expYear,expMonth,surname);
                     }
 
                 }

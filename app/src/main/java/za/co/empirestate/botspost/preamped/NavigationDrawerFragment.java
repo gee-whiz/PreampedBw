@@ -1,18 +1,18 @@
 package za.co.empirestate.botspost.preamped;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
-import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -42,26 +41,22 @@ public class NavigationDrawerFragment extends Fragment {
      * expands it. This shared preference tracks this.
      */
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-
+    ListViewAdapter adapter;
+    String[] lst = { " ","Buy Prepaid Electricity","Buy Prepaid Airtime","Renew PoBox","Transaction History","Settings","Terms & Conditions", "Contact Us","Log out"};
     /**
      * A pointer to the current callbacks instance (the Activity).
      */
     private NavigationDrawerCallbacks mCallbacks;
-
     /**
      * Helper component that ties the action bar to the navigation drawer.
      */
     private ActionBarDrawerToggle mDrawerToggle;
-
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
-
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
-    ListViewAdapter adapter;
-    String[] lst = { " ","Buy Prepaid Electricity","Buy Prepaid Airtime","Transaction History","Settings","Terms & Conditions", "Contact Us","Log out"};
 
     public NavigationDrawerFragment() {
     }
@@ -220,26 +215,30 @@ public class NavigationDrawerFragment extends Fragment {
            Intent intent = new Intent(getActivity(),AirtimeActivity.class);
             startActivity(intent);
         }
+        else  if (position == 3){
+            Intent intent = new Intent(getActivity(),RenewPoBox.class);
+            startActivity(intent);
+        }
 
 
-        else if(position == 3){
+        else if(position == 4){
             Intent intent = new Intent(getActivity(),
                     NewTransactionHistory.class);
             startActivity(intent);
-        }else if(position == 4){
+        }else if(position == 5){
             Intent intent = new Intent(getActivity(),
                     SettingsActivity.class);
             startActivity(intent);
-        }else if(position == 5){
+        }else if(position == 6){
             Intent intent = new Intent(getActivity(),
                     TermsAndConditions.class);
             startActivity(intent);
-        }else if(position == 6){
+        }else if(position == 7){
 
             Intent intent = new Intent(getActivity(),
                     ContactUsActivity.class);
             startActivity(intent);
-        }else if(position == 7){
+        }else if(position == 8){
             getActivity().finish();
         }
     }
@@ -298,6 +297,31 @@ public class NavigationDrawerFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Per the navigation drawer design guidelines, updates the action bar to show the global app
+     * 'context', rather than just what's in the current screen.
+     */
+    private void showGlobalContextActionBar() {
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setTitle(R.string.app_name);
+    }
+
+    private ActionBar getActionBar() {
+        return ((ActionBarActivity) getActivity()).getSupportActionBar();
+    }
+
+    /**
+     * Callbacks interface that all activities using this fragment must implement.
+     */
+    public interface NavigationDrawerCallbacks {
+        /**
+         * Called when an item in the navigation drawer is selected.
+         */
+        void onNavigationDrawerItemSelected(int position);
+    }
+
     private class ListViewAdapter extends BaseAdapter {
 
         String[] lst;
@@ -343,30 +367,5 @@ public class NavigationDrawerFragment extends Fragment {
             return view;
         }
 
-    }
-
-    /**
-     * Per the navigation drawer design guidelines, updates the action bar to show the global app
-     * 'context', rather than just what's in the current screen.
-     */
-    private void showGlobalContextActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
-    }
-
-    private ActionBar getActionBar() {
-        return ((ActionBarActivity) getActivity()).getSupportActionBar();
-    }
-
-    /**
-     * Callbacks interface that all activities using this fragment must implement.
-     */
-    public static interface NavigationDrawerCallbacks {
-        /**
-         * Called when an item in the navigation drawer is selected.
-         */
-        void onNavigationDrawerItemSelected(int position);
     }
 }
