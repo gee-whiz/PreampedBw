@@ -77,22 +77,22 @@ public class LoginActivity extends Activity
     setContentView(R.layout.activity_login);
 
       Button btnLogin = (Button) findViewById(R.id.btn_login);
-     txtMeterNumber = (EditText) findViewById(R.id.meter_number);
+     //txtMeterNumber = (EditText) findViewById(R.id.meter_number);
       txtPassword = (EditText) findViewById(R.id.password);
       txtPhone = (EditText) findViewById(R.id.phone);
     this.mysqliteFunction = new MySQLiteFunctions(this);
     //this.txtMeterNumber.setText(this.mysqliteFunction.getMeterNumber());
       String tmp = this.mysqliteFunction.getPhone();
       Log.d(LOG,"temp "+tmp);
-    meterNumber = txtMeterNumber.getText().toString();
+    meterNumber = "";
       if (!tmp.isEmpty()) {
           txtPhone.setText(this.mysqliteFunction.getPhone().substring(4));
       }
       regid = mysqliteFunction.getDeviceId();
-      txtMeterNumber.setEnabled(true);
+      //txtMeterNumber.setEnabled(true);
       txtPhone.setEnabled(true);
-      if(meterNumber.isEmpty()){
-          txtMeterNumber.setEnabled(true);
+      if(meterNumber.length() <8){
+          //txtMeterNumber.setEnabled(true);
           txtPhone.setEnabled(true);
       }else{
           txtPhone.setText(this.mysqliteFunction.getPhone().substring(4));
@@ -115,15 +115,11 @@ public class LoginActivity extends Activity
           public void onClick(View v) {
 
               password = txtPassword.getText().toString();
-              meterNumber = txtMeterNumber.getText().toString();
+              //meterNumber = txtMeterNumber.getText().toString();
                phone = txtPhone.getText().toString();
 
               if ( password.isEmpty() || phone.isEmpty()) {
 
-                  if (meterNumber.isEmpty()) {
-
-                      //txtMeterNumber.setError("Meter number cannot be empty");
-                  }
 
                   if (password.isEmpty()) {
                       txtPassword.setError("password cannot be empty");
@@ -145,8 +141,8 @@ public class LoginActivity extends Activity
 
               } else {
                   if (isOnline()) {
-                      if (meterNumber.isEmpty()){
-                          new LoginTask().execute("null", password, phone, regid);
+                      if (meterNumber.length() <8){
+                          new LoginTask().execute("", password, phone, regid);
                       }
                       else {
                           new LoginTask().execute(meterNumber, password, phone, regid);
