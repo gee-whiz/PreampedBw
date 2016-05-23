@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,12 +37,14 @@ import java.util.Map;
 
 import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
-public class SelectPostBox extends Activity implements AdapterView.OnItemSelectedListener   {
+public class SelectPostBox extends Activity    {
     private static final String LOG = "Hey Gee" ;
     private static final String TAG = "hey Gee";
     Intent localIntent;
     View back;
+    ImageView imgBack;
     Spinner sp;
+    EditText pobox;
     String selecteditem,selectedPostBox;
     List<String> SpinnerArray = new ArrayList<String>();
     String PostOfficeName,GroupId;
@@ -73,25 +77,40 @@ public class SelectPostBox extends Activity implements AdapterView.OnItemSelecte
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SelectPostBox.this, PostBox.class);
+                selectedPostBox = "PO" + pobox.getText().toString();
+                if (selectedPostBox.length() < 3) {
+                    pobox.setError("Please enter a valid post box");
+                    return;
+
+                } else {
+                    selectedPostBox = "PO" + pobox.getText().toString();
+                    Intent intent = new Intent(SelectPostBox.this, PostBox.class);
 
 
-                intent.putExtra("HolderType", poboxObj.getHolderType());
-                intent.putExtra("Name", selectedPostBox);
-                intent.putExtra("Size", poboxObj.getSize());
-                intent.putExtra("PaidUntil", poboxObj.getPaidUntil());
-                intent.putExtra("Status", poboxObj.getStatus());
-                intent.putExtra("RenewalAmount", poboxObj.getRenewalAmount());
-                intent.putExtra("PenaltyAmount", poboxObj.getPenaltyAmount());
-                intent.putExtra("poboxID", poboxObj.getPostBoxId());
-                intent.putExtra("GroupId", GroupId);
+                    intent.putExtra("HolderType", poboxObj.getHolderType());
+                    intent.putExtra("Name", selectedPostBox);
+                    intent.putExtra("Size", poboxObj.getSize());
+                    intent.putExtra("PaidUntil", poboxObj.getPaidUntil());
+                    intent.putExtra("Status", poboxObj.getStatus());
+                    intent.putExtra("RenewalAmount", poboxObj.getRenewalAmount());
+                    intent.putExtra("PenaltyAmount", poboxObj.getPenaltyAmount());
+                    intent.putExtra("poboxID", poboxObj.getPostBoxId());
+                    intent.putExtra("GroupId", GroupId);
 
-                startActivity(intent);
+                    startActivity(intent);
 
+                }
             }
         });
 
         back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SelectPostBox.this,RenewPoBox.class);
+                startActivity(intent);
+            }
+        });
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SelectPostBox.this,RenewPoBox.class);
@@ -104,9 +123,10 @@ public class SelectPostBox extends Activity implements AdapterView.OnItemSelecte
 
     public  void  setFields()
     {
-        sp = (Spinner)findViewById(R.id.spPoBox);
+        pobox = (EditText)findViewById(R.id.edtPoBox);
         back = (View)findViewById(R.id.btnBack);
         next = (Button)findViewById(R.id.btnNext);
+        imgBack = (ImageView)findViewById(R.id.imgBack);
 
     }
 
@@ -128,7 +148,7 @@ public class SelectPostBox extends Activity implements AdapterView.OnItemSelecte
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedPostBox= adapterView.getItemAtPosition(i).toString();
+                selectedPostBox = adapterView.getItemAtPosition(i).toString();
                 Log.d(LOG, " selected post box " + selectedPostBox);
             }
 
@@ -161,7 +181,7 @@ public class SelectPostBox extends Activity implements AdapterView.OnItemSelecte
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Intent intent = new Intent(SelectPostBox.this,RenewPoBox.class);
+                Intent intent = new Intent(SelectPostBox.this, RenewPoBox.class);
                 startActivity(intent);
 
             }
@@ -217,7 +237,7 @@ public class SelectPostBox extends Activity implements AdapterView.OnItemSelecte
                          for (int i = 0; i < postofficesList.size(); i++) {
                              SpinnerArray.add(postofficesList.get(i).getName());
                              pDialog.dismiss();
-                             setSpinners();
+                            // setSpinners();
                          }
                      }
 
@@ -260,17 +280,6 @@ public class SelectPostBox extends Activity implements AdapterView.OnItemSelecte
     }
 
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        Toast.makeText(
-                getApplicationContext(),
-                adapterView.getItemAtPosition(i).toString() + " Selected",
-                Toast.LENGTH_LONG).show();
 
-    }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 }

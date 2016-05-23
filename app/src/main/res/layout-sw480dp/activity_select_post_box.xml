@@ -13,15 +13,15 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="#FFF000">
-        <TextView android:textSize="20.0sp"
-            android:textColor="#EA2026"
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@null"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Account Details"
+            android:drawablePadding="5.0dip"
             android:drawableRight="@drawable/finger_print"
-            android:drawablePadding="5.0dip" />
+            android:text="Account Details"
+            android:textColor="#EA2026"
+            android:textSize="20.0sp" />
     </FrameLayout>
     <LinearLayout
         android:id="@+id/btnBack"
@@ -49,18 +49,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Select Post Box"
+            android:text="`Enter Post Box"
             android:textColor="@android:color/black" />
 
-        <Spinner
-            android:id="@+id/spPoBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="45dp"
-            android:layout_marginRight="45dp"
-            android:layout_marginTop="10dp">
+        <EditText
+            android:id="@+id/edtPoBox"
+            android:layout_width="fill_parent"
+            android:layout_height="50.0dip"
+            android:layout_marginLeft="45.0dip"
+            android:layout_marginRight="45.0dip"
+            android:background="@drawable/text_box_bg"
+            android:hint="Enter Po Box"
+            android:inputType="text" android:paddingLeft="3.0dip"/>
 
-        </Spinner>
 
 
     </LinearLayout><Space

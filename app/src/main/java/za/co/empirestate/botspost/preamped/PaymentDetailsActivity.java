@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
@@ -30,6 +31,7 @@ public class PaymentDetailsActivity extends Activity
   EditText txtCvv;
   EditText txtNumber;
   EditText txtSurname;
+    ImageButton back;
   Time localTime;
 
     private String amount;
@@ -61,6 +63,7 @@ public class PaymentDetailsActivity extends Activity
     final RadioButton rdoMasterCard = (RadioButton) findViewById(R.id.master_card);
     localTime = new Time(Time.getCurrentTimezone());
     localTime.setToNow();
+      back = (ImageButton)findViewById(R.id.bck_btn);
 
 
 
@@ -102,6 +105,16 @@ public class PaymentDetailsActivity extends Activity
         public void onNothingSelected(AdapterView<?> paramAnonymousAdapterView) {
         }
     });
+
+      back.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              Intent  intent = new Intent(PaymentDetailsActivity.this, MainActivity.class);
+              startActivity(intent);
+          }
+      });
+
+
     btnNext.setOnClickListener(new View.OnClickListener() {
         public void onClick(View paramAnonymousView) {
             String cardHolderInitial = txtInitial.getText().toString();
