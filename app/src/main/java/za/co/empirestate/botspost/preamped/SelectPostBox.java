@@ -65,15 +65,13 @@ public class SelectPostBox extends Activity    {
         setContentView(R.layout.activity_select_post_box);
 
         pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Please wait...");
-        pDialog.show();
+
         setFields();
         poboxObj = new PoboxObj();
         localIntent = getIntent();
 
         GroupId = localIntent.getStringExtra("GroupId");
         PostOfficeName = localIntent.getStringExtra("PostOfficeName");
-        GetPostBox(PostOfficeName, GroupId);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,20 +82,10 @@ public class SelectPostBox extends Activity    {
 
                 } else {
                     selectedPostBox = "PO" + pobox.getText().toString();
-                    Intent intent = new Intent(SelectPostBox.this, PostBox.class);
+                    pDialog.setMessage("Please wait...");
+                    pDialog.show();
+                    GetPostBox(PostOfficeName, GroupId);
 
-
-                    intent.putExtra("HolderType", poboxObj.getHolderType());
-                    intent.putExtra("Name", selectedPostBox);
-                    intent.putExtra("Size", poboxObj.getSize());
-                    intent.putExtra("PaidUntil", poboxObj.getPaidUntil());
-                    intent.putExtra("Status", poboxObj.getStatus());
-                    intent.putExtra("RenewalAmount", poboxObj.getRenewalAmount());
-                    intent.putExtra("PenaltyAmount", poboxObj.getPenaltyAmount());
-                    intent.putExtra("poboxID", poboxObj.getPostBoxId());
-                    intent.putExtra("GroupId", GroupId);
-
-                    startActivity(intent);
 
                 }
             }
@@ -181,8 +169,9 @@ public class SelectPostBox extends Activity    {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Intent intent = new Intent(SelectPostBox.this, RenewPoBox.class);
-                startActivity(intent);
+                pobox.setText("");
+                pobox.setFocusable(true);
+                pobox.setError("Please enter a valid post box");
 
             }
         });
@@ -197,7 +186,7 @@ public class SelectPostBox extends Activity    {
                 AppConfig.URL_RENEWPOBOX, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(LOG, "pobox  response " + response.toString());
+                Log.d(LOG, "post box  response " + response.toString());
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONArray jsonArray = new JSONArray(response);
@@ -238,6 +227,18 @@ public class SelectPostBox extends Activity    {
                              SpinnerArray.add(postofficesList.get(i).getName());
                              pDialog.dismiss();
                             // setSpinners();
+                             Intent intent = new Intent(SelectPostBox.this, PostBox.class);
+                             intent.putExtra("HolderType", poboxObj.getHolderType());
+                             intent.putExtra("Name", selectedPostBox);
+                             intent.putExtra("Size", poboxObj.getSize());
+                             intent.putExtra("PaidUntil", poboxObj.getPaidUntil());
+                             intent.putExtra("Status", poboxObj.getStatus());
+                             intent.putExtra("RenewalAmount", poboxObj.getRenewalAmount());
+                             intent.putExtra("PenaltyAmount", poboxObj.getPenaltyAmount());
+                             intent.putExtra("poboxID", poboxObj.getPostBoxId());
+                             intent.putExtra("GroupId", GroupId);
+
+                             startActivity(intent);
                          }
                      }
 
@@ -264,8 +265,8 @@ public class SelectPostBox extends Activity    {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("function", "GetPostBox");
                 params.put("groupId",GroupId);
-                params.put("postBoxId","PO100");
-                Log.d(LOG, "values sent from the device  " + params);
+                params.put("postBoxId",selectedPostBox);
+                Log.d(LOG, "values sent from the device for selecting post box  " + params);
                 return params;
             }
 
