@@ -1,101 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <FrameLayout android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.15">
-        <TextView android:textSize="25.0sp" android:textColor="#EA2026" android:layout_gravity="center" android:background="@null" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SUCCESSFUL" android:drawableRight="@drawable/payment_details_icon" android:drawablePadding="5.0dip" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  android:orientation="vertical">
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.15" android:background="#FFF000">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:background="@null" android:drawablePadding="5.0dip" android:drawableRight="@drawable/payment_details_icon" android:text="SUCCESSFUL" android:textColor="#EA2026" android:textSize="25.0sp" />
     </FrameLayout>
-    <LinearLayout android:orientation="horizontal" android:background="#EA2026" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.05">
-        <ImageButton android:layout_gravity="center_vertical" android:id="@+id/bck_btn" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/bck_btn" />
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.05" android:background="#EA2026" android:orientation="horizontal">
+        <ImageButton android:id="@+id/bck_btn" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:background="@null" android:src="@drawable/bck_btn" />
     </LinearLayout>
 
     <LinearLayout
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:background="#ffffffff"
-        android:paddingTop="10.0dip"
         android:layout_width="fill_parent"
         android:layout_height="0.0dip"
         android:layout_weight="0.6"
+        android:background="#ffffffff"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="10.0dip"
         >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginBottom="15dp"
-            android:layout_marginLeft="50dp">
+            android:layout_marginLeft="50dp"
+            android:orientation="horizontal">
 
-            <TextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Reference#:" android:layout_marginRight="87dp"/>
-            <TextView android:textSize="15.0sp" android:textColor="#ff000000" android:id="@+id/reference" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="87dp" android:text="Reference#:" android:textColor="#ff000000" android:textSize="15.0sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/reference" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#ff000000" android:textSize="15.0sp" />
 
      </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginBottom="15dp"
-            android:layout_marginLeft="50dp">
-            <TextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Transaction Amount:" android:layout_marginRight="30dp"/>
-            <TextView android:textSize="15.0sp" android:textColor="#ff000000" android:id="@+id/unit" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            android:layout_marginLeft="50dp"
+            android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="30dp" android:text="Transaction Amount:" android:textColor="#ff000000" android:textSize="15.0sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/unit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#ff000000" android:textSize="15.0sp" />
        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginBottom="15dp"
-            android:layout_marginLeft="50dp">
-            <TextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Units:" android:layout_marginRight="130dp"/>
-            <TextView android:textSize="15.0sp" android:textColor="#ff000000" android:id="@+id/nbr_of_units" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            android:layout_marginLeft="50dp"
+            android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="130dp" android:text="Units:" android:textColor="#ff000000" android:textSize="15.0sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/nbr_of_units" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#ff000000" android:textSize="15.0sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginBottom="15dp"
-            android:layout_marginLeft="50dp">
+            android:layout_marginLeft="50dp"
+            android:orientation="horizontal">
 
-            <TextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cost of Units:" android:layout_marginRight="81dp"/>
-            <TextView android:textSize="15.0sp" android:textColor="#ff000000" android:id="@+id/cost" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="81dp" android:text="Cost of Units:" android:textColor="#ff000000" android:textSize="15.0sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/cost" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#ff000000" android:textSize="15.0sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginBottom="15dp"
-            android:layout_marginLeft="50dp">
+            android:layout_marginLeft="50dp"
+            android:orientation="horizontal">
 
-            <TextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="VAT and Levy:" android:layout_marginRight="75dp"/>
-            <TextView android:textSize="15.0sp" android:textColor="#ff000000" android:id="@+id/vat" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="75dp" android:text="VAT and Levy:" android:textColor="#ff000000" android:textSize="15.0sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/vat" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#ff000000" android:textSize="15.0sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginBottom="15dp"
-            android:layout_marginLeft="50dp">
-            <TextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Transaction Fee:" android:layout_marginRight="60dp"/>
-            <TextView android:textSize="15.0sp" android:textColor="#ff000000" android:id="@+id/levy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="P4.50" />
+            android:layout_marginLeft="50dp"
+            android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="60dp" android:text="Transaction Fee:" android:textColor="#ff000000" android:textSize="15.0sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/levy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="P4.00" android:textColor="#ff000000" android:textSize="15.0sp" />
         </LinearLayout>
 
-        <TextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Token" />
-        <TextView android:textSize="17.0sp" android:textColor="#ff000000" android:id="@+id/token_top" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0000 0000 0000" android:textStyle="bold"/>
-        <TextView android:textSize="17.0sp" android:textColor="#ff000000" android:id="@+id/token_bottom" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0000 0000" android:textStyle="bold"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Token" android:textColor="#ff000000" android:textSize="15.0sp" android:textStyle="bold" />
+        <TextView android:id="@+id/token_top" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0000 0000 0000" android:textColor="#ff000000" android:textSize="17.0sp" android:textStyle="bold"/>
+        <TextView android:id="@+id/token_bottom" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0000 0000" android:textColor="#ff000000" android:textSize="17.0sp" android:textStyle="bold"/>
     </LinearLayout>
 
-    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.075">
-        <FrameLayout android:background="@drawable/text_box_bg" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.5">
-            <TextView android:textSize="15.0sp" android:textColor="#ff000000" android:layout_gravity="center" android:id="@+id/date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Date:" />
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.075" android:orientation="horizontal">
+        <FrameLayout android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.5" android:background="@drawable/text_box_bg">
+            <TextView android:id="@+id/date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Date:" android:textColor="#ff000000" android:textSize="15.0sp" />
         </FrameLayout>
-        <FrameLayout android:background="@drawable/text_box_bg" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.5">
-            <TextView android:textSize="15.0sp" android:textColor="#ff000000" android:layout_gravity="center" android:id="@+id/time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Time" />
+        <FrameLayout android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.5" android:background="@drawable/text_box_bg">
+            <TextView android:id="@+id/time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Time" android:textColor="#ff000000" android:textSize="15.0sp" />
         </FrameLayout>
     </LinearLayout>
-    <Button android:textSize="22.0sp" android:textStyle="bold" android:textColor="#EA2026" android:orientation="vertical" android:id="@+id/btn_finish" android:background="#FFF000" android:layout_width="fill_parent" android:layout_height="0.0dip" android:text="Finish" android:layout_weight="0.075" />
-    <FrameLayout android:background="#ff000000" android:paddingTop="10.0dip" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.075">
-        <ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/fifth_dot" />
+    <Button android:id="@+id/btn_finish" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.075" android:background="#FFF000" android:orientation="vertical" android:text="Finish" android:textColor="#EA2026" android:textSize="22.0sp" android:textStyle="bold" />
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.075" android:background="#ff000000" android:paddingTop="10.0dip">
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:src="@drawable/fifth_dot" />
     </FrameLayout>
 </LinearLayout>

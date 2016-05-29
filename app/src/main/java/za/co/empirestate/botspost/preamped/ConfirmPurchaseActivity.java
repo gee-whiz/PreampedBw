@@ -125,7 +125,7 @@ public class ConfirmPurchaseActivity extends Activity {
         else {
 
             if (meterChar.equalsIgnoreCase("B")||meterChar.equalsIgnoreCase("O")||meterChar.equalsIgnoreCase("M")) {
-                tmeter.setText("Voucher");
+                tmeter.setText("Network Provider");
                 ls_transactionFee = localIntent.getStringExtra("transactionFee");
                 Log.e(LOG,"transaction fee"+ls_transactionFee);
             }
@@ -706,10 +706,15 @@ public class ConfirmPurchaseActivity extends Activity {
 
                         startActivity(intent);
                     }
+
+                    else  if(res.equalsIgnoreCase("98")) {
+                        CardError(PaymentReference);
+                    }
+
                     else
                     {
-                        Toast.makeText(getApplicationContext(),"Hi Ed Please check logs ",Toast.LENGTH_LONG).show();
                         pDialog.dismiss();
+                        NetworkError();
                     }
 
                 } catch (JSONException e) {

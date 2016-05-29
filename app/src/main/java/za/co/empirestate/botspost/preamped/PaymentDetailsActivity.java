@@ -173,6 +173,7 @@ public class PaymentDetailsActivity extends Activity
             Log.d(LOG, "I'm sending this " + ls_transactionFee);
             localIntent.putExtra("groupId", groupId);
             localIntent.putExtra("PaidUntil",PaidUntil);
+            Log.d(LOG,"transaction fee"+ls_transactionFee);
             //Intent encryptIntent = new Intent();
             //encryptIntent.putExtra("card_number",cardNumber);
             //encryptIntent.putExtra("card_cvv",strCvv);

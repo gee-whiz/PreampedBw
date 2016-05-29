@@ -78,7 +78,8 @@ public class PostBox extends Activity {
                     localIntent2.putExtra("groupId", localIntent.getStringExtra("GroupId"));
                     Log.d(LOG, "group id " + localIntent.getStringExtra("GroupId"));
                     localIntent2.putExtra("PaidUntil",PaidUntil);
-                    localIntent2.putExtra("transactionfee", TransactionHandle);
+
+                    localIntent2.putExtra("transactionFee",TransactionHandle);
 
                     PostBox.this.startActivity(localIntent2);
 
@@ -128,6 +129,7 @@ public  void  setFields()
          pen = Double.parseDouble(TransactionHandle);
          tot = t + pen;
         total.setText("P" + String.format(Locale.ENGLISH, "%.2f", tot));
+
 
 
 

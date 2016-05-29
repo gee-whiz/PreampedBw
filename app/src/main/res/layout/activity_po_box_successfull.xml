@@ -66,7 +66,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:text="Payment reference:"
+                    android:text="Payment eference:"
                     android:textColor="#ff000000"
                     android:textSize="15.0sp"
                     android:textStyle="bold"/>

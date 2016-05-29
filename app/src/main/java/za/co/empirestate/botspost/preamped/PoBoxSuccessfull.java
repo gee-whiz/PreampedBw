@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.sql.Time;
 import java.util.Locale;
 
 public class PoBoxSuccessfull extends Activity {
@@ -23,6 +24,8 @@ public class PoBoxSuccessfull extends Activity {
      Button bFinish;
     ImageButton  back;
     View  bview;
+    TextView tTime,tDate;
+
 
 
 
@@ -70,10 +73,12 @@ public class PoBoxSuccessfull extends Activity {
         tPaymentReference = (TextView)findViewById(R.id.txtPaymentReference);
         tAmount    =  (TextView)findViewById(R.id.txtAmount);
         tPaidUntul = (TextView)findViewById(R.id.txtPaid);
-        tTransactionFee   = (TextView)findViewById(R.id.txtaTransactionFee);
+        tTransactionFee   = (TextView)findViewById(R.id.txtFee);
         bFinish = (Button)findViewById(R.id.btn_finish);
         back = (ImageButton)findViewById(R.id.bck_btn);
         bview = findViewById(R.id.bview);
+        tTime = (TextView)findViewById(R.id.time);
+        tDate =(TextView)findViewById(R.id.date);
     }
 
 
@@ -92,7 +97,11 @@ public class PoBoxSuccessfull extends Activity {
         tPaidUntul.setText(PaidUntil);
         tTransactionFee.setText(transactionFee);
 
-
+        android.text.format.Time localTime = new android.text.format.Time(android.text.format.Time.getCurrentTimezone());
+        localTime.setToNow();
+        int curMonth = localTime.month + 1;
+        tDate.setText(localTime.monthDay + "/" + curMonth + "/" + localTime.year);
+        tTime.setText(localTime.format("%k:%M:%S"));
 
     }
 
