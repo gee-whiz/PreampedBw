@@ -14,11 +14,6 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.NoSuchPaddingException;
-
 import za.co.empirestate.botspost.model.Payment;
 import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
@@ -40,7 +35,7 @@ public class PaymentDetailsActivity extends Activity
   private String month;
   private MySQLiteFunctions mysqliteFunction;
   private Payment payment;
-  private String year,groupId,voucherValue,ls_transactionFee;
+  private String year,groupId,voucherValue,ls_transactionFee,PaidUntil;
 
     protected void onCreate(Bundle paramBundle)
   {
@@ -52,6 +47,8 @@ public class PaymentDetailsActivity extends Activity
      this.groupId = localIntent.getStringExtra("groupId");
       voucherValue = localIntent.getStringExtra("voucherValue");
       ls_transactionFee = localIntent.getStringExtra("transactionFee");
+      PaidUntil =  localIntent.getStringExtra("PaidUntil");
+
     this.mysqliteFunction = new MySQLiteFunctions(this);
     final Spinner spnMonths = (Spinner) findViewById(R.id.month);
     final Spinner spnYears = (Spinner) findViewById(R.id.year);
@@ -174,7 +171,8 @@ public class PaymentDetailsActivity extends Activity
             localIntent.putExtra("meter_number", PaymentDetailsActivity.this.meterNumber);
             localIntent.putExtra("transactionFee", ls_transactionFee);
             Log.d(LOG, "I'm sending this " + ls_transactionFee);
-            localIntent.putExtra("groupId",groupId);
+            localIntent.putExtra("groupId", groupId);
+            localIntent.putExtra("PaidUntil",PaidUntil);
             //Intent encryptIntent = new Intent();
             //encryptIntent.putExtra("card_number",cardNumber);
             //encryptIntent.putExtra("card_cvv",strCvv);

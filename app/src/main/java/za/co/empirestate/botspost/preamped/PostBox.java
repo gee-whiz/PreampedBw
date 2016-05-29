@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
 public class PostBox extends Activity {
@@ -75,6 +77,9 @@ public class PostBox extends Activity {
                     localIntent2.putExtra("meter_number", localIntent.getStringExtra("poboxID"));
                     localIntent2.putExtra("groupId", localIntent.getStringExtra("GroupId"));
                     Log.d(LOG, "group id " + localIntent.getStringExtra("GroupId"));
+                    localIntent2.putExtra("PaidUntil",PaidUntil);
+                    localIntent2.putExtra("transactionfee", TransactionHandle);
+
                     PostBox.this.startActivity(localIntent2);
 
                 }
@@ -118,10 +123,12 @@ public  void  setFields()
         RenewalAmount = localIntent.getStringExtra("RenewalAmount");
         PenaltyAmount = localIntent.getStringExtra("PenaltyAmount");
         TransactionHandle = "11.20";
+        PaidUntil = localIntent.getStringExtra("PaidUntil");
          t =  Double.parseDouble(RenewalAmount);
          pen = Double.parseDouble(TransactionHandle);
          tot = t + pen;
-        total.setText("P" + String.format("%.2f", tot));
+        total.setText("P" + String.format(Locale.ENGLISH, "%.2f", tot));
+
 
 
 
@@ -149,6 +156,9 @@ public  void  setFields()
                 localIntent1.putExtra("isNew", false);
                 localIntent1.putExtra("meter_number", localIntent.getStringExtra("poboxID"));
                 localIntent1.putExtra("groupId",localIntent.getStringExtra("GroupId"));
+                localIntent1.putExtra("PaidUntil",PaidUntil);
+                localIntent1.putExtra("transactionFee",TransactionHandle);
+
                 PostBox.this.startActivity(localIntent1);
                 overridePendingTransition(R.anim.from, R.anim.to);
                 return;

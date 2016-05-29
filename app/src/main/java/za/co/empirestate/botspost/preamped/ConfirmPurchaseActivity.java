@@ -81,6 +81,7 @@ public class ConfirmPurchaseActivity extends Activity {
     private String reference = null;
     private String last3Digits;
     private String vatAndLevy;
+    private  String PaidUntil;
     private String costOfUnits;
     private String email,ls_transactionFee;
     private TextView tmeter;
@@ -130,6 +131,9 @@ public class ConfirmPurchaseActivity extends Activity {
             }
             else
                 tmeter.setText("PoBox ID");
+               PaidUntil=  localIntent.getStringExtra("PaidUntil");
+               ls_transactionFee = localIntent.getStringExtra("transactionFee");
+            Log.e(LOG,"george "+PaidUntil + ls_transactionFee);
         }
         if (localIntent.getBooleanExtra("isNew", false))
         {
@@ -687,23 +691,31 @@ public class ConfirmPurchaseActivity extends Activity {
                 try {
                     jsonArray = new JSONArray(response);
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
-                   // String res = jsonObject.getString("response");
+                   String res = jsonObject.getString("Response");
+                    String PaymentReference = jsonObject.getString("PaymentReference");
 
+                    if(res.equalsIgnoreCase("00")){
 
+                        pDialog.dismiss();
+                        Intent intent = new Intent(ConfirmPurchaseActivity.this,PoBoxSuccessfull.class);
+                        intent.putExtra("PaymentReference",PaymentReference);
+                        intent.putExtra("Amount",amount);
+                        intent.putExtra("transactionFee","P"+ls_transactionFee);
+                        Log.e(LOG, "transaction fee" + ls_transactionFee);
+                        intent.putExtra("PaidUntil",PaidUntil);
+
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(),"Hi Ed Please check logs ",Toast.LENGTH_LONG).show();
+                        pDialog.dismiss();
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if(response.equalsIgnoreCase("00")){
 
-                    pDialog.dismiss();
-                    Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(),"Hi Ed Please check logs ",Toast.LENGTH_LONG).show();
-                    pDialog.dismiss();
-                }
 
             }
 

@@ -6,8 +6,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
@@ -112,7 +109,7 @@ public class SelectPostBox extends Activity    {
     public  void  setFields()
     {
         pobox = (EditText)findViewById(R.id.edtPoBox);
-        back = (View)findViewById(R.id.btnBack);
+        back = findViewById(R.id.btnBack);
         next = (Button)findViewById(R.id.btnNext);
         imgBack = (ImageView)findViewById(R.id.imgBack);
 
@@ -229,7 +226,7 @@ public class SelectPostBox extends Activity    {
                             // setSpinners();
                              Intent intent = new Intent(SelectPostBox.this, PostBox.class);
                              intent.putExtra("HolderType", poboxObj.getHolderType());
-                             intent.putExtra("Name", selectedPostBox);
+                             intent.putExtra("Name", Name);
                              intent.putExtra("Size", poboxObj.getSize());
                              intent.putExtra("PaidUntil", poboxObj.getPaidUntil());
                              intent.putExtra("Status", poboxObj.getStatus());

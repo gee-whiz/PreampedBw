@@ -17,6 +17,7 @@
             android:textSize="25.0sp" />
     </FrameLayout>
     <LinearLayout
+        android:id="@+id/bview"
         android:layout_width="fill_parent"
         android:layout_height="0.0dip"
         android:layout_weight="0.05"
@@ -65,29 +66,13 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:text="Product Name:"
-                    android:textColor="#ff000000"
-                    android:textSize="15.0sp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="80dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Value:"
+                    android:text="Payment reference:"
                     android:textColor="#ff000000"
                     android:textSize="15.0sp"
                     android:textStyle="bold"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Expiration Date:"
-                    android:textColor="#ff000000"
-                    android:textSize="15.0sp"
-                    android:textStyle="bold"/>
+
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -123,7 +108,7 @@
                 android:orientation="vertical"
                 android:padding="10dp">
                 <TextView
-                    android:id="@+id/txtSerial"
+                    android:id="@+id/txtPaid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -136,7 +121,7 @@
 
                 <TextView
 
-                    android:id="@+id/txtProductName"
+                    android:id="@+id/txtPaymentReference"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -144,27 +129,6 @@
                     android:textColor="#ff000000"
                     android:textSize="15.0sp" />
 
-
-
-                <TextView
-                    android:id="@+id/txtValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text=""
-                    android:textColor="#ff000000"
-                    android:textSize="15.0sp" />
-
-
-
-                <TextView
-                    android:id="@+id/txtExpDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text=""
-                    android:textColor="#ff000000"
-                    android:textSize="15.0sp" />
 
                 <TextView
                     android:id="@+id/txtAmount"
