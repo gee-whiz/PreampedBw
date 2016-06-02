@@ -19,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
@@ -691,8 +690,10 @@ public class ConfirmPurchaseActivity extends Activity {
                 try {
                     jsonArray = new JSONArray(response);
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
-                   String res = jsonObject.getString("Response");
+                    String res = jsonObject.getString("Response");
                     String PaymentReference = jsonObject.getString("PaymentReference");
+
+
 
                     if(res.equalsIgnoreCase("00")){
 
