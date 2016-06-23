@@ -11,9 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+
 import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
 public class UpdateCardActivity extends Activity
@@ -83,13 +83,11 @@ public class UpdateCardActivity extends Activity
               .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
       // Apply the adapter to the spinner
       spnYears.setAdapter(adapterYears);
-    ((ImageButton)findViewById(R.id.bck_btn)).setOnClickListener(new View.OnClickListener()
-    {
-      public void onClick(View paramAnonymousView)
-      {
-        UpdateCardActivity.this.onBackPressed();
-        UpdateCardActivity.this.finish();
-      }
+    findViewById(R.id.bck_btn).setOnClickListener(new View.OnClickListener() {
+        public void onClick(View paramAnonymousView) {
+            UpdateCardActivity.this.onBackPressed();
+            UpdateCardActivity.this.finish();
+        }
     });
     spnMonths.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
     {
@@ -199,7 +197,7 @@ public class UpdateCardActivity extends Activity
             Intent localIntent = new Intent(UpdateCardActivity.this, MainActivity.class);
           //  UpdateCardActivity.this.mysqliteFunction.deletePayment();
             UpdateCardActivity.this.mysqliteFunction.createPaymentTable(cardNumber, initial, surname, cvv, UpdateCardActivity.this.month, UpdateCardActivity.this.year, last3digits);
-          /*  UpdateCardActivity.this.startActivity(localIntent);
+           UpdateCardActivity.this.startActivity(localIntent);
             Intent encryptIntent = new Intent(UpdateCardActivity.this,EncryptionService.class);
             encryptIntent.putExtra("card_number",cardNumber);
             encryptIntent.putExtra("card_cvv",cvv);
@@ -209,7 +207,7 @@ public class UpdateCardActivity extends Activity
             encryptIntent.putExtra("exp_year",year);
             encryptIntent.putExtra("last3_digits",last3digits);
             startService(encryptIntent);
-            finish();*/
+            finish();
 
             Intent intent = new Intent(UpdateCardActivity.this,MainActivity.class);
             startActivity(intent);

@@ -44,7 +44,7 @@
         <TextView android:id="@+id/txtHolder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Network Provider"
+            android:text="Mobile Operator"
             android:textColor="#ff000000"
             android:textStyle="bold" />
         <TextView

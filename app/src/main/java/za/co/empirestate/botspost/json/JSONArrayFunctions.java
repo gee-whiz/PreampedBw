@@ -18,6 +18,9 @@ public class JSONArrayFunctions
 
   public String addNewUser(String paramString1, String paramString2, String paramString3,String phone,String name,String deviceId,String os)
   {
+      if (deviceId == null){
+          deviceId = null;
+      }
     LinkedList localLinkedList = new LinkedList();
     localLinkedList.add(new BasicNameValuePair("tag", ADD_USER_TAG));
     localLinkedList.add(new BasicNameValuePair("meter_number", paramString1));

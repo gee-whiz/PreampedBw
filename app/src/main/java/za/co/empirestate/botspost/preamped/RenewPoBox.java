@@ -1,13 +1,9 @@
 package za.co.empirestate.botspost.preamped;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -94,7 +90,7 @@ public class RenewPoBox extends Activity implements AdapterView.OnItemSelectedLi
 
 
     public void setFields(){
-        backView = (View)findViewById(R.id.btnBack);
+        backView = findViewById(R.id.btnBack);
         backImage = (ImageButton)findViewById(R.id.imgBack);
         sp = (Spinner)findViewById(R.id.spPoAmount);
         next = (Button)findViewById(R.id.btnNext);
@@ -119,9 +115,12 @@ public class RenewPoBox extends Activity implements AdapterView.OnItemSelectedLi
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selecteditem = adapterView.getItemAtPosition(i).toString().substring(0,4);
-                selectedPostOffice = adapterView.getItemAtPosition(i).toString().substring(4);
-                Log.d(LOG, " selected group id " + selecteditem);
+
+
+                Postoffices postoffices = postofficesList.get(i);
+                selecteditem = postoffices.getGroupID();
+                selectedPostOffice = postoffices.getPostOfficeName();
+                        Log.d(LOG, " selected group id " + selecteditem);
                 Log.d(LOG, " selected postoffice " + selectedPostOffice);
             }
 
@@ -155,7 +154,8 @@ public class RenewPoBox extends Activity implements AdapterView.OnItemSelectedLi
                      }
                 }
                 for (int i = 0; i < postofficesList.size(); i++) {
-                    SpinnerArray.add(postofficesList.get(i).getGroupID() +" "+postofficesList.get(i).getPostOfficeName());
+
+                    SpinnerArray.add(" " +postofficesList.get(i).getPostOfficeName());
 
                 }
                 pDialog.dismiss();

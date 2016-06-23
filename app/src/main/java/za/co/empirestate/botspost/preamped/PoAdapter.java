@@ -43,6 +43,7 @@ public class PoAdapter extends  RecyclerView.Adapter<PoAdapter.AirtimeViewHolder
         holder.token.setText(history.gethId());
         holder.dateTime.setText(history.gethTranDateTime());
         holder.ref.setText(history.gethRev());
+        holder.poNumber.setText(history.getMeterNumber().substring(2));
 
     }
 
@@ -57,13 +58,14 @@ public class PoAdapter extends  RecyclerView.Adapter<PoAdapter.AirtimeViewHolder
     }
     //set fields
     public class AirtimeViewHolder extends RecyclerView.ViewHolder {
-        protected TextView ref,amount,dateTime,token;
+        protected TextView ref,amount,dateTime,token,poNumber;
         public AirtimeViewHolder(View itemView) {
             super(itemView);
             ref      = (TextView)itemView.findViewById(R.id.txtRef);
             amount   = (TextView)itemView.findViewById(R.id.txtAmount);
             dateTime = (TextView)itemView.findViewById(R.id.txtTime);
             token    = (TextView)itemView.findViewById(R.id.txtToken);
+            poNumber = (TextView)itemView.findViewById(R.id.txtPobox);
         }
     }
 }

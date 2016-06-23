@@ -125,9 +125,11 @@ public  void  setFields()
         PenaltyAmount = localIntent.getStringExtra("PenaltyAmount");
         TransactionHandle = "11.20";
         PaidUntil = localIntent.getStringExtra("PaidUntil");
+        Double penalty = Double.parseDouble(PenaltyAmount);
          t =  Double.parseDouble(RenewalAmount);
          pen = Double.parseDouble(TransactionHandle);
-         tot = t + pen;
+        Log.e(LOG,"penalty "+penalty);
+         tot = t + pen + penalty;
         total.setText("P" + String.format(Locale.ENGLISH, "%.2f", tot));
 
 

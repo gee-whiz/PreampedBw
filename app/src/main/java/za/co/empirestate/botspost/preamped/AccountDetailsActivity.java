@@ -76,7 +76,7 @@ setSpinners();
        }
    });
       String curMeterNumber = mysqliteFunction.getMeterNumber();
-      if (curMeterNumber.isEmpty()){
+      if (curMeterNumber.length() < 9){
           ShowMeterError();
       }
     btnNxt.setOnClickListener(new View.OnClickListener()

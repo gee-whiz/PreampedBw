@@ -43,6 +43,7 @@ public class HistoryAdapter extends  RecyclerView.Adapter<HistoryAdapter.History
         holder.token.setText(history.gethId());
         holder.dateTime.setText(history.gethTranDateTime());
         holder.ref.setText(history.gethRev());
+        holder.meterNumber.setText(history.getMeterNumber());
 
     }
 
@@ -57,13 +58,14 @@ public class HistoryAdapter extends  RecyclerView.Adapter<HistoryAdapter.History
     }
       //set fields
     public class HistoryViewHolder extends RecyclerView.ViewHolder {
-       protected TextView ref,amount,dateTime,token;
+       protected TextView ref,amount,dateTime,token,meterNumber;
         public HistoryViewHolder(View itemView) {
             super(itemView);
             ref      = (TextView)itemView.findViewById(R.id.txtRef);
             amount   = (TextView)itemView.findViewById(R.id.txtAmount);
             dateTime = (TextView)itemView.findViewById(R.id.txtTime);
             token    = (TextView)itemView.findViewById(R.id.txtToken);
+            meterNumber = (TextView)itemView.findViewById(R.id.txtMeterNumber);
         }
     }
 }

@@ -52,6 +52,7 @@ public class AirtimeAdapter extends  RecyclerView.Adapter<AirtimeAdapter.Airtime
             holder.token.setText(history.gethId());
             holder.dateTime.setText(history.gethTranDateTime());
             holder.ref.setText(history.gethRev());
+            holder.provider.setText(history.getMeterNumber());
         } catch (Exception e) {
             Log.d(LOG, "Failed to do something: " + e.getMessage());
         }
@@ -69,13 +70,15 @@ public class AirtimeAdapter extends  RecyclerView.Adapter<AirtimeAdapter.Airtime
     }
     //set fields
     public class AirtimeViewHolder extends RecyclerView.ViewHolder {
-        protected TextView ref,amount,dateTime,token;
+        protected TextView ref,amount,dateTime,token,provider;
         public AirtimeViewHolder(View itemView) {
             super(itemView);
             ref      = (TextView)itemView.findViewById(R.id.txtRef);
             amount   = (TextView)itemView.findViewById(R.id.txtAmount);
             dateTime = (TextView)itemView.findViewById(R.id.txtTime);
             token    = (TextView)itemView.findViewById(R.id.txtToken);
+            provider = (TextView)itemView.findViewById(R.id.txtProvider);
+
         }
     }
 }

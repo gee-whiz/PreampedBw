@@ -121,9 +121,11 @@ public class RegistrationActivity extends Activity
       setContentView(R.layout.activity_registration);
     btnReg = (Button) findViewById(R.id.register_btn);
       final EditText txtPhoneNumber = (EditText) findViewById(R.id.phone);
-      final EditText txtMeterNumber = (EditText) findViewById(R.id.meter_number);
+      //final EditText txtMeterNumber = (EditText) findViewById(R.id.meter_number);
     txtEmailAddress = (AutoCompleteTextView) findViewById(R.id.email_address);
       getEmail();
+      meterNumber = " ";
+      Log.e(LOG,"length "+meterNumber.length());
     final EditText txtPassword = (EditText) findViewById(R.id.password);
     final EditText txtConfirmPass = (EditText) findViewById(R.id.confirm_pass);
       final EditText txtName = (EditText) findViewById(R.id.name);
@@ -157,7 +159,7 @@ public class RegistrationActivity extends Activity
 
     btnReg.setOnClickListener(new View.OnClickListener() {
         public void onClick(View paramAnonymousView) {
-            RegistrationActivity.this.meterNumber = txtMeterNumber.getText().toString();
+           // RegistrationActivity.this.meterNumber = txtMeterNumber.getText().toString();
             RegistrationActivity.this.emailAddress = txtEmailAddress.getText().toString();
             RegistrationActivity.this.password = txtPassword.getText().toString();
             RegistrationActivity.this.confirmPass = txtConfirmPass.getText().toString();
@@ -203,7 +205,7 @@ public class RegistrationActivity extends Activity
             }
             if (RegistrationActivity.this.isOnline()) {
                 if(termsAndConChk.isChecked()){
-                  if (meterNumber.isEmpty()){
+                  if (meterNumber.length() < 9){
                       new RegistrationTask().execute("null",
                               emailAddress, password, phone, name, mysqliteFunction.getDeviceId(), "ANDROID");
                   }
@@ -399,7 +401,7 @@ public class RegistrationActivity extends Activity
 
 
 
-                  if (meterNumber.isEmpty()){
+                  if (meterNumber.length() < 9){
                       utilityResponse = "success";
                   }
                     else {

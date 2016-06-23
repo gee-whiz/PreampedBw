@@ -138,10 +138,11 @@ public class AirtimeFragment extends android.app.Fragment {
                         String  hAmount = jsonObject.getString("Amount");
                         String hRef = jsonObject.getString("Ref");
                         String hDateTime = jsonObject.getString("tranDateTime");
-
+                       String hProvider = jsonObject.getString("additionalInfo");
                         history.sethAmount(hAmount);
                         history.sethId(hId);
                         history.sethRev(hRef);
+                        history.setMeterNumber(hProvider);
                         history.sethTranDateTime(hDateTime);
                         AirtimeList.add(history);
 

@@ -55,6 +55,7 @@ public class SettingsActivity extends Activity
       final EditText txtEmail = (EditText) findViewById(R.id.email_address);
       final EditText txtPhone = (EditText) findViewById(R.id.phone);
     ((EditText)findViewById(R.id.meter_number)).setText(this.mysqliteFunction.getMeterNumber());
+      //txtEmail.setText(this.mysqliteFunction.getEmail());
 
       txtMeteNumber.setOnClickListener(new View.OnClickListener() {
           @Override

@@ -60,7 +60,7 @@
             android:layout_marginRight="45.0dip"
             android:background="@drawable/text_box_bg"
              android:hint="Enter Po Box Number"
-            android:inputType="number" android:paddingLeft="3.0dip"/>
+            android:inputType="textPhonetic"  android:paddingLeft="3.0dip"/>
 
 
 

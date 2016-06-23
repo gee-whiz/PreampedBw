@@ -2,9 +2,7 @@ package za.co.empirestate.botspost.preamped;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -139,10 +137,12 @@ public class PoFragment extends android.app.Fragment {
                         String hAmount = jsonObject.getString("Amount");
                         String hRef = jsonObject.getString("Ref");
                         String hDateTime = jsonObject.getString("tranDateTime");
+                        String hPoBox = jsonObject.getString("additionalInfo");
                         history.sethAmount(hAmount);
                         history.sethId(hId);
                         history.sethRev(hRef);
                         history.sethTranDateTime(hDateTime);
+                        history.setMeterNumber(hPoBox);
                         AirtimeList.add(history);
                     } catch (JSONException e) {
                     }

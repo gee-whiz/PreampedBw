@@ -12,19 +12,19 @@ import java.util.ListIterator;
  */
 public class History implements List<History> {
 
-    public String hId,hAmount,hRev,hTranDateTime;
+    public String hId,hAmount,hRev,hTranDateTime,meterNumber;
 
     //default constructor
     public History() {
     }
-    public History(String hId, String hRev, String hAmount, String hTranDateTime) {
+
+    public History(String hId, String hTranDateTime, String meterNumber, String hRev, String hAmount) {
         this.hId = hId;
+        this.hTranDateTime = hTranDateTime;
+        this.meterNumber = meterNumber;
         this.hRev = hRev;
         this.hAmount = hAmount;
-        this.hTranDateTime = hTranDateTime;
     }
-
-    //getters and setters methods
 
     public String gethId() {
         return hId;
@@ -48,6 +48,14 @@ public class History implements List<History> {
 
     public void sethRev(String hRev) {
         this.hRev = hRev;
+    }
+
+    public String getMeterNumber() {
+        return meterNumber;
+    }
+
+    public void setMeterNumber(String meterNumber) {
+        this.meterNumber = meterNumber;
     }
 
     public String gethTranDateTime() {

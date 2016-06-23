@@ -1,11 +1,9 @@
 package za.co.empirestate.botspost.preamped;
 
 import android.app.IntentService;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.Window;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -50,8 +48,8 @@ public class EncryptionService extends IntentService {
       mysqliteFunction = new MySQLiteFunctions(getApplicationContext());
         try {
             aes = new AES();
-            iv = aes.generateRandomIV(16);
-            shaKey = aes.SHA256(iv,32);
+            iv = AES.generateRandomIV(16);
+            shaKey = AES.SHA256(iv, 32);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
@@ -113,8 +111,8 @@ public class EncryptionService extends IntentService {
                     } catch (BadPaddingException e) {
                         e.printStackTrace();
                     }
-                    mysqliteFunction.updateCardDetails(cardNumber,cvv,initial,surname,expMonth,expYear,last3Digits);
-                    Log.d(LOG,"card number updated "+cardNumber);
+                    //mysqliteFunction.updateCardDetails(cardNumber,cvv,initial,surname,expMonth,expYear,last3Digits);
+                   // Log.d(LOG,"card number updated "+cardNumber);
                     Toast.makeText(getApplicationContext(),"Card successfully updated",Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(getApplicationContext(),"Card details could not be updated please check your internet settings",Toast.LENGTH_LONG).show();

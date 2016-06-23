@@ -48,7 +48,7 @@ public class AirtimeSuccessActivity extends Activity {
         {
             tproductName.setText(productName);
             tamount.setText("P"+amount+".00");
-            tActivation.setText(ls_activationNumber);
+            tActivation.setText(ls_activationNumber.substring(0,4)+" "+ls_activationNumber.substring(4,8)+" "+ls_activationNumber.substring(8,12)+" "+ls_activationNumber.substring(12));
             tSerialNumber.setText(ls_serialNumber);
             tExpDate.setText(date);
             int curMonth = localTime.month + 1;

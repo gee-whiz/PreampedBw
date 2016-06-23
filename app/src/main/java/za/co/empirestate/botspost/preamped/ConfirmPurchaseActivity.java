@@ -124,7 +124,7 @@ public class ConfirmPurchaseActivity extends Activity {
         else {
 
             if (meterChar.equalsIgnoreCase("B")||meterChar.equalsIgnoreCase("O")||meterChar.equalsIgnoreCase("M")) {
-                tmeter.setText("Network Provider");
+                tmeter.setText("Mobile Operator");
                 ls_transactionFee = localIntent.getStringExtra("transactionFee");
                 Log.e(LOG,"transaction fee"+ls_transactionFee);
             }
@@ -664,10 +664,9 @@ public class ConfirmPurchaseActivity extends Activity {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ConfirmPurchaseActivity.this,SettingsActivity.class);
-                startActivity(intent);
-                finish();
+
                 dialog.dismiss();
+                pDialog.dismiss();
 
             }
         });

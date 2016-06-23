@@ -2,9 +2,7 @@ package za.co.empirestate.botspost.preamped;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,10 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.Cache;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -28,7 +24,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -142,10 +137,13 @@ public class ElecFragment extends android.app.Fragment {
                         String hAmount = jsonObject.getString("Amount");
                         String hRef = jsonObject.getString("Ref");
                         String hDateTime = jsonObject.getString("tranDateTime");
+                        String hPoNumber = jsonObject.getString("additionalInfo");
+
                         history.sethAmount(hAmount);
                         history.sethId(hId);
                         history.sethRev(hRef);
                         history.sethTranDateTime(hDateTime);
+                        history.setMeterNumber(hPoNumber);
                         historyList.add(history);
 
 
