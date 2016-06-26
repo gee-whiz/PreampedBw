@@ -139,7 +139,7 @@ public class RenewPoBox extends Activity implements AdapterView.OnItemSelectedLi
                 AppConfig.URL_RENEWPOBOX, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(LOG, "post offices   response " + response.toString());
+
                 for (int i = 0; i < 140; i++) {
                      try {
                     JSONArray jsonArray = new JSONArray(response);

@@ -126,7 +126,7 @@ public class AirtimeFragment extends android.app.Fragment {
                 AppConfig.URL_HISTORY, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(LOG, "transaction history response " + response.toString());
+
                 int size = response.length();
                 for (int i = 0; i < 100; i++) {
                     try {

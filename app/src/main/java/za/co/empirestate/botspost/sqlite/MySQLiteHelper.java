@@ -30,7 +30,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper
   public static final String CREATE_TABLE_TRANSACTION = "CREATE TABLE IF NOT EXISTS transaction_tbl(id INTEGER PRIMARY KEY,status TEXT,time TEXT);";
   public static final String CREATE_TABLE_HISTORY = "CREATE TABLE IF NOT EXISTS history_tbl(id INTEGER PRIMARY KEY, meter_number TEXT,reference TEXT,amount TEXT,units TEXT,token TEXT,message TEXT,date TEXT,time TEXT);";
   public static final String CREATE_TABLE_DEVICE_ID = "CREATE TABLE IF NOT EXISTS device_id_tbl (device_id TEXT);";
-  public static final String CREATE_TABLE_CURRENT_USER = "CREATE TABLE IF NOT EXISTS current_user_tbl (id INTEGER PRIMARY KEY ,email TEXT,phone TEXT,meter_number  UNIQUE);";
+  public static final String CREATE_TABLE_CURRENT_USER = "CREATE TABLE IF NOT EXISTS current_user_tbl (id INTEGER PRIMARY KEY ,email TEXT,phone TEXT,meter_number  );";
   private static final String DB_NAME = "preamped.db";
   private static final int DB_VERSION = 6;
 

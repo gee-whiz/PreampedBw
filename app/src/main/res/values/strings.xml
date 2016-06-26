@@ -114,5 +114,6 @@
     <string name="title_activity_select_post_box">SelectPostBox</string>
     <string name="title_activity_airtime_confirm">AirtimeConfirm</string>
     <string name="title_activity_eleconfirm">Eleconfirm</string>
+    <string name="title_activity_main2">Main2Activity</string>
 
 </resources>

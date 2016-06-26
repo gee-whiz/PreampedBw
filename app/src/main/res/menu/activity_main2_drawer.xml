@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/buy_elec"
+            android:title="Buy Prepaid Electricity" />
+        <item
+            android:id="@+id/buy_airtime"
+            android:title="Buy Prepaid Airtime" />
+        <item
+            android:id="@+id/renew"
+
+            android:title="Renew PoBox" />
+        <item
+            android:id="@+id/transaction"
+
+            android:title="Transaction History" />
+
+
+
+            <item
+                android:id="@+id/settings"
+
+                android:title="Settings" />
+            <item
+                android:id="@+id/terms"
+
+                android:title="Terms &amp;Conditions" />
+            <item
+                android:id="@+id/contact_us"
+
+                android:title="Contact us" />
+            <item
+                android:id="@+id/log_out"
+
+                android:title="Logout" />
+
+    </group>
+</menu>

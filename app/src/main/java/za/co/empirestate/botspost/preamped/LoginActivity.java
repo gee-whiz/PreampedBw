@@ -266,12 +266,12 @@ public class LoginActivity extends Activity
                         String phone = serverObj.getString("phone");
                         File dbTest =new File("/data/data/za.co.empirestate.botspost.preamped/databases/preamped.db");
                         if(meterNumber != null){
-                            mysqliteFunction.createCurrentUserTable(meterNumber,"","");
+                            mysqliteFunction.createCurrentUserTable(meterNumber ,null,null);
                             Log.d(LOG, "User already exists in local storage");
                         }
                         else
                         {
-                            mysqliteFunction.createCurrentUserTable(meterNumber,"","");
+                            mysqliteFunction.createCurrentUserTable(meterNumber,null,null);
                         }
                         if(dbTest.exists()){
                             //mysqliteFunction.deleteUser();

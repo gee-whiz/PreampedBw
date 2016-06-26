@@ -51,7 +51,16 @@ public class GcmRegistrationService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         mysqliteFunction = new MySQLiteFunctions(this);
-        new GcmRegistrationTask().execute();
+
+           try
+           {
+               new GcmRegistrationTask().doInBackground();
+           }catch (Exception e){
+
+           }
+
+
+
     }
 
     @Override

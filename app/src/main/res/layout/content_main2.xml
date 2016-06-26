@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+  android:background="@drawable/bg"
+    android:orientation="vertical"
+
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="za.co.empirestate.myapplication.MainActivity"
+    tools:showIn="@layout/app_bar_main2">
+
+
+
+
+
+    <LinearLayout
+
+      android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <Button
+
+            android:id="@+id/btn_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#EA2026"
+            android:text="Buy Prepaid Electricity"
+            android:textColor="@android:color/white"
+            android:textSize="15.0sp" />
+        <Button
+
+            android:id="@+id/btn_airtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFF000"
+            android:text="Buy Prepaid Airtime"
+            android:textColor="#EA2026"
+            android:textSize="15.0sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

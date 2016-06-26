@@ -156,10 +156,9 @@ setSpinners();
         mysqliteFunction.getAllMeterNumbers();
         mmeters = mysqliteFunction.getAllM();
 
-        Log.d(LOG, "All meter numbers " + mmeters);
         ArrayList<String> tmp = new ArrayList<>();
         for (int i = 0;i < mmeters.length;i++){
-            Log.e(LOG,"nuuuuu"+mmeters[i].length());
+
             if (mmeters[i].length() > 9) {
                 tmp.add(mmeters[i]);
             }
