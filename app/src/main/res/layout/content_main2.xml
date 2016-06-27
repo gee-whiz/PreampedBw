@@ -33,7 +33,7 @@
             android:background="#EA2026"
             android:text="Buy Prepaid Electricity"
             android:textColor="@android:color/white"
-            android:textSize="15.0sp" />
+            android:textSize="12.0sp" />
         <Button
 
             android:id="@+id/btn_airtime"
@@ -43,7 +43,7 @@
             android:background="#FFF000"
             android:text="Buy Prepaid Airtime"
             android:textColor="#EA2026"
-            android:textSize="15.0sp" />
+            android:textSize="12.0sp" />
 
     </LinearLayout>
 
