@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
 public class Eleconfirm extends Activity {
@@ -20,7 +22,7 @@ public class Eleconfirm extends Activity {
     Button next,cancel;
     View back;
     String amount,str,cardNumber;
-    int TokenAmount;
+    double TokenAmount;
     Intent localIntent;
     private MySQLiteFunctions mysqliteFunction;
 
@@ -28,13 +30,13 @@ public class Eleconfirm extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eleconfirm);
-      SetFields();
+        SetFields();
         this.mysqliteFunction = new MySQLiteFunctions(this);
         localIntent = getIntent();
         str = localIntent.getStringExtra("meter_number");
         amount = localIntent.getStringExtra("amount");
 
-     UpdateFields();
+        UpdateFields();
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,12 +93,12 @@ public class Eleconfirm extends Activity {
 
     public  void  UpdateFields(){
 
-        TokenAmount  = Integer.parseInt(amount) - 4;
+        TokenAmount = Double.parseDouble(amount) -4.50;
         tAmount.setText("P"+amount+".00");
         tMeter.setText(str);
-        tTransactionFee.setText("P4.00");
+        tTransactionFee.setText("P4.50");
         tTotal.setText("P" + amount+".00");
-        tToken.setText("P"+String.valueOf(TokenAmount)+".00");
+        tToken.setText("P"+String.format(Locale.ENGLISH, "%.2f", TokenAmount));
     }
 
 
@@ -113,7 +115,7 @@ public class Eleconfirm extends Activity {
             Log.e("card number",cardNumber);
 
             if (cardNumber.length() > 18 ){
-               CardError("Please update your card details");
+                CardError("Please update your card details");
             }
             else
             {

@@ -3,7 +3,6 @@ package za.co.empirestate.botspost.preamped;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -68,7 +67,7 @@ public class AirtimeActivity extends Activity {
 
 
     public  void setFields(){
-        backButton = (View)findViewById(R.id.btnBack);
+        backButton = findViewById(R.id.btnBack);
         backImage =  (ImageButton)findViewById(R.id.imgBack);
         spnAmnt =    (Spinner)findViewById(R.id.spAmount);
         spnProviders = (Spinner)findViewById(R.id.smProviders);

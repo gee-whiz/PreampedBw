@@ -3,16 +3,10 @@ package za.co.empirestate.botspost.preamped;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,31 +15,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-     Context ctx;
-    Button elec,air;
+    Context ctx;
+    Button elec, air;
+
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         ctx = getApplicationContext();
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = this.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(this.getResources().getColor(R.color.redBorderColor));
-        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-         elec = (Button)findViewById(R.id.btn_buy);
-        air  = (Button)findViewById(R.id.btn_airtime);
+        elec = (Button) findViewById(R.id.btn_buy);
+        air = (Button) findViewById(R.id.btn_airtime);
 
         elec.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +48,10 @@ public class MainActivity extends AppCompatActivity
         air.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ctx,AirtimeActivity.class);
+                Intent intent = new Intent(ctx, AirtimeActivity.class);
                 startActivity(intent);
             }
         });
-
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -76,6 +62,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -84,7 +71,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            new LogoutMsgDialog().show(getFragmentManager(),null);
+            new LogoutMsgDialog().show(getFragmentManager(), null);
         }
     }
 
@@ -121,11 +108,11 @@ public class MainActivity extends AppCompatActivity
                     AccountDetailsActivity.class);
             startActivity(intent);
         } else if (id == R.id.buy_airtime) {
-            Intent intent = new Intent(ctx,AirtimeActivity.class);
+            Intent intent = new Intent(ctx, AirtimeActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.renew) {
-            Intent intent = new Intent(ctx,RenewPoBox.class);
+            Intent intent = new Intent(ctx, RenewPoBox.class);
             startActivity(intent);
 
         } else if (id == R.id.transaction) {
@@ -134,21 +121,18 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.settings) {
-            Intent intent = new Intent(ctx,SettingsActivity.class);
+            Intent intent = new Intent(ctx, SettingsActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.contact_us) {
             Intent intent = new Intent(ctx,
                     ContactUsActivity.class);
             startActivity(intent);
-        }
-       else if (id == R.id.terms) {
+        } else if (id == R.id.terms) {
             Intent intent = new Intent(ctx,
                     TermsAndConditions.class);
             startActivity(intent);
-         }
-
-        else if (id == R.id.log_out) {
+        } else if (id == R.id.log_out) {
 
             new LogoutMsgDialog().show(getFragmentManager(), null);
         }
@@ -158,20 +142,28 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
 
-    public static class LogoutMsgDialog extends DialogFragment
-    {
-        public Dialog onCreateDialog(Bundle paramBundle)
-        {
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+
+    public static class LogoutMsgDialog extends DialogFragment {
+        public Dialog onCreateDialog(Bundle paramBundle) {
             AlertDialog.Builder locaBuilder = new AlertDialog.Builder(getActivity());
-            locaBuilder.setMessage("Are you sure you want to log out?").setCancelable(false).setTitle(getResources().getString(R.string.app_name)).setPositiveButton("yes", new DialogInterface.OnClickListener()
-            {
-                public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt)
-                {
-                    startActivity(new Intent(getActivity(),RegOrLogActivity.class));
+            locaBuilder.setMessage("Are you sure you want to log out?").setCancelable(false).setTitle(getResources().getString(R.string.app_name)).setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
+                    startActivity(new Intent(getActivity(), RegOrLogActivity.class));
                     getActivity().finish();
                 }
-            }).setNegativeButton("no",new DialogInterface.OnClickListener() {
+            }).setNegativeButton("no", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 

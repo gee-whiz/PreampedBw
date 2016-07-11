@@ -1,7 +1,6 @@
 package za.co.empirestate.botspost.sqlite;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 

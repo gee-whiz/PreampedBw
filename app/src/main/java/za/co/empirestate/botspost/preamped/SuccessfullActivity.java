@@ -15,15 +15,15 @@ import za.co.empirestate.botspost.model.Payment;
 
 public class SuccessfullActivity extends Activity
 {
-  private Payment payment;
     DecimalFormat df = new DecimalFormat("#.00");
+  private Payment payment;
 
   protected void onCreate(Bundle paramBundle)
   {
     super.onCreate(paramBundle);
       setContentView(R.layout.activity_successfull);
     Intent intent = getIntent();
-    this.payment = ((Payment)intent.getParcelableExtra("payment_details"));
+    this.payment = intent.getParcelableExtra("payment_details");
     Time localTime = new Time(Time.getCurrentTimezone());
     localTime.setToNow();
     TextView txtTokenTop = (TextView)findViewById(R.id.token_top);

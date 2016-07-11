@@ -78,7 +78,7 @@
             android:layout_marginLeft="50dp"
             android:orientation="horizontal">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="60dp" android:text="Transaction Fee:" android:textColor="#ff000000" android:textSize="15.0sp" android:textStyle="bold"/>
-            <TextView android:id="@+id/levy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="P4.00" android:textColor="#ff000000" android:textSize="15.0sp" />
+            <TextView android:id="@+id/levy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="P4.50" android:textColor="#ff000000" android:textSize="15.0sp" />
         </LinearLayout>
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Token" android:textColor="#ff000000" android:textSize="15.0sp" android:textStyle="bold" />

@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.sql.Time;
 import java.util.Locale;
 
 public class PoBoxSuccessfull extends Activity {

@@ -13,10 +13,8 @@ public class RegOrLogActivity extends Activity
     super.onCreate(paramBundle);
       setContentView(R.layout.activity_reg_or_log);
       Button btn_log = (Button) findViewById(R.id.log_btn);
-    ((Button)findViewById(R.id.reg_btn)).setOnClickListener(new View.OnClickListener()
-    {
-      public void onClick(View paramAnonymousView)
-      {
+    findViewById(R.id.reg_btn).setOnClickListener(new View.OnClickListener() {
+      public void onClick(View paramAnonymousView) {
         Intent localIntent = new Intent(RegOrLogActivity.this, RegistrationActivity.class);
         RegOrLogActivity.this.startActivity(localIntent);
         //  overridePendingTransition(R.anim.from, R.anim.to);

@@ -79,7 +79,7 @@
             android:orientation="horizontal">
 
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="120dp" android:text="Transaction Fee" android:textColor="#ff000000" android:textSize="30.0sp" android:textStyle="bold"/>
-            <TextView android:id="@+id/levy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="P4.00" android:textColor="#ff000000" android:textSize="25.0sp" />
+            <TextView android:id="@+id/levy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="P4.50" android:textColor="#ff000000" android:textSize="25.0sp" />
 
         </LinearLayout>
 

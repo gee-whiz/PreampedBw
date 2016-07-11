@@ -130,8 +130,8 @@ public class ConfirmPurchaseActivity extends Activity {
             }
             else
                 tmeter.setText("PoBox ID");
-               PaidUntil=  localIntent.getStringExtra("PaidUntil");
-               ls_transactionFee = localIntent.getStringExtra("transactionFee");
+            PaidUntil=  localIntent.getStringExtra("PaidUntil");
+            ls_transactionFee = localIntent.getStringExtra("transactionFee");
             Log.e(LOG,"george "+PaidUntil + ls_transactionFee);
         }
         if (localIntent.getBooleanExtra("isNew", false))
@@ -441,7 +441,7 @@ public class ConfirmPurchaseActivity extends Activity {
 
                         try {
                             encriptedCard = aes.encrypt(cardNumber, shaKey, iv);
-                           encriptedCVV = aes.encrypt(cvv, shaKey, iv);
+                            encriptedCVV = aes.encrypt(cvv, shaKey, iv);
                         } catch (InvalidKeyException e) {
                             e.printStackTrace();
                         } catch (UnsupportedEncodingException e) {

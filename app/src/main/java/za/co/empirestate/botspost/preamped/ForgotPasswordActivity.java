@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -26,9 +25,9 @@ import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
 
 public class ForgotPasswordActivity extends Activity {
-    private MySQLiteFunctions mysqliteFunction;
     private static String dialogMsg;
     EditText txtEmail;
+    private MySQLiteFunctions mysqliteFunction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,7 @@ public class ForgotPasswordActivity extends Activity {
         Button btnResetPass = (Button) findViewById(R.id.btn_reset);
         this.mysqliteFunction = new MySQLiteFunctions(this);
         txtEmail.setText(mysqliteFunction.getEmail());
-        ((ImageButton)findViewById(R.id.bck_btn)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.bck_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View paramAnonymousView) {
                 onBackPressed();
                 finish();
@@ -63,12 +62,9 @@ public class ForgotPasswordActivity extends Activity {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
-        if (netInfo != null && netInfo.isConnectedOrConnecting()
+        return netInfo != null && netInfo.isConnectedOrConnecting()
                 && cm.getActiveNetworkInfo().isAvailable()
-                && cm.getActiveNetworkInfo().isConnected()) {
-            return true;
-        }
-        return false;
+                && cm.getActiveNetworkInfo().isConnected();
     }
 
     @Override
@@ -76,6 +72,20 @@ public class ForgotPasswordActivity extends Activity {
         startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
     }
 
+    public static class ErrorMsgDialog extends DialogFragment
+    {
+        public Dialog onCreateDialog(Bundle paramBundle)
+        {
+            AlertDialog.Builder localBuilder = new AlertDialog.Builder(getActivity());
+            localBuilder.setMessage(dialogMsg).setCancelable(false).setTitle(getResources().getString(R.string.app_name)).setPositiveButton("ok", new DialogInterface.OnClickListener()
+            {
+                public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt)
+                {
+                }
+            });
+            return localBuilder.create();
+        }
+    }
 
     private class ResetTask extends AsyncTask<String,Void,String> {
         private ProgressDialog progressDialog;
@@ -152,21 +162,6 @@ public class ForgotPasswordActivity extends Activity {
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(false);
             progressDialog.show();
-        }
-    }
-
-    public static class ErrorMsgDialog extends DialogFragment
-    {
-        public Dialog onCreateDialog(Bundle paramBundle)
-        {
-            AlertDialog.Builder localBuilder = new AlertDialog.Builder(getActivity());
-            localBuilder.setMessage(dialogMsg).setCancelable(false).setTitle(getResources().getString(R.string.app_name)).setPositiveButton("ok", new DialogInterface.OnClickListener()
-            {
-                public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt)
-                {
-                }
-            });
-            return localBuilder.create();
         }
     }
 }

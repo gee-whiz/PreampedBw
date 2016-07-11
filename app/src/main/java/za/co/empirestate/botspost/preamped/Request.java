@@ -265,7 +265,7 @@ public class Request {
         localLinkedList.add(new BasicNameValuePair("key", key));
         localLinkedList.add(new BasicNameValuePair("meter_number", meter_number));
         localLinkedList.add(new BasicNameValuePair("phone", phone));
-
+        Log.d(LOG, "card update encoded " +localLinkedList  );
         return getRespFromUrl(url, localLinkedList);
     }
 }

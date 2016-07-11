@@ -12,7 +12,7 @@
     </style>
 
 
-    <style name="AppBaseTheme" parent="android:Theme.Light"></style>
+    <style name="AppBaseTheme" parent="android:Theme.Light"/>
 
 
     <style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+@SuppressWarnings("ALL")
 public class AirtimeSuccessActivity extends Activity {
 
     private static final String LOG = "Hey Gee" ;
@@ -33,7 +34,8 @@ public class AirtimeSuccessActivity extends Activity {
         setContentView(R.layout.activity_airtime_success);
         setFields();
         final Intent i = getIntent();
-        Time localTime = new Time(Time.getCurrentTimezone());
+        //noinspection deprecation,deprecation,deprecation
+        @SuppressWarnings("deprecation") Time localTime = new Time(Time.getCurrentTimezone());
         localTime.setToNow();
         ls_activationNumber = i.getStringExtra("ActivationNumber");
         ls_serialNumber  = i.getStringExtra("SerialNumber");

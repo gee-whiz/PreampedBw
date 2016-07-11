@@ -41,10 +41,10 @@ public class PostBox extends Activity {
         setFields();
 
         this.mysqliteFunction = new MySQLiteFunctions(this);
-         poboxObj = new PoboxObj();
+        poboxObj = new PoboxObj();
 
-          localIntent = getIntent();
-            updateFields();
+        localIntent = getIntent();
+        updateFields();
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +68,7 @@ public class PostBox extends Activity {
 
                 if (PostBox.this.mysqliteFunction.checkPaymentHistory())
                 {
-                   checkCard();
+                    checkCard();
                 }
                 else {
                     Intent localIntent2 = new Intent(PostBox.this, PaymentDetailsActivity.class);
@@ -94,22 +94,22 @@ public class PostBox extends Activity {
 
 
 
-public  void  setFields()
-{
-    cancel = (Button)findViewById(R.id.btnCancel);
-    tName =  (TextView)findViewById(R.id.txtName);
-    tHolderType = (TextView)findViewById(R.id.txtHolderType);
-    tPenaltyAmount = (TextView)findViewById(R.id.txtPenalty);
-    tRenewalAmount = (TextView)findViewById(R.id.txtRenewalAmount);
-    tSize = (TextView)findViewById(R.id.txtSize);
-    tStatus = (TextView)findViewById(R.id.txtStatus);
-    tPaidUntil =(TextView)findViewById(R.id.txtUntil);
-    tTransactionHandle = (TextView)findViewById(R.id.txtFee);
-     back = findViewById(R.id.btnBack);
-    next = (Button)findViewById(R.id.btnNext);
-    total = (TextView)findViewById(R.id.txtTotal);
+    public  void  setFields()
+    {
+        cancel = (Button)findViewById(R.id.btnCancel);
+        tName =  (TextView)findViewById(R.id.txtName);
+        tHolderType = (TextView)findViewById(R.id.txtHolderType);
+        tPenaltyAmount = (TextView)findViewById(R.id.txtPenalty);
+        tRenewalAmount = (TextView)findViewById(R.id.txtRenewalAmount);
+        tSize = (TextView)findViewById(R.id.txtSize);
+        tStatus = (TextView)findViewById(R.id.txtStatus);
+        tPaidUntil =(TextView)findViewById(R.id.txtUntil);
+        tTransactionHandle = (TextView)findViewById(R.id.txtFee);
+        back = findViewById(R.id.btnBack);
+        next = (Button)findViewById(R.id.btnNext);
+        total = (TextView)findViewById(R.id.txtTotal);
 
-}
+    }
 
     public  void updateFields(){
 
@@ -126,10 +126,10 @@ public  void  setFields()
         TransactionHandle = "11.20";
         PaidUntil = localIntent.getStringExtra("PaidUntil");
         Double penalty = Double.parseDouble(PenaltyAmount);
-         t =  Double.parseDouble(RenewalAmount);
-         pen = Double.parseDouble(TransactionHandle);
+        t =  Double.parseDouble(RenewalAmount);
+        pen = Double.parseDouble(TransactionHandle);
         Log.e(LOG,"penalty "+penalty);
-         tot = t + pen + penalty;
+        tot = t + pen + penalty;
         total.setText("P" + String.format(Locale.ENGLISH, "%.2f", tot));
 
 

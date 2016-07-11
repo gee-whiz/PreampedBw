@@ -45,11 +45,11 @@ public class AirtimeConfirm extends Activity {
             public void onClick(View v) {
                 if (AirtimeConfirm.this.mysqliteFunction.checkPaymentHistory())
                 {
-                 checkCard();
+                    checkCard();
 
 
                 }
-             else {
+                else {
                     Intent localIntent2 = new Intent(AirtimeConfirm.this, PaymentDetailsActivity.class);
                     Log.d(LOG, "sending first Selected meter number " + voucher);
                     localIntent2.putExtra("meter_number", voucher);
@@ -92,7 +92,7 @@ public class AirtimeConfirm extends Activity {
     public  void  SetFields(){
 
         tAmount = (TextView)findViewById(R.id.txtAmount);
-       // tTransactionFee =  (TextView)findViewById(R.id.txtaTransactionFee);
+        // tTransactionFee =  (TextView)findViewById(R.id.txtaTransactionFee);
         tTotal = (TextView)findViewById(R.id.txtTotal);
         next = (Button)findViewById(R.id.btnNext);
         cancel = (Button)findViewById(R.id.btnCancel);
@@ -114,7 +114,7 @@ public class AirtimeConfirm extends Activity {
         total = fAmount ;
         tAmount.setText("P"+amount+".00");
         tVoucher.setText(voucher);
-       // tTransactionFee.setText("P"+String.format(Locale.ENGLISH, "%.2f", transactionFee) );
+        // tTransactionFee.setText("P"+String.format(Locale.ENGLISH, "%.2f", transactionFee) );
         ls_transactionFee = "P"+String.format(Locale.ENGLISH, "%.2f", transactionFee);
         tTotal.setText("P" + String.format(Locale.ENGLISH, "%.2f", total));
 

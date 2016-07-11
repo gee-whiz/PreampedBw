@@ -8,7 +8,6 @@ import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageButton;
 
 
 public class TermsAndConditions extends Activity {
@@ -21,11 +20,9 @@ public class TermsAndConditions extends Activity {
         WebView myWebView = (WebView) findViewById(R.id.webview);
         final Activity activity = this;
 
-        ((ImageButton)findViewById(R.id.bck_btn)).setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View paramAnonymousView)
-            {
-               onBackPressed();
+        findViewById(R.id.bck_btn).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View paramAnonymousView) {
+                onBackPressed();
                 finish();
             }
         });
@@ -34,6 +31,12 @@ public class TermsAndConditions extends Activity {
         webSettings.setJavaScriptEnabled(true);
         myWebView.setWebViewClient(new MyWebclient());
         myWebView.loadUrl("http://utc.empirestate.co.za/bostwana_post_office/terms.html");
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        finish();
     }
 
     private class MyWebclient extends WebViewClient{
@@ -87,11 +90,5 @@ public class TermsAndConditions extends Activity {
         public void onPageFinished(WebView view, String url) {
         }
 
-    }
-
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        finish();
     }
 }

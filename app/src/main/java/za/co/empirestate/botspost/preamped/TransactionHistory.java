@@ -11,8 +11,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -21,8 +19,8 @@ import za.co.empirestate.botspost.sqlite.MySQLiteFunctions;
 
 
 public class TransactionHistory extends Activity {
-    private MySQLiteFunctions mysqliteFunction;
     TextView tab1,tab2,tab3;
+    private MySQLiteFunctions mysqliteFunction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +36,7 @@ public class TransactionHistory extends Activity {
 
 
 
-        ((ImageButton)findViewById(R.id.bck_btn)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.bck_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View paramAnonymousView) {
                 onBackPressed();
                 finish();
@@ -101,33 +99,6 @@ public class TransactionHistory extends Activity {
         this.mysqliteFunction.close();
     }
 
-    public static class MsgDialog extends DialogFragment {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstance) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("No transactions found")
-                    .setCancelable(false)
-                    .setTitle(getResources().getString(R.string.app_name))
-                    .setPositiveButton("ok",
-                            new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface arg0,
-                                                    int arg1) {
-                                    // TODO Auto-generated method stub
-                                    Intent i = new Intent(getActivity(),
-                                            MainActivity.class);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                }
-                            });
-            return builder.create();
-        }
-    }
-
-
     public  void  setTabs(){
 
         tab1.setBackgroundResource(R.drawable.red_back);
@@ -174,11 +145,36 @@ public class TransactionHistory extends Activity {
 
     }
 
-
     public  void setFields(){
         tab1 = (TextView)findViewById(R.id.txt_top_tab1);
         tab2 = (TextView)findViewById(R.id.txt_top_tab2);
         tab3 = (TextView)findViewById(R.id.txt_top_tab3);
 
+    }
+
+    public static class MsgDialog extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstance) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("No transactions found")
+                    .setCancelable(false)
+                    .setTitle(getResources().getString(R.string.app_name))
+                    .setPositiveButton("ok",
+                            new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface arg0,
+                                                    int arg1) {
+                                    // TODO Auto-generated method stub
+                                    Intent i = new Intent(getActivity(),
+                                            MainActivity.class);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                }
+                            });
+            return builder.create();
+        }
     }
 }
