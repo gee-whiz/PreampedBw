@@ -12,7 +12,7 @@ public class AppConfig {
     public static final String    URL_AIRTIME = "http://utc.empirestate.co.za/bostwana_post_office/vendAirtime.php";
     public static final String    URL_RENEWPOBOX = "http://utc.empirestate.co.za/bostwana_post_office/RenewPOBox.php";
     public  static final  String  URL_IV = "http://utc.empirestate.co.za/bostwana_post_office/update_key_and_iv.php";
-
+    public static final String    URL_Water = "http://utc.empirestate.co.za/bostwana_post_office/vend_water.php";
     public static final String URL_LOGIN = "http://utc.empirestate.co.za/bostwana_post_office/log_reg_upd.php";
 }
 

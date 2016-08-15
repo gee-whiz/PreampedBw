@@ -21,13 +21,10 @@
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
-
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-
             android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +32,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".RegOrLogActivity"
             android:screenOrientation="portrait"
@@ -50,6 +46,7 @@
                 <category android:name="za.co.empirestate.botspost.preamped" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name=".RegistrationActivity"
             android:screenOrientation="portrait"
@@ -89,7 +86,9 @@
 
         <service android:name=".ConfirmTransactionService" />
         <service android:name=".GcmRegistrationService" />
-        <service android:name=".GcmIntentService"  android:enabled="false" />
+        <service
+            android:name=".GcmIntentService"
+            android:enabled="false" />
         <service android:name=".EncryptionService" />
 
         <activity
@@ -104,8 +103,6 @@
         <activity
             android:name=".PendingActivity"
             android:screenOrientation="portrait" />
-
-
         <activity
             android:name=".ContactUsActivity"
             android:label="@string/title_activity_contact_us" />
@@ -145,7 +142,27 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".WaterActivity"
+            android:label="@string/title_activity_water"
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
+        <activity
+            android:name=".ConfirmWater"
+            android:label="@string/title_activity_confirm_water"
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
+        <activity
+            android:name=".WaterPurchaseConfirm"
+            android:label="@string/title_activity_water_purchase_confirm"
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
+        <activity
+            android:name=".WaterPaymentDetails"
+            android:label="@string/title_activity_water_payment_details"
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
+        <activity
+            android:name=".WaterSuccess"
+            android:label="@string/title_activity_water_success"
+            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
     </application>
 
 </manifest>

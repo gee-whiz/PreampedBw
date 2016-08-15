@@ -123,7 +123,7 @@ public class RegistrationActivity extends Activity
       final EditText txtPhoneNumber = (EditText) findViewById(R.id.phone);
       //final EditText txtMeterNumber = (EditText) findViewById(R.id.meter_number);
     txtEmailAddress = (AutoCompleteTextView) findViewById(R.id.email_address);
-      getEmail();
+     // getEmail();
       meterNumber = " ";
       Log.e(LOG,"length "+meterNumber.length());
     final EditText txtPassword = (EditText) findViewById(R.id.password);
@@ -308,7 +308,7 @@ public class RegistrationActivity extends Activity
         AccountManager am = AccountManager.get(getApplicationContext());
         Account[] accts = am.getAccounts();
         if (accts.length == 0) {
-            Toast.makeText(ctx, "No Accounts found. Please create one and try again", Toast.LENGTH_LONG).show();
+            //Toast.makeText(ctx, "No Accounts found. Please create one and try again", Toast.LENGTH_LONG).show();
             finish();
             return;
         }

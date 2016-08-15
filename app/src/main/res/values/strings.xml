@@ -34,14 +34,28 @@
         <item>Other Amount</item>
     </string-array>
 
-    <string-array name="airtime_vouchers">
+    <string-array name="orange_vouchers">
+        <item>P10</item>
+        <item>P20</item>
+        <item>P50</item>
+        <item>P100</item>
+    </string-array>
+
+    <string-array name="mascom_vouchers">
+        <item>P10</item>
+        <item>P20</item>
+        <item>P60</item>
+        <item>P100</item>
+    </string-array>
+
+    <string-array name="bemobile_vouchers">
         <item>P10</item>
         <item>P20</item>
         <item>P30</item>
         <item>P50</item>
-        <item>P60</item>
         <item>P100</item>
     </string-array>
+
 
 
     <string-array name="airtime_providers">
@@ -115,5 +129,10 @@
     <string name="title_activity_airtime_confirm">AirtimeConfirm</string>
     <string name="title_activity_eleconfirm">Eleconfirm</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_water">WaterActivity</string>
+    <string name="title_activity_confirm_water">ConfirmWater</string>
+    <string name="title_activity_water_purchase_confirm">WaterPurchaseConfirm</string>
+    <string name="title_activity_water_payment_details">WaterPaymentDetails</string>
+    <string name="title_activity_water_success">WaterSuccess</string>
 
 </resources>

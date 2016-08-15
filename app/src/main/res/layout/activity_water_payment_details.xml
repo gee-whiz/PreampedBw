@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.15" android:background="#FFF000">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:background="@null" android:drawablePadding="5.0dip" android:drawableRight="@drawable/payment_details_icon" android:text="Payment Details" android:textColor="#EA2026" android:textSize="20.0sp" />
+    </FrameLayout>
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.05" android:background="#EA2026" android:orientation="horizontal">
+        <ImageButton android:id="@+id/bck_btn" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:background="@null" android:src="@drawable/bck_btn" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.675" android:background="#ffffffff" android:gravity="center_horizontal" android:orientation="vertical" android:paddingTop="10.0dip">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Card Holder Initial" android:textColor="#ff000000" />
+        <EditText android:id="@+id/initial" android:layout_width="fill_parent" android:layout_height="33.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:background="@drawable/text_box_bg" android:inputType="text" android:paddingLeft="3.0dip" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Card Holder Surname" android:textColor="#ff000000" />
+        <EditText android:id="@+id/surname" android:layout_width="fill_parent" android:layout_height="33.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:background="@drawable/text_box_bg" android:inputType="text" android:paddingLeft="3.0dip" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Card Number" android:textColor="#ff000000" />
+        <EditText android:id="@+id/card_number" android:layout_width="fill_parent" android:layout_height="33.0dip" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:background="@drawable/text_box_bg" android:inputType="number" android:maxLength="16" android:paddingLeft="3.0dip" />
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:orientation="horizontal">
+            <LinearLayout android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="0.25" android:orientation="vertical">
+                <TextView android:layout_width="110.0dip" android:layout_height="wrap_content" android:maxLines="1" android:text="exp date" android:textColor="#ff000000" />
+                <Spinner android:id="@+id/month" android:layout_width="fill_parent" android:layout_height="33.0dip" android:background="@drawable/text_box_bg" android:paddingLeft="3.0dip" />
+            </LinearLayout>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom" android:layout_marginLeft="5.0dip" android:text="/" android:textColor="#ff000000" android:textSize="30.0sp" />
+            <Spinner android:id="@+id/year" android:layout_width="0.0dip" android:layout_height="33.0dip" android:layout_gravity="bottom" android:layout_marginRight="5.0dip" android:layout_weight="0.25" android:background="@drawable/text_box_bg" android:paddingLeft="3.0dip" />
+            <LinearLayout android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="0.4" android:gravity="start" android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="cvv number" android:textColor="#ff000000" />
+                <EditText android:id="@+id/cvv" android:layout_width="fill_parent" android:layout_height="33.0dip" android:background="@drawable/text_box_bg" android:inputType="number" android:maxLength="3" android:paddingLeft="3.0dip" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="45.0dip" android:layout_marginRight="45.0dip" android:orientation="vertical">
+            <RadioGroup android:id="@+id/rdoCard" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                <RadioButton android:id="@+id/visa" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:text="Visa" android:textColor="#ff000000" />
+                <RadioButton android:id="@+id/master_card" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Master card" android:textColor="#ff000000" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Please be aware that Visa Electron debit cards are not eligible for use in this application."
+                android:textColor="#EA2026"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <Button android:id="@+id/btn_next" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.075" android:background="#FFF000" android:orientation="vertical" android:text="NEXT" android:textColor="#EA2026" android:textSize="22sp" android:textStyle="bold" />
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.075" android:background="#ff000000" android:paddingTop="10.0dip">
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:src="@drawable/second_dot" />
+    </FrameLayout>
+</LinearLayout>

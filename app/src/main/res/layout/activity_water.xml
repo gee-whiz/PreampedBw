@@ -18,8 +18,7 @@
             android:layout_gravity="center"
             android:background="@null"
             android:drawablePadding="5.0dip"
-            android:drawableRight="@drawable/finger_print"
-            android:text="Account Details"
+            android:text="Purchase Water"
             android:textColor="#EA2026"
             android:textSize="20.0sp" />
     </FrameLayout>
@@ -45,58 +44,84 @@
         android:layout_marginTop="20dp"
         android:orientation="vertical">
 
-
-        <RadioGroup
-            android:id="@+id/rdoPox"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
-            <RadioButton
-                android:id="@+id/POBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text=" PO Box"
-                android:textColor="#ff000000" />
-            <RadioButton
-                android:id="@+id/master_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Private Bag"
-                android:textColor="#ff000000" />
-        </RadioGroup>
+            android:text="Account holder"
+            android:textColor="#ff000000" />
+        <EditText android:id="@+id/edtAcoountHolder"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="45.0dip"
+            android:layout_marginRight="45.0dip"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/text_box_bg"
+            android:gravity="center_horizontal|center_vertical"
+            android:hint="Account holder"
+            android:inputType="text" android:paddingLeft="3.0dip"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="Customer number"
+            android:textColor="#ff000000" />
+        <EditText android:id="@+id/edtCustomerNumber"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="45.0dip"
+            android:layout_marginRight="45.0dip"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/text_box_bg"
+            android:gravity="center_horizontal|center_vertical"
+            android:hint="Customer number"
+            android:inputType="text" android:paddingLeft="3.0dip"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:text="Enter PO Box or Private Bag number only"
-            android:textColor="@android:color/black" />
-
-        <EditText
-            android:id="@+id/edtPoBox"
+            android:layout_marginTop="8dp"
+            android:text="Contract number"
+            android:textColor="#ff000000" />
+        <EditText android:id="@+id/edtContractNumber"
             android:layout_width="fill_parent"
-            android:layout_height="50.0dip"
+            android:layout_height="45dp"
             android:layout_marginLeft="45.0dip"
             android:layout_marginRight="45.0dip"
             android:layout_marginTop="8dp"
             android:background="@drawable/text_box_bg"
-            android:gravity="center"
-             android:hint="Enter Po Box / Private Bag"
-            android:inputType="number"  android:paddingLeft="3.0dip"/>
+            android:gravity="center_horizontal|center_vertical"
+            android:hint="Contract number"
+            android:inputType="text" android:paddingLeft="3.0dip"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="Amount"
+            android:textColor="#ff000000" />
+        <EditText android:id="@+id/edtAmount"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="45.0dip"
+            android:layout_marginRight="45.0dip"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/text_box_bg"
+            android:gravity="center_horizontal|center_vertical"
+            android:hint="Amount"
+            android:inputType="numberDecimal" android:paddingLeft="3.0dip"/>
 
-
-    </LinearLayout><Space
+    </LinearLayout>
+    <Space
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="1"/>
 
 
     <Button
-
         android:id="@+id/btnNext"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -121,4 +146,3 @@
 
 
 </LinearLayout>
-

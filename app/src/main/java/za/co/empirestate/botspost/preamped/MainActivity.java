@@ -136,6 +136,10 @@ public class MainActivity extends AppCompatActivity
 
             new LogoutMsgDialog().show(getFragmentManager(), null);
         }
+       /* else  if (id == R.id.water){
+            Intent   intent = new Intent(ctx,WaterActivity.class);
+            startActivity(intent);
+        }*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_weight="0.15"
+        android:background="#FFF000">
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:drawablePadding="5.0dip"
+            android:drawableRight="@drawable/payment_details_icon"
+            android:text="SUCCESSFUL"
+            android:textColor="#EA2026"
+            android:textSize="25.0sp" />
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_weight="0.05"
+        android:background="#EA2026"
+        android:orientation="horizontal">
+        <ImageButton android:id="@+id/bck_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@null"
+            android:src="@drawable/bck_btn" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_weight="0.6"
+        android:background="#ffffffff"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="10.0dip">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Account Holder:"
+                    android:textColor="#ff000000"
+                    android:textSize="15.0sp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Customer Number:"
+                    android:textColor="#ff000000"
+                    android:textSize="15.0sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Contract Number:"
+                    android:textColor="#ff000000"
+                    android:textSize="15.0sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Amount:"
+                    android:textColor="#ff000000"
+                    android:textSize="15.0sp"
+                    android:textStyle="bold"/>
+
+
+
+            </LinearLayout>
+
+
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="10dp">
+                <TextView
+                    android:id="@+id/txtAccountHolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text=""
+                    android:textColor="#ff000000"
+                    android:textSize="15.0sp" />
+
+
+
+
+                <TextView
+
+                    android:id="@+id/txtCustomerNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text=""
+                    android:textColor="#ff000000"
+                    android:textSize="15.0sp" />
+
+
+
+                <TextView
+                    android:id="@+id/txtContractNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text=""
+                    android:textColor="#ff000000"
+                    android:textSize="15.0sp" />
+
+
+
+                <TextView
+
+                    android:id="@+id/txtAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text=""
+                    android:textColor="#ff000000"
+                    android:textSize="15.0sp" />
+
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Payment Reference #"
+                android:textColor="#ff000000"
+                android:textSize="15.0sp"
+                android:textStyle="bold" />
+            <TextView
+
+                android:id="@+id/txtRefNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="0000 0000 0000"
+                android:textColor="#ff000000"
+                android:textIsSelectable="true"
+                android:textSize="16.0sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip" android:layout_weight="0.075" android:orientation="horizontal">
+        <FrameLayout android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.5" android:background="@drawable/text_box_bg">
+            <TextView android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Date:"
+                android:textColor="#ff000000"
+                android:textSize="15.0sp" />
+        </FrameLayout>
+        <FrameLayout android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.5" android:background="@drawable/text_box_bg">
+            <TextView android:id="@+id/time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Time" android:textColor="#ff000000" android:textSize="15.0sp" />
+        </FrameLayout>
+    </LinearLayout>
+    <Button android:id="@+id/btnNext" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.075" android:background="#FFF000" android:orientation="vertical" android:text="Finish" android:textColor="#EA2026" android:textSize="22.0sp" android:textStyle="bold" />
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.075" android:background="#ff000000" android:paddingTop="10.0dip">
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:src="@drawable/fifth_dot" />
+    </FrameLayout>
+</LinearLayout>

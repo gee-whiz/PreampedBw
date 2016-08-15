@@ -80,7 +80,7 @@ public class AirtimeActivity extends Activity {
       //  amount = "100";
         Log.d(LOG,"current voucher  is "+ ls_voucher);
         //spinner for denominations
-        ArrayAdapter<CharSequence> adapterAmnt = ArrayAdapter.createFromResource  (this, R.array.airtime_vouchers,
+        ArrayAdapter<CharSequence> adapterAmnt = ArrayAdapter.createFromResource  (this, R.array.bemobile_vouchers,
                 android.R.layout.simple_spinner_item);
         adapterAmnt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnAmnt.setAdapter(adapterAmnt);
@@ -112,6 +112,28 @@ public class AirtimeActivity extends Activity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                ls_voucher = spnProviders.getSelectedItem().toString().substring(0);
                 voucher = ls_voucher;
+                if (voucher.equalsIgnoreCase("Mascom")){
+                    ArrayAdapter<CharSequence> adapterAmnt = ArrayAdapter.createFromResource  (AirtimeActivity.this, R.array.mascom_vouchers,
+                            android.R.layout.simple_spinner_item);
+                    adapterAmnt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spnAmnt.setAdapter(adapterAmnt);
+
+                }
+                else if (voucher.equalsIgnoreCase("Orange"))
+                {
+                    ArrayAdapter<CharSequence> adapterAmnt = ArrayAdapter.createFromResource  (AirtimeActivity.this, R.array.orange_vouchers,
+                            android.R.layout.simple_spinner_item);
+                    adapterAmnt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spnAmnt.setAdapter(adapterAmnt);
+
+                }
+
+                else {
+                    ArrayAdapter<CharSequence> adapterAmnt = ArrayAdapter.createFromResource  (AirtimeActivity.this, R.array.bemobile_vouchers,
+                            android.R.layout.simple_spinner_item);
+                    adapterAmnt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spnAmnt.setAdapter(adapterAmnt);
+                }
                 Log.d(LOG,"Selected voucher is "+ voucher);
             }
 

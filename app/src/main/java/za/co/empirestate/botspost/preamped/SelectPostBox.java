@@ -6,14 +6,20 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -26,6 +32,7 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +49,7 @@ public class SelectPostBox extends Activity    {
     ImageView imgBack;
     Spinner sp;
     EditText pobox;
+    RadioButton radPostBox;
     String selecteditem,selectedPostBox;
     List<String> SpinnerArray = new ArrayList<String>();
     String PostOfficeName,GroupId;
@@ -73,15 +81,23 @@ public class SelectPostBox extends Activity    {
             @Override
             public void onClick(View view) {
                 selectedPostBox = "PO" + pobox.getText().toString();
-                if (selectedPostBox.length() < 3) {
-                    pobox.setError("Please enter a valid post box");
+                if (pobox.getText().length() < 3) {
+                    pobox.setError("Please enter a valid post box starting with a digit");
                     return;
 
                 } else {
-                    selectedPostBox = "PO" + pobox.getText().toString();
-                    pDialog.setMessage("Please wait...");
-                    pDialog.show();
-                    GetPostBox(PostOfficeName, GroupId);
+                    if(radPostBox.isChecked()){
+                        selectedPostBox = "PO" + pobox.getText().toString();   pDialog.setMessage("Please wait...");
+                        pDialog.show();
+                        GetPostBox(PostOfficeName, GroupId);
+                    }
+                   else
+                    {
+                        selectedPostBox = "PB" + pobox.getText().toString();   pDialog.setMessage("Please wait...");
+                        pDialog.show();
+                        GetPostBox(PostOfficeName, GroupId);
+                    }
+
 
 
                 }
@@ -98,10 +114,34 @@ public class SelectPostBox extends Activity    {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SelectPostBox.this,RenewPoBox.class);
+                Intent intent = new Intent(SelectPostBox.this, RenewPoBox.class);
                 startActivity(intent);
             }
         });
+
+
+        pobox.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (pobox.getText().toString().length() > 0) {
+                    Log.d(LOG, "text greater than three");
+                    pobox.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+                } else {
+                    pobox.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+               }
+
+
+           }
+       });
     }
 
 
@@ -112,6 +152,7 @@ public class SelectPostBox extends Activity    {
         back = findViewById(R.id.btnBack);
         next = (Button)findViewById(R.id.btnNext);
         imgBack = (ImageView)findViewById(R.id.imgBack);
+        radPostBox = (RadioButton)findViewById(R.id.POBox);
 
     }
 

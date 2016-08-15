@@ -691,9 +691,6 @@ public class ConfirmPurchaseActivity extends Activity {
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
                     String res = jsonObject.getString("Response");
                     String PaymentReference = jsonObject.getString("PaymentReference");
-
-
-
                     if(res.equalsIgnoreCase("00")){
 
                         pDialog.dismiss();
